@@ -1,0 +1,1 @@
+window.alert('editor loaded');
