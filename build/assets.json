@@ -1,0 +1,9 @@
+{
+  "app": {
+    "js": "//localhost:8080/assets/app.js",
+    "css": "//localhost:8080/assets/style.css"
+  },
+  "vendor": {
+    "js": "//localhost:8080/assets/vendor.js"
+  }
+}
