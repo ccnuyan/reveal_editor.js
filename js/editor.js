@@ -11,8 +11,11 @@ import '../css/editor.scss';
 
 injectTapEventPlugin();
 
+// $('.reveal').wrap('<div id="main"></div>');
 document.getElementsByClassName('reveal')[0]
-    .insertAdjacentHTML('afterend', '<div id="reveal_editor"></div>');
+    .insertAdjacentHTML('afterend', '<div id="reveal_manipulations" class="ui sidebar visible"></div>');
+document.getElementsByClassName('reveal')[0]
+    .insertAdjacentHTML('afterend', '<div id="reveal_options" class="ui sidebar visible"></div>');
 
 ReactDom.render((
   <Provider store={ store }>
