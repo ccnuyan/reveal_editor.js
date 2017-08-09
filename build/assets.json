@@ -1,0 +1,8 @@
+{
+  "app": {
+    "js": "//localhost:8080/assets/app.js"
+  },
+  "vendor": {
+    "js": "//localhost:8080/assets/vendor.js"
+  }
+}
