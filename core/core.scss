@@ -1,0 +1,49 @@
+#reveal>.slides{
+    width:960px;
+    height:700px;
+}
+
+// the reveal default margin bottom is 20px
+#reveal h1,#reveal h2,#reveal h3,#reveal h4,#reveal h5,#reveal h6{
+    margin:0;
+}
+
+.sl-block{
+    position: absolute;
+}
+
+.anchor {
+    pointer-events: auto;
+}
+.anchor[data-direction='e'] {
+    left: 0;
+    top: 50%;
+}
+.anchor[data-direction='w'] {
+    right: 0;
+    top: 50%;
+}
+.anchor[data-direction='n'] {
+    left: 50%;
+    top: 0;
+}
+.anchor[data-direction='s'] {
+    left: 50%;
+    bottom: 0;
+}
+.anchor[data-direction='ne'] {
+    left: 0;
+    top: 0;
+}
+.anchor[data-direction='nw'] {
+    right: 0;
+    top: 0;
+}
+.anchor[data-direction='se'] {
+    left: 0;
+    bottom: 0;
+}
+.anchor[data-direction='sw'] {
+    right: 0;
+    bottom: 0;
+}

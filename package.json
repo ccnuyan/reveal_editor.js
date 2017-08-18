@@ -33,6 +33,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "chai": "^4.1.1",
     "compression": "^1.7.0",
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
@@ -114,7 +115,9 @@
       "$": true,
       "printError": true,
       "printMessage": true,
-      "STATE_FROM_SERVER": true
+      "CKEDITOR": true,
+      "Reveal": true,
+      "RevealEditor": true
     },
     "rules": {
       "camelcase": 0,

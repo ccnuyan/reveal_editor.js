@@ -9,31 +9,26 @@
 		<link rel="stylesheet" href="/reveal/css/reveal.css">
 		<link rel="stylesheet" href="/semantic/dist/semantic.css">
 		<link rel="stylesheet" href="/reveal/css/theme/white.css">
-		<link rel="stylesheet" href="//localhost:8080/assets/style.css">
+		<link rel="stylesheet" href="//localhost:8080/assets/core.css">
+		<link rel="stylesheet" href="//localhost:8080/assets/editor.css">
 	</head>
 	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+		<div id="wrapper">
+			<div id="reveal_container">
+				<div class="reveal" id="reveal">
+					<div class="slides">
+					</div>
+				</div>
 			</div>
+			<div id="reveal_editor"></div>
 		</div>
-
-		<script src="/lib/js/head.min.js"></script> 
-		<script src="/reveal/js/reveal.js"></script>
+		<script src="/lib/js/head.min.js"></script>
+		<script src="/lib/js/html5shiv.js"></script>
 		<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
 		<script src="/semantic/dist/semantic.js"></script>
-		<script src="//localhost:8080/assets/vendor.js"></script>
-
-		<script>
-			Reveal.initialize({
-				dependencies: [
-					{ src: '//localhost:8080/assets/app.js' }
-					// { src: 'plugin/markdown/markdown.js' },
-					// { src: 'plugin/notes/notes.js', async: true },
-					// { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
+		<script src="/ckeditor/ckeditor.js"></script>
+		<script src="/reveal/js/reveal.js"></script>
+		<script src="//localhost:8080/assets/core.js"></script>
+		<script src="//localhost:8080/assets/editor.js"></script>
 	</body>
-</html>·
+</html>

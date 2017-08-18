@@ -8,8 +8,9 @@ const rules = require('./webpack/commonRules.js');
 
 const config = {
   entry: {
-    app: ['babel-polyfill', './js/editor.js'],
-    vendor: ['whatwg-fetch', 'react', 'react-dom'], // whatwg-fetch is imported in './includes.js'
+    editor: './editor/editor.js',
+    core: './core/core.js',
+    // vendor: ['whatwg-fetch', 'react', 'react-dom'], // whatwg-fetch is imported in './includes.js'
   },
   target: 'web',
   output: {
@@ -29,11 +30,11 @@ const config = {
       prettyPrint: true,
     }),
     new ExtractTextPlugin({
-      filename: 'style.css',
+      filename: '[name].css',
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor', // Specify the common bundle's name.
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor', // Specify the common bundle's name.
+    // }),
     new webpack.SourceMapDevToolPlugin(),
   ],
   module: {
