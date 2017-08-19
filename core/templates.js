@@ -101,7 +101,15 @@ const sectionTemplates = {
     </div>`,
 };
 
+const imageTamplates = {
+  initial: `
+    <div class="sl-block-content">
+        <img src="" alt=""/>
+    </div>`,
+};
+
 export default {
   slidesTemplates,
   sectionTemplates,
+  imageTamplates,
 };

@@ -1,17 +1,24 @@
-import Block from './Block';
 import _u from './util';
 import config from './config';
 import Elements from './Elements';
+import TextBlock from './TextBlock';
+import ImageBlock from './ImageBlock';
 
 class Section extends Elements {
+  static map = {
+    text: TextBlock,
+    image: ImageBlock,
+  }
   constructor({ parent, el }) {
     super({ parent, el });
     this.blocks = [];
     _u.findChildren(this.dom, '.sl-block').forEach((block) => {
-      this.blocks.push(new Block({
-        parent: this,
-        el: block,
-      }));
+      this.blocks.push(new (Section.map[block.dataset.blockType])(
+        {
+          parent: this,
+          el: block,
+        },
+      ));
     });
   }
 
@@ -23,7 +30,7 @@ class Section extends Elements {
 
     this.dom.appendChild(blockDiv);
 
-    const block = new Block({
+    const block = new (Section.map[type])({
       parent: this,
       el: blockDiv,
     });
@@ -42,6 +49,23 @@ class Section extends Elements {
     const textBlock = this.getNewBlock('text', content);
     this.parent.currentBlock = textBlock;
     textBlock.toManipulate();
+  }
+
+  addImage({ imageUrl }) {
+    const content = _u.create('div', config.classnames.content, config.styles.imageContent);
+    const image = _u.create('img', [], {});
+    content.appendChild(image);
+
+    if (imageUrl) {
+      image.setAttribute('src', imageUrl);
+      image.setAttribute('alt', '');
+    }
+    const imageblock = this.getNewBlock('image', content);
+
+    this.blocks.push(imageblock);
+
+    this.parent.currentBlock = imageblock;
+    imageblock.toManipulate();
   }
 }
 

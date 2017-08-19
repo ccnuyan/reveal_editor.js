@@ -115,6 +115,12 @@ class TransformerAnchor extends Elements {
       }
       default:
     }
+    bstyle.width = `${Math.max(parseInt(bstyle.width), this.parent.parent.minsize.width)}px`;
+    bstyle.height = `${Math.max(parseInt(bstyle.height), this.parent.parent.minsize.height)}px`;
+
+    if (this.parent.parent.rearrange) {
+      this.parent.parent.rearrange();
+    }
   }
 }
 

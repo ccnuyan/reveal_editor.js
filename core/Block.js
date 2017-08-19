@@ -36,7 +36,7 @@ class Block extends Elements {
     this.blockTransformer.hide();
   }
 
-  toEdit = () => {
+  toEdit() {
     this.parent.blocks.forEach((block) => {
       block.toPreview();
     });
@@ -44,41 +44,16 @@ class Block extends Elements {
 
     this.mode = 'editing';
     expect(this.blockType).to.exist;
-
-    switch (this.blockType) {
-      case 'text': {
-        this.blockContent.dom.setAttribute('contenteditable', 'true');
-        let initiatedFlag = false;
-        Object.keys(CKEDITOR.instances).some((name) => {
-          const ariaLabel = this.blockContent.dom.getAttribute('aria-label');
-          if (ariaLabel && ariaLabel.split(', ')[1] === name) {
-            CKEDITOR.instances[name].focus();
-            initiatedFlag = true;
-            return true;
-          }
-          return false;
-        });
-        if (!initiatedFlag) {
-          CKEDITOR.inline(this.blockContent.dom, _config.ckeditorConfig);
-        }
-        _u.clearUserSelection();
-        break;
-      }
-      case 'image': {
-        break;
-      }
-      default:
-    }
   }
 
-  toManipulate = () => {
+  toManipulate() {
     this.mode = 'manipulating';
     // no need to call toPreview() for other blocks, when select multiple blocks, for Example.
 
     this.blockTransformer.show();
   }
 
-  toPreview = () => {
+  toPreview() {
     this.mode = 'previewing';
     Object.keys(CKEDITOR.instances).forEach((key) => {
       const ce_instance = CKEDITOR.instances[key];

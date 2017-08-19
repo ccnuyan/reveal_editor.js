@@ -56,11 +56,23 @@ const styles = {
     width: '100%',
     height: '100%',
   },
-  imageContentImage: {
+  imageContentImageWide: {
     padding: '0px',
     border: '0px solid transparent',
     margin: '0px',
-    verticalAlign: 'middle',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    width: 'inherit',
+    height: 'auto',
+  },
+  imageContentImageTall: {
+    padding: '0px',
+    border: '0px solid transparent',
+    margin: '0px',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    width: 'auto',
+    height: 'inherit',
   },
   subMenuPanel: {
     position: 'fixed',
@@ -71,6 +83,7 @@ const styles = {
 };
 
 const classnames = {
+  editingUI: 'editing-ui',
   block: 'sl-block',
   transform: 'sl-block-transform',
   content: 'sl-block-content',

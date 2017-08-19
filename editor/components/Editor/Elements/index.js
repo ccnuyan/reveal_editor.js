@@ -14,7 +14,7 @@ class Elements extends Component {
             </div>
           </div>
           <div className="item">
-            <div className="ui inverted massive icon button">
+            <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewImage }>
               <i className="image icon"></i>
             </div>
           </div>
@@ -25,6 +25,10 @@ class Elements extends Component {
 
   onAddNewText = () => {
     window.RevealEditor.currentSection.addText();
+  }
+
+  onAddNewImage = () => {
+    window.RevealEditor.currentSection.addImage({ imageUrl: '/test.jpg' });
   }
 }
 
