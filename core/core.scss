@@ -12,6 +12,11 @@
     position: absolute;
 }
 
+.sl-block[data-block-type='text'] *{
+    margin: 0;
+}
+
+
 .anchor {
     pointer-events: auto;
 }

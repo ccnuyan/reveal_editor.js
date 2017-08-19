@@ -4,52 +4,56 @@ import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
 class Manipulations extends Component {
-  render =() => {
+
+  undo = (event) => {
+    event.preventDefault();
+    window.RevealEditor.services.undoredo.undo();
+  }
+
+  redo = (event) => {
+    event.preventDefault();
+    window.RevealEditor.services.undoredo.redo();
+  }
+
+  render = () => {
     return (
       <div id='editor_manipulations' className="ui center aligned segment">
         <div className="ui list">
-          <a href="" className="item">
-            <button onTouchTap={ this.props.set_preview }
-            className="ui icon button"
-            >
+          <div className="item">
+            <button onTouchTap={ this.props.set_preview } className="ui icon button">
               <i className="play icon"></i>
             </button>
-          </a>
-          <a href="" className="item">
-            <button
-        className="ui icon button"
-            >
+          </div>
+          <div className="item">
+            <button onTouchTap={ this.undo } className="ui icon button">
               <i className="undo icon"></i>
             </button>
-          </a>
-          <a href="" className="item">
-            <button
-        className="ui icon button"
-            >
+          </div>
+          <div className="item">
+            <button onTouchTap={ this.redo } className="ui icon button">
+              <i className="redo icon"></i>
+            </button>
+          </div>
+          <div className="item">
+            <button className="ui icon button">
               <i className="save icon"></i>
             </button>
-          </a>
-          <a href="" className="item">
-            <button
-        className="ui icon button"
-            >
+          </div>
+          <div className="item">
+            <button className="ui icon button">
               <i className="sidebar icon"></i>
             </button>
-          </a>
-          <a href="" className="item">
-            <button
-        className="ui icon button"
-            >
+          </div>
+          <div className="item">
+            <button className="ui icon button">
               <i className="folder open icon"></i>
             </button>
-          </a>
-          <a href="" className="item">
-            <button
-        className="ui icon button"
-            >
+          </div>
+          <div className="item">
+            <button className="ui icon button">
               <i className="external icon"></i>
             </button>
-          </a>
+          </div>
         </div>
       </div>
     );

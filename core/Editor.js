@@ -3,41 +3,40 @@ import './CKEDITORPlugins';
 import _u from './util';
 import revealConf from './revealConf';
 import config from './config';
-import templates from './templates';
 import Section from './Section';
 import Axis from './Axis';
+import services from './services';
 /* eslint-disable no-param-reassign, radix */
 
 // this.reveal should be the reveal element;
 class Editor {
-  constructor(reveal) {
-    this.dom = reveal;
 
-    // iniitialize reveal
-    _u.setHTML(this.dom, templates.slidesTemplates.default);
+  constructor({ reveal, initialHTML }) {
+    this.dom = reveal;
+    this.services = services(this);
+    this.linkDomEvents();
+
+    _u.setHTML(document.querySelector('.reveal'), initialHTML);
     window.Reveal.initialize(revealConf.editingConf);
 
-    // paint the axis
+      // paint the axis
     this.axis = new Axis(this.dom);
     this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
 
-    this.initializeSections();
-
-    // select rect
+      // select rect
     this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
     this.dom.appendChild(this.selectRect);
 
+    this.initializeSections();
+  }
+
+  linkDomEvents = () => {
     // link drag events
     this.dom.setAttribute('draggable', true);
     _u.on(this.dom, 'dragstart', this.dragstart);
     _u.on(this.dom, 'dragover', this.do);
     _u.on(this.dom, 'dragend', this.dragend);
 
-    this.linkRevealEvents();
-    this.linkDomEvents();
-  }
-
-  linkDomEvents = () => {
     // on blank clicked
     _u.on(this.dom, 'click', (event) => {
       event.stopPropagation();
@@ -51,22 +50,32 @@ class Editor {
     });
   }
 
-  linkRevealEvents = () => {
-    Reveal.addEventListener('slidechanged', (event) => {
-      // set current section
-      this.sections.some((section) => {
-        if (event.currentSlide === section.dom) {
-          this.currentSection = section;
-          return true;
-        }
-        return false;
-      });
-    });
+  reload({ html }) {
+    // save the old configuration and position
+    const oldConf = window.Reveal.getConfig();
+    const h = Reveal.getIndices().h;
+    const v = Reveal.getIndices().v;
+
+    const virReveal = document.createElement('div');
+    _u.setHTML(virReveal, html);
+    _u.setHTML(this.slidesDom, virReveal.querySelector('.slides').innerHTML);
+
+    // reinitialize reveal
+    window.Reveal.initialize(oldConf);
+    window.Reveal.navigateTo(h, v);
+
+    // re-paint the axis
+    this.axis = new Axis(this.dom);
+    this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
+
+    // reinitialize the sections
+    this.initializeSections();
   }
 
+  // this method make sure the currentSection is always exist
   initializeSections = () => {
     this.sections = [];
-    const currentSectionDom = Reveal.getCurrentSlide();
+    const currentSectionDom = window.Reveal.getCurrentSlide();
     expect(currentSectionDom).to.exist;
     _u.findChildren(this.dom, '.slides>section').forEach((section) => {
       const sec = new Section({
@@ -79,11 +88,22 @@ class Editor {
         this.currentSection = sec;
       }
     });
-    expect(this.currentSection).to.exist;
+    window.Reveal.addEventListener('slidechanged', (event) => {
+      // set current section
+      this.sections.some((section) => {
+        if (event.currentSlide === section.dom) {
+          this.currentSection = section;
+          return true;
+        }
+        return false;
+      });
+    });
   }
 
+  // do = dargover, capture the event emmited by this dom elements
   do = (event) => {
     event.stopPropagation();
+    // redirect to the handler where the dragstart
     this.draggingElement.dragover(event);
   }
 

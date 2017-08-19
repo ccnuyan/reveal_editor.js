@@ -26,8 +26,10 @@ class TransformerAnchor extends Elements {
     event.stopPropagation();
   }
 
+  // do = dargover, capture the event emmited by this dom elements
   do = (event) => {
     event.stopPropagation();
+    // redirect to the handler where the dragstart
     this.parent.parent.parent.parent.draggingElement.dragover(event);
   }
 

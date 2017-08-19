@@ -203,6 +203,15 @@ function replaceWithHTML(el, string) {
   el.outerHTML = string;
 }
 
+function removeAllAttributes(el) {
+  const attributes = [];
+  Array.prototype.forEach.call(el.attributes, (att) => {
+    attributes.push(att.name);
+  });
+
+  attributes.forEach(att => el.removeAttribute(att));
+}
+
 function setAttr(el, attr, value) {
   el.setAttribute(attr, value);
 }
@@ -333,6 +342,7 @@ export default {
   removeClass,
   replaceWithHTML,
   setAttr,
+  removeAllAttributes,
   setHTML,
   setText,
   siblings,

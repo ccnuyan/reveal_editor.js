@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import _u from './util';
 import config from './config';
 import Elements from './Elements';
@@ -5,10 +6,12 @@ import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
 
 class Section extends Elements {
+  // block type to Element Type
   static map = {
     text: TextBlock,
     image: ImageBlock,
   }
+
   constructor({ parent, el }) {
     super({ parent, el });
     this.blocks = [];
@@ -41,6 +44,10 @@ class Section extends Elements {
   }
 
   addText = () => {
+    this.parent.services.undoredo.enqueue();
+    this.blocks.forEach((block) => {
+      block.toPreview();
+    });
     const content = _u.create('div', config.classnames.content);
     const paragraph = _u.create('p');
     paragraph.textContent = '输入文本内容';
@@ -52,6 +59,10 @@ class Section extends Elements {
   }
 
   addImage({ imageUrl }) {
+    this.parent.services.undoredo.enqueue();
+    this.blocks.forEach((block) => {
+      block.toPreview();
+    });
     const content = _u.create('div', config.classnames.content, config.styles.imageContent);
     const image = _u.create('img', [], {});
     content.appendChild(image);
@@ -66,6 +77,24 @@ class Section extends Elements {
 
     this.parent.currentBlock = imageblock;
     imageblock.toManipulate();
+  }
+
+  removeSelectedBlocks() {
+    this.parent.services.undoredo.enqueue();
+    const toBeRemoved = [];
+    this.blocks.forEach((block) => {
+      if (block.mode === 'manipulating') {
+        toBeRemoved.push(block);
+      }
+    });
+
+    toBeRemoved.forEach((block) => {
+      block.remove();
+    });
+  }
+
+  getSelectedBlocks() {
+    return _.filter(this.blocks, { mode: 'manipulating' });
   }
 }
 
