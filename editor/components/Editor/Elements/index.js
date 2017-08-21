@@ -19,8 +19,23 @@ class Elements extends Component {
             </div>
           </div>
           <div className="item">
-            <div className="ui inverted massive icon button" onTouchTap={ this.onReload }>
-              <i className="image icon"></i>
+            <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGShape }>
+              <i className="square outline icon"></i>
+            </div>
+          </div>
+          <div className="item">
+            <div className="ui inverted massive icon button">
+              <i className="smile icon"></i>
+            </div>
+          </div>
+          <div className="item">
+            <div className="ui inverted massive icon button">
+              <i className="long arrow right icon"></i>
+            </div>
+          </div>
+          <div className="item">
+            <div className="ui inverted massive icon button" onTouchTap={ this.onTest }>
+              <i className="star icon"></i>
             </div>
           </div>
         </div>
@@ -38,43 +53,15 @@ class Elements extends Component {
     window.RevealEditor.currentSection.addImage({ imageUrl: '/test.jpg' });
   }
 
-  onReload = () => {
+  onAddSVGShape = () => {
     event.preventDefault();
-    window.RevealEditor.reload({
-      html: `<div class="slides">
-                <section>
-                    <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
-                        <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
-                            <h1>Title Text</h1>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
-                        <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Section Title">
-                            <h2>Section Title</h2>
-                        </div>
-                    </div>
-                    <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
-                        <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Content">
-                            <p>Content</p>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <div class="sl-block" data-block-type="text" style="width: 720px; left: 80px; top: 70px; height: auto;">
-                        <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Section Title">
-                            <h2>Section Title</h2>
-                        </div>
-                    </div>
-                    <div class="sl-block" data-block-type="text" style="width: 720px; left: 160px; top: 210px; height: auto; text-align:left">
-                        <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Content">
-                            <p>Content</p>
-                        </div>
-                    </div>
-                </section>
-            </div>`,
-    });
+    window.RevealEditor.currentSection.addSVGShape({ shape: 'Rect' });
+    window.RevealEditor.currentSection.addSVGShape({ shape: 'Ellipse' });
+    window.RevealEditor.currentSection.addSVGShape({ shape: 'Circle' });
+  }
+
+  onTest = () => {
+    event.preventDefault();
   }
 }
 

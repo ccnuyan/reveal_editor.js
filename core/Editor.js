@@ -19,15 +19,16 @@ class Editor {
     _u.setHTML(document.querySelector('.reveal'), initialHTML);
     window.Reveal.initialize(revealConf.editingConf);
 
-      // paint the axis
-    this.axis = new Axis(this.dom);
+    // paint the axis
+    this.axis = new Axis({ editor: this });
     this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
 
-      // select rect
+    // select rect
     this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
     this.dom.appendChild(this.selectRect);
 
     this.initializeSections();
+    this.linkRevealEvents();
   }
 
   linkDomEvents = () => {
@@ -50,6 +51,15 @@ class Editor {
     });
   }
 
+  linkRevealEvents = () => {
+    window.Reveal.addEventListener('overviewshown', () => {
+      this.axis.hide();
+    });
+    window.Reveal.addEventListener('overviewhidden', () => {
+      this.axis.show();
+    });
+  }
+
   reload({ html }) {
     // save the old configuration and position
     const oldConf = window.Reveal.getConfig();
@@ -65,7 +75,7 @@ class Editor {
     window.Reveal.navigateTo(h, v);
 
     // re-paint the axis
-    this.axis = new Axis(this.dom);
+    this.axis = new Axis({ editor: this });
     this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
 
     // reinitialize the sections
@@ -147,9 +157,9 @@ class Editor {
       const blockStyle = getComputedStyle(block.dom);
 
       if (parseInt(rectStyle.left) < parseInt(slidesStyle.marginLeft) + parseInt(blockStyle.left) &&
-            parseInt(rectStyle.top) < parseInt(slidesStyle.marginTop) + parseInt(blockStyle.top) &&
-            parseInt(rectStyle.left) + parseInt(rectStyle.width) > parseInt(slidesStyle.marginLeft) + parseInt(blockStyle.left) + parseInt(blockStyle.width) &&
-            parseInt(rectStyle.top) + parseInt(rectStyle.height) > parseInt(slidesStyle.marginTop) + parseInt(blockStyle.top) + parseInt(blockStyle.height)) {
+        parseInt(rectStyle.top) < parseInt(slidesStyle.marginTop) + parseInt(blockStyle.top) &&
+        parseInt(rectStyle.left) + parseInt(rectStyle.width) > parseInt(slidesStyle.marginLeft) + parseInt(blockStyle.left) + parseInt(blockStyle.width) &&
+        parseInt(rectStyle.top) + parseInt(rectStyle.height) > parseInt(slidesStyle.marginTop) + parseInt(blockStyle.top) + parseInt(blockStyle.height)) {
         block.toManipulate();
       }
     });
@@ -159,6 +169,23 @@ class Editor {
     event.preventDefault();
     _u.hide(this.selectRect);
   };
+
+  toPreview() {
+    this.dom.setAttribute('draggable', false);
+    this.axis.hide();
+    this.sections.forEach((section) => {
+      section.toPreview();
+    });
+  }
+
+  // toManipulate() {
+  //   // Review.
+  // }
+
+  toEdit() {
+    this.dom.setAttribute('draggable', true);
+    this.axis.show();
+  }
 }
 
 export default Editor;

@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import actions from '../../store/actions';
 
 class Previewer extends Component {
+
+  static propTypes = {
+    set_edit: PropTypes.func.isRequired,
+  }
+
+  toEdit = () => {
+    window.RevealEditor.toEdit();
+    this.props.set_edit();
+  }
+
   render =() => {
     return (
       <div id="preview_panel">
-        <div className="ui icon button" onTouchTap={ this.props.set_edit }>
+        <div className="ui icon button" onTouchTap={ this.toEdit }>
           <i className="edit icon"></i>
         </div>
       </div>);

@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import actions from '../../../store/actions';
 
 class Manipulations extends Component {
+
+  static propTypes = {
+    set_preview: PropTypes.func.isRequired,
+  }
 
   undo = (event) => {
     event.preventDefault();
@@ -15,23 +20,28 @@ class Manipulations extends Component {
     window.RevealEditor.services.undoredo.redo();
   }
 
+  preview = () => {
+    window.RevealEditor.toPreview();
+    this.props.set_preview();
+  }
+
   render = () => {
     return (
       <div id='editor_manipulations' className="ui center aligned segment">
         <div className="ui list">
           <div className="item">
-            <button onTouchTap={ this.props.set_preview } className="ui icon button">
+            <button onTouchTap={ this.preview } className="ui icon button">
               <i className="play icon"></i>
             </button>
           </div>
           <div className="item">
             <button onTouchTap={ this.undo } className="ui icon button">
-              <i className="undo icon"></i>
+              <i className="reply icon"></i>
             </button>
           </div>
           <div className="item">
             <button onTouchTap={ this.redo } className="ui icon button">
-              <i className="redo icon"></i>
+              <i className="share icon"></i>
             </button>
           </div>
           <div className="item">

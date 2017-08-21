@@ -1,12 +1,12 @@
 const styles = {
   anchor: {
     position: 'absolute',
-    width: '16px',
-    height: '16px',
-    // borderRadius: '6px',
+    width: '9px',
+    height: '9px',
+    borderRadius: '5px',
     border: '1px solid rgb(27, 173, 225)',
     display: 'block',
-    margin: '-9px',
+    margin: '-5px',
     background: '#fff',
     cursor: 'default',
   },
@@ -73,6 +73,10 @@ const styles = {
     maxHeight: '100%',
     width: 'auto',
     height: 'inherit',
+  },
+  shapeBlock: {
+    width: '200px',
+    height: '200px',
   },
   subMenuPanel: {
     position: 'fixed',

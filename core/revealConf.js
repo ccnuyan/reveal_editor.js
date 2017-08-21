@@ -9,6 +9,7 @@ const baseConf = {
   height: 700,
   margin: 0.1,
   transition: 'slide',
+  fragments: false,
 };
 
 export default {

@@ -42,6 +42,7 @@ class Transformer extends Elements {
           }));
         });
         break; }
+      case 'shape':
       case 'image': {
         ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'].forEach((dr) => {
           this.anchors.push(new TransformerAnchor({

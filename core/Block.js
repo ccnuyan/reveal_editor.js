@@ -54,13 +54,14 @@ class Block extends Elements {
           const ariaLabel = this.blockContent.dom.getAttribute('aria-label');
           if (ariaLabel && ariaLabel.split(', ')[1] === name) {
             CKEDITOR.instances[name].focus();
+            this.CKEDITORInstance = CKEDITOR.instances[name];
             initiatedFlag = true;
             return true;
           }
           return false;
         });
         if (!initiatedFlag) {
-          CKEDITOR.inline(this.blockContent.dom, _config.ckeditorConfig);
+          this.CKEDITORInstance = CKEDITOR.inline(this.blockContent.dom, _config.ckeditorConfig);
         }
         _u.clearUserSelection();
         break;
@@ -82,14 +83,10 @@ class Block extends Elements {
 
   toPreview = () => {
     this.mode = 'previewing';
-    Object.keys(CKEDITOR.instances).forEach((key) => {
-      const ce_instance = CKEDITOR.instances[key];
 
-      if (ce_instance && ce_instance.container.$ === this.blockContent.dom) {
-        ce_instance.destroy();
-      }
-    });
-    this.parent.parent.dom.setAttribute('draggable', true);
+    if (this.CKEDITORInstance) {
+      this.CKEDITORInstance.destroy();
+    }
     this.blockContent.dom.setAttribute('contenteditable', false);
     this.blockTransformer.hide();
   }

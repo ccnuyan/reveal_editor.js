@@ -4,6 +4,7 @@ import config from './config';
 import Elements from './Elements';
 import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
+import SVGBlock from './SVGBlock';
 
 class Section extends Elements {
   // block type to Element Type
@@ -25,6 +26,7 @@ class Section extends Elements {
     });
   }
 
+  // for text and image
   getNewBlock = (type, content) => {
     const blockDiv = _u.create('div', 'sl-block', config.styles[`${type}Block`]);
 
@@ -38,31 +40,36 @@ class Section extends Elements {
       el: blockDiv,
     });
 
-    this.blocks.push(block);
-
     return block;
   }
 
-  addText = () => {
+  beforeAdd = () => {
     this.parent.services.undoredo.enqueue();
     this.blocks.forEach((block) => {
       block.toPreview();
     });
+  }
+  afterAdd = (block) => {
+    this.blocks.push(block);
+    this.parent.currentBlock = block;
+    block.toManipulate();
+  }
+
+  addText = () => {
+    this.beforeAdd();
+
     const content = _u.create('div', config.classnames.content);
     const paragraph = _u.create('p');
     paragraph.textContent = '输入文本内容';
     content.appendChild(paragraph);
     this.dom.appendChild(content);
     const textBlock = this.getNewBlock('text', content);
-    this.parent.currentBlock = textBlock;
-    textBlock.toManipulate();
+
+    this.afterAdd(textBlock);
   }
 
   addImage({ imageUrl }) {
-    this.parent.services.undoredo.enqueue();
-    this.blocks.forEach((block) => {
-      block.toPreview();
-    });
+    this.beforeAdd();
     const content = _u.create('div', config.classnames.content, config.styles.imageContent);
     const image = _u.create('img', [], {});
     content.appendChild(image);
@@ -73,10 +80,27 @@ class Section extends Elements {
     }
     const imageblock = this.getNewBlock('image', content);
 
-    this.blocks.push(imageblock);
+    this.afterAdd(imageblock);
+  }
 
-    this.parent.currentBlock = imageblock;
-    imageblock.toManipulate();
+  addSVGShape = ({ shape }) => {
+    this.beforeAdd();
+
+    const content = _u.create('div', config.classnames.content);
+    this.dom.appendChild(content);
+    const blockDiv = _u.create('div', 'sl-block', config.styles.shapeBlock);
+    blockDiv.setAttribute('data-block-type', 'shape');
+    blockDiv.appendChild(content);
+
+    this.dom.appendChild(blockDiv);
+
+    const svgBlock = new SVGBlock({
+      parent: this,
+      el: blockDiv,
+      shape,
+    });
+
+    this.afterAdd(svgBlock);
   }
 
   removeSelectedBlocks() {
@@ -95,6 +119,12 @@ class Section extends Elements {
 
   getSelectedBlocks() {
     return _.filter(this.blocks, { mode: 'manipulating' });
+  }
+
+  toPreview() {
+    this.blocks.forEach((block) => {
+      block.toPreview();
+    });
   }
 }
 
