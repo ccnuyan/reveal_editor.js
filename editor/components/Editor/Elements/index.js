@@ -4,38 +4,52 @@ import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 
 class Elements extends Component {
+
+  constructor() {
+    super();
+    window.RevealEditor.emitter.on('editorCurrentBlocksChanged', (event) => {
+      console.log(event);
+    });
+    window.RevealEditor.emitter.on('editorRequestEditImage', (event) => {
+      console.log(event);
+    });
+    window.RevealEditor.emitter.on('editorCurrentSlideChanged', (event) => {
+      console.log(event);
+    });
+  }
+
   render = () => {
     return (
       <div id='editor_elements' className="ui center aligned segment">
         <div className="ui list">
           <div className="item">
             <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewText }>
-              <i className="font icon"></i>
+              <i className="font big icon"></i>
             </div>
           </div>
           <div className="item">
             <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewImage }>
-              <i className="image icon"></i>
+              <i className="image big icon"></i>
             </div>
           </div>
           <div className="item">
             <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGShape }>
-              <i className="square outline icon"></i>
+              <i className="square outline big icon"></i>
             </div>
           </div>
           <div className="item">
             <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGIcon }>
-              <i className="smile icon"></i>
+              <i className="smile big icon"></i>
             </div>
           </div>
           <div className="item">
             <div className="ui inverted massive icon button">
-              <i className="long arrow right icon"></i>
+              <i className="long arrow right big icon"></i>
             </div>
           </div>
           <div className="item">
             <div className="ui inverted massive icon button" onTouchTap={ this.onTest }>
-              <i className="star icon"></i>
+              <i className="star big icon"></i>
             </div>
           </div>
         </div>

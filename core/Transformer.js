@@ -29,7 +29,9 @@ class Transformer extends Elements {
 
   onDblclick = (event) => {
     event.stopPropagation();
-    this.block.toEdit();
+    if (this.block.toEdit) {
+      this.block.toEdit();
+    }
   }
 
   initializeAnchors = () => {

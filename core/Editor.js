@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import _ from 'lodash';
 import './CKEDITORPlugins';
 import _u from './util';
 import revealConf from './revealConf';
@@ -6,15 +7,19 @@ import config from './config';
 import Section from './Section';
 import Axis from './Axis';
 import services from './services';
+import Emitter from './Emitter';
+
 /* eslint-disable no-param-reassign, radix */
 
 // this.reveal should be the reveal element;
-class Editor {
 
+class Editor {
   constructor({ reveal, initialHTML }) {
     this.dom = reveal;
     this.services = services(this);
     this.linkDomEvents();
+
+    this.emitter = new Emitter();
 
     _u.setHTML(document.querySelector('.reveal'), initialHTML);
     window.Reveal.initialize(revealConf.editingConf);
@@ -28,8 +33,20 @@ class Editor {
     this.dom.appendChild(this.selectRect);
 
     this.initializeSections();
+
     this.linkRevealEvents();
+
+    this.emitter.emit('editorInitialized', {
+      editor: this,
+    });
   }
+
+  debouncedEventEmit = _.debounce(() => {
+    this.emitter.emit('editorCurrentBlocksChanged', {
+      activeSection: this.currentSection,
+      activeBlocks: this.currentSection.getSelectedBlocks(),
+    });
+  }, 100);
 
   linkDomEvents = () => {
     // link drag events
@@ -107,6 +124,11 @@ class Editor {
         }
         return false;
       });
+
+
+      this.emitter.emit('editorCurrentSlideChanged', {
+        activeSection: this.currentSection,
+      });
     });
   }
 
@@ -180,15 +202,13 @@ class Editor {
     this.sections.forEach((section) => {
       section.toPreview();
     });
+    this.mode = 'previewing';
   }
-
-  // toManipulate() {
-  //   // Review.
-  // }
 
   toEdit() {
     this.dom.setAttribute('draggable', true);
     this.axis.show();
+    this.mode = 'editing';
   }
 }
 

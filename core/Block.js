@@ -1,11 +1,9 @@
-import { expect } from 'chai';
 import _ from 'lodash';
 import _u from './util';
 import config from './config';
 import Transformer from './Transformer';
 import BlockContent from './BlockContent';
 import Elements from './Elements';
-import CKEditorConfig from './configs/CKEditorConfig';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -15,6 +13,7 @@ class Block extends Elements {
     this.blockType = el.dataset.blockType;
 
     this.editor = parent.editor;
+    this.section = this.parent;
 
     _u.findChildren(this.dom, config.selectors.content).forEach((dom) => {
       if (!this.blockContent) {
@@ -74,63 +73,25 @@ class Block extends Elements {
     this.updateTransformMatrix();
   }
 
-  toEdit = () => {
-    this.parent.blocks.forEach((block) => {
-      block.toPreview();
-    });
-    this.parent.parent.dom.setAttribute('draggable', false);
-
-    this.mode = 'editing';
-    expect(this.blockType).to.exist;
-
-    switch (this.blockType) {
-      case 'text': {
-        this.blockContent.dom.setAttribute('contenteditable', 'true');
-        let initiatedFlag = false;
-        Object.keys(CKEDITOR.instances).some((name) => {
-          const ariaLabel = this.blockContent.dom.getAttribute('aria-label');
-          if (ariaLabel && ariaLabel.split(', ')[1] === name) {
-            CKEDITOR.instances[name].focus();
-            this.CKEDITORInstance = CKEDITOR.instances[name];
-            initiatedFlag = true;
-            return true;
-          }
-          return false;
-        });
-        if (!initiatedFlag) {
-          this.CKEDITORInstance = CKEDITOR.inline(this.blockContent.dom, CKEditorConfig);
-        }
-        _u.clearUserSelection();
-        break;
-      }
-      case 'image': {
-        break;
-      }
-      default:
-    }
-  }
-
   // when selected;
   toManipulate = () => {
     this.mode = 'manipulating';
-    // no need to call toPreview() for other blocks, when select multiple blocks, for Example.
-
     this.blockTransformer.show();
+    this.editor.debouncedEventEmit();
   }
 
   toPreview = () => {
     this.mode = 'previewing';
-
     if (this.CKEDITORInstance) {
       this.CKEDITORInstance.destroy();
     }
     this.blockContent.dom.setAttribute('contenteditable', false);
     this.blockTransformer.hide();
+    this.editor.debouncedEventEmit();
   }
 
   remove = () => {
-    // to be testify
-    _.remove(this.parent.blocks, { dom: this.dom });
+    _.remove(this.section.blocks, { dom: this.dom });
     _u.remove(this.dom);
   }
 }

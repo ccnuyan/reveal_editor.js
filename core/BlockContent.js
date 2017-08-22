@@ -5,6 +5,9 @@ class BlockContent extends Elements {
   constructor({ parent, el }) {
     super({ parent, el });
     this.linkBlockContentEvents();
+
+    this.block = this.parent;
+    this.editor = this.parent.editor;
   }
 
   linkBlockContentEvents = () => {
@@ -13,8 +16,11 @@ class BlockContent extends Elements {
     });
 
     _u.on(this.dom, 'click', (event) => {
-      event.stopPropagation();
-      if (this.parent.mode !== 'editing') {
+      if (this.editor.mode === 'previewing') {
+        return;
+      }
+      if (this.block.mode !== 'editing') {
+        event.stopPropagation();
         this.parent.parent.blocks.forEach((block) => {
           block.toPreview();
         });

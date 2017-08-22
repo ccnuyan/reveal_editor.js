@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import _u from './util';
 import config from './config';
 import Block from './Block';
@@ -23,8 +22,23 @@ class ImageBlock extends Block {
       this.rearrange();
     });
   }
-  toEdit() {
-    super.toEdit();
+
+  getState = () => {
+    return {
+      src: _u.getAttribute(this.image, 'src'),
+    };
+  }
+
+  setState = (src) => {
+    _u.setAttr(this.image, 'src', src);
+  }
+
+  toEdit = () => {
+    this.editor.emitter.emit('editorRequestEditImage', {
+      activeSection: this.editor.currentSection,
+      imageBlock: this,
+      state: this.getState(),
+    });
   }
 
   rearrange = () => {
