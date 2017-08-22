@@ -1,0 +1,115 @@
+import Elements from './Elements';
+
+import _u from './util';
+import _config from './config';
+
+import rotateLeft from './svgResource/rotate-left.svg';
+
+/* eslint-disable no-param-reassign, radix */
+
+class TransformerAnchor extends Elements {
+  constructor({ parent }) {
+    const anchor = _u.create('div', 'rotate_anchor', _config.styles.rotateAnchor);
+    super({ parent, el: anchor });
+
+    this.block = this.parent.parent.parent.parent;
+
+
+    this.parent.dom.appendChild(anchor);
+
+    this.dom.setAttribute('draggable', true);
+    _u.on(this.dom, 'dragstart', this.dragstart);
+    _u.on(this.dom, 'dragover', this.do);
+    _u.on(this.dom, 'dragend', this.dragend);
+
+    _u.on(this.dom, 'click', this.onClick);
+
+    _u.setHTML(this.dom, rotateLeft);
+
+    this.svg = this.dom.querySelector('svg');
+
+    _u.applyStyle(this.svg, {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: 20,
+      height: 20,
+    });
+
+    _u.setAttr(this.svg, 'fill', 'lightgrey');
+
+    _u.on(this.dom, 'mouseover', () => {
+      _u.setAttr(this.svg, 'fill', 'black');
+    });
+
+    _u.on(this.dom, 'mouseleave', () => {
+      _u.setAttr(this.svg, 'fill', 'lightgrey');
+    });
+
+    this.R2D = 180 / Math.PI;
+  }
+
+  onClick = (event) => {
+    event.stopPropagation();
+  }
+
+  // do = dargover, capture the event emmited by this dom elements
+  do = (event) => {
+    event.stopPropagation();
+    // redirect to the handler where the dragstart
+    this.block.draggingElement.dragover(event);
+  }
+
+  dragstart = (event) => {
+    event.stopPropagation();
+
+    // anchor.transformer.block.section.editor
+    this.block.draggingMode = 'rotate';
+    this.block.draggingElement = this;
+
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
+
+    const blockStyle = getComputedStyle(this.parent.parent.dom);
+    const originalStyle = {
+      width: parseInt(blockStyle.width),
+      height: parseInt(blockStyle.height),
+    };
+
+    this.center = {
+      x: _u.offset(this.parent.parent.dom).left + (originalStyle.width / 2),
+      y: _u.offset(this.parent.parent.dom).top + (originalStyle.height / 2),
+    };
+
+    this.dragfrom = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+
+    const x1 = this.dragfrom.x - this.center.x;
+    const y1 = this.dragfrom.y - this.center.y;
+
+    this.startAng = -this.R2D * Math.atan2(y1, x1);
+  }
+
+  dragover = (event) => {
+    event.stopPropagation();
+    event.dataTransfer.dropEffect = 'move';
+
+    const x2 = event.x - this.center.x;
+    const y2 = event.y - this.center.y;
+
+    this.endAng = this.R2D * Math.atan2(y2, x2);
+    const orgdegree = parseInt(this.parent.parent.getTransform());
+    this.toRotate = orgdegree + this.endAng + this.startAng;
+
+    this.parent.parent.setTransform(this.toRotate);
+  }
+
+  dragend = () => {
+    event.stopPropagation();
+    this.parent.parent.saveTransform(this.toRotate);
+  }
+}
+
+export default TransformerAnchor;

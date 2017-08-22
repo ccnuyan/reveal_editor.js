@@ -150,17 +150,21 @@ class Editor {
     this.selectRect.style.width = `${Math.abs(offsetX)}px`;
     this.selectRect.style.height = `${Math.abs(offsetY)}px`;
 
+    const rectloc = _u.offset(this.selectRect);
     const rectStyle = getComputedStyle(this.selectRect);
-    const slidesStyle = getComputedStyle(this.slidesDom);
 
     this.currentSection.blocks.forEach((block) => {
+      const blockloc = _u.offset(block.dom);
       const blockStyle = getComputedStyle(block.dom);
 
-      if (parseInt(rectStyle.left) < parseInt(slidesStyle.marginLeft) + parseInt(blockStyle.left) &&
-        parseInt(rectStyle.top) < parseInt(slidesStyle.marginTop) + parseInt(blockStyle.top) &&
-        parseInt(rectStyle.left) + parseInt(rectStyle.width) > parseInt(slidesStyle.marginLeft) + parseInt(blockStyle.left) + parseInt(blockStyle.width) &&
-        parseInt(rectStyle.top) + parseInt(rectStyle.height) > parseInt(slidesStyle.marginTop) + parseInt(blockStyle.top) + parseInt(blockStyle.height)) {
+      if (
+        rectloc.left < blockloc.left &&
+        rectloc.top < blockloc.top &&
+        rectloc.left + parseInt(rectStyle.width) > blockloc.left + parseInt(blockStyle.width) &&
+        rectloc.top + parseInt(rectStyle.height) > blockloc.top + parseInt(blockStyle.height)) {
         block.toManipulate();
+      } else {
+        block.toPreview();
       }
     });
   }

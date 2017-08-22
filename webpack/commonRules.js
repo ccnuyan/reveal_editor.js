@@ -50,14 +50,19 @@ module.exports = [{
       loader: 'markdown-loader',
     },
   ],
-// }, {
-//   test: /\.woff(2)?(\?[a-z0-9]+)?$/,
-//   use: {
-//     loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-//   },
-// }, {
-//   test: /\.(ttf|eot|svg)(\?[a-z0-9]+)?$/,
-//   use: {
-//     loader: 'file-loader',
-//   },
+}, {
+  test: /\.woff(2)?(\?[a-z0-9]+)?$/,
+  use: {
+    loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+  },
+}, {
+  test: /\.(ttf|eot)(\?[a-z0-9]+)?$/,
+  use: {
+    loader: 'file-loader',
+  },
+}, {
+  test: /\.svg$/,
+  use: {
+    loader: 'svg-inline-loader',
+  },
 }];

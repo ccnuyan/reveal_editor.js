@@ -1,3 +1,11 @@
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const AssetsPlugin = require('assets-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const rules = require('./webpack/commonRules.js');
+
 const config = {
   entry: {
     app: ['babel-polyfill', './js/editor.js'],

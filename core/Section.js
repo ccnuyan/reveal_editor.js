@@ -4,7 +4,8 @@ import config from './config';
 import Elements from './Elements';
 import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
-import SVGBlock from './SVGBlock';
+import SVGShapeBlock from './SVGShapeBlock';
+import SVGIconBlock from './SVGIconBlock';
 
 class Section extends Elements {
   // block type to Element Type
@@ -94,10 +95,30 @@ class Section extends Elements {
 
     this.dom.appendChild(blockDiv);
 
-    const svgBlock = new SVGBlock({
+    const svgBlock = new SVGShapeBlock({
       parent: this,
       el: blockDiv,
       shape,
+    });
+
+    this.afterAdd(svgBlock);
+  }
+
+  addSVGIcon = ({ icon }) => {
+    this.beforeAdd();
+
+    const content = _u.create('div', config.classnames.content);
+    this.dom.appendChild(content);
+    const blockDiv = _u.create('div', 'sl-block', config.styles.shapeBlock);
+    blockDiv.setAttribute('data-block-type', 'shape');
+    blockDiv.appendChild(content);
+
+    this.dom.appendChild(blockDiv);
+
+    const svgBlock = new SVGIconBlock({
+      parent: this,
+      el: blockDiv,
+      icon,
     });
 
     this.afterAdd(svgBlock);

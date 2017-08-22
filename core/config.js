@@ -10,6 +10,19 @@ const styles = {
     background: '#fff',
     cursor: 'default',
   },
+  rotateAnchor: {
+    position: 'absolute',
+    width: '20px',
+    height: '20px',
+    right: '0px',
+    marginRight: '-22px',
+    top: '0px',
+    marginTop: '-22px',
+    border: '0px',
+    display: 'block',
+    background: 'rgba(0,0,0,0)',
+    cursor: 'default',
+  },
   transform: {
     position: 'absolute',
     height: '100%',
@@ -110,11 +123,11 @@ const ckeditorPlugins = 'basicstyles,blockquote,colorbutton,colordialog,dialogad
 const ckeditorConfig = {};
 
 ckeditorConfig.toolbar = [
-    ['Format', 'FontSize', 'TextColor'],
-    ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'],
-    ['NumberedList', 'BulletedList', '-', 'Blockquote'],
-    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-    ['Link', 'Unlink'],
+  ['Format', 'FontSize', 'TextColor'],
+  ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'],
+  ['NumberedList', 'BulletedList', '-', 'Blockquote'],
+  ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+  ['Link', 'Unlink'],
 ];
 
 ckeditorConfig.allowedContent = {

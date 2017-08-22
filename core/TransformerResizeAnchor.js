@@ -5,7 +5,7 @@ import _config from './config';
 
 /* eslint-disable no-param-reassign, radix */
 
-class TransformerAnchor extends Elements {
+class TransformerResizeAnchor extends Elements {
   constructor({ parent, dr }) {
     const anchor = _u.create('div', 'anchor', _config.styles.anchor);
     anchor.setAttribute('data-direction', dr);
@@ -127,4 +127,4 @@ class TransformerAnchor extends Elements {
   }
 }
 
-export default TransformerAnchor;
+export default TransformerResizeAnchor;

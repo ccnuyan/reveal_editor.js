@@ -24,7 +24,7 @@ class Elements extends Component {
             </div>
           </div>
           <div className="item">
-            <div className="ui inverted massive icon button">
+            <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGIcon }>
               <i className="smile icon"></i>
             </div>
           </div>
@@ -58,6 +58,11 @@ class Elements extends Component {
     window.RevealEditor.currentSection.addSVGShape({ shape: 'Rect' });
     window.RevealEditor.currentSection.addSVGShape({ shape: 'Ellipse' });
     window.RevealEditor.currentSection.addSVGShape({ shape: 'Circle' });
+  }
+
+  onAddSVGIcon = () => {
+    event.preventDefault();
+    window.RevealEditor.currentSection.addSVGIcon({ icon: 'eye' });
   }
 
   onTest = () => {

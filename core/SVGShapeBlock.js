@@ -3,7 +3,7 @@ import Block from './Block';
 
 /* eslint-disable no-param-reassign, radix */
 
-class SVGBlock extends Block {
+class SVGShapeBlock extends Block {
   constructor({ parent, el, shape }) {
     super({ parent, el });
     this.shape = shape;
@@ -18,7 +18,7 @@ class SVGBlock extends Block {
 
     this.svgConfig = {
       strokeWidth: 20,
-      stroke: 'rgba(0,0,0,255)',
+      stroke: 'rgba(0,0,0,1)',
       fill: 'rgba(0,0,0,0)',
     };
 
@@ -84,4 +84,4 @@ class SVGBlock extends Block {
   }
 }
 
-export default SVGBlock;
+export default SVGShapeBlock;

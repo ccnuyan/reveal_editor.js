@@ -6,6 +6,8 @@ import Transformer from './Transformer';
 import BlockContent from './BlockContent';
 import Elements from './Elements';
 
+/* eslint-disable no-param-reassign, radix */
+
 class Block extends Elements {
   constructor({ parent, el }) {
     super({ parent, el });
@@ -36,6 +38,21 @@ class Block extends Elements {
 
     this.blockTransformer.hide();
   }
+
+  setTransform = (degree) => {
+    this.dom.style.transform = `rotate(${Math.round(degree)}deg)`;
+  }
+
+  saveTransform = (degree) => {
+    _u.setAttr(this.dom, 'data-transform', Math.round(degree));
+  }
+
+  getTransform = () => {
+    if (this.dom.dataset.transform) {
+      return parseInt(this.dom.dataset.transform);
+    }
+    return 0;
+  };
 
   toEdit = () => {
     this.parent.blocks.forEach((block) => {

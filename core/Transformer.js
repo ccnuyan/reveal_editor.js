@@ -1,6 +1,7 @@
 import Elements from './Elements';
 import _u from './util';
-import TransformerAnchor from './TransformerAnchor';
+import TransformerResizeAnchor from './TransformerResizeAnchor';
+import TransformerRotateAnchor from './TransformerRotateAnchor';
 /* eslint-disable no-param-reassign, radix */
 
 class Transformer extends Elements {
@@ -29,6 +30,9 @@ class Transformer extends Elements {
   initializeAnchors = () => {
     this.anchors = [];
 
+    const ra = new TransformerRotateAnchor({ parent: this });
+    this.anchors.push(ra);
+
     if (!this.parent.dom.dataset.blockType) {
       return;
     }
@@ -36,7 +40,7 @@ class Transformer extends Elements {
     switch (this.parent.dom.dataset.blockType) {
       case 'text': {
         ['e', 'w'].forEach((dr) => {
-          this.anchors.push(new TransformerAnchor({
+          this.anchors.push(new TransformerResizeAnchor({
             parent: this,
             dr,
           }));
@@ -45,7 +49,7 @@ class Transformer extends Elements {
       case 'shape':
       case 'image': {
         ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'].forEach((dr) => {
-          this.anchors.push(new TransformerAnchor({
+          this.anchors.push(new TransformerResizeAnchor({
             parent: this,
             dr,
           }));
