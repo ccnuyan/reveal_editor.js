@@ -1,10 +1,9 @@
 import Block from './Block';
 import _u from './util';
 
+/* eslint-disable no-param-reassign, radix, import/no-unresolved */
 import eye from './svgLib/eye.svg';
 
-
-/* eslint-disable no-param-reassign, radix */
 
 class SVGIconBlock extends Block {
 
@@ -12,19 +11,19 @@ class SVGIconBlock extends Block {
     eye,
   }
 
-  constructor({ parent, el, icon }) {
+  constructor({ parent, el }) {
     super({ parent, el });
-    this.icon = icon;
-
     this.minsize = {
       width: 20,
       height: 20,
     };
-
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
-
     this.fill = 'rgba(0,0,0,1)';
+  }
+
+  load({ icon }) {
+    this.icon = icon;
 
     _u.setHTML(this.blockContent.dom, SVGIconBlock.svgMap[icon]);
     this.svgIcon = this.blockContent.dom.querySelector('svg');

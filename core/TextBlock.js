@@ -1,6 +1,5 @@
-import { expect } from 'chai';
+import CKEditorConfig from './configs/CKEditorConfig';
 import _u from './util';
-import _config from './config';
 import Block from './Block';
 
 class TextBlock extends Block {
@@ -26,7 +25,7 @@ class TextBlock extends Block {
       return false;
     });
     if (!initiatedFlag) {
-      CKEDITOR.inline(this.blockContent.dom, _config.ckeditorConfig);
+      CKEDITOR.inline(this.blockContent.dom, CKEditorConfig);
     }
     _u.clearUserSelection();
   }

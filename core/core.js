@@ -1,6 +1,7 @@
 import Editor from './Editor';
 import templates from './templates';
-import './core.scss';
+import './css/editor.scss';
+import './css/reveal.scss';
 
 (() => {
   window.RevealEditor = new Editor({

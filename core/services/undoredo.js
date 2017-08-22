@@ -31,7 +31,7 @@ class UndoRedo {
       },
       block: {
         classesAllowed: ['sl-block'],
-        attributesAllowed: ['data-id', 'data-block-type', 'style', 'data-vote-selectable'],
+        attributesAllowed: ['data-id', 'data-block-type', 'style', 'data-vote-selectable', 'data-transform'],
       },
     };
 

@@ -12,8 +12,8 @@ class TransformerAnchor extends Elements {
     const anchor = _u.create('div', 'rotate_anchor', _config.styles.rotateAnchor);
     super({ parent, el: anchor });
 
-    this.block = this.parent.parent.parent.parent;
-
+    this.editor = this.parent.editor;
+    this.block = this.parent.parent;
 
     this.parent.dom.appendChild(anchor);
 
@@ -57,15 +57,15 @@ class TransformerAnchor extends Elements {
   do = (event) => {
     event.stopPropagation();
     // redirect to the handler where the dragstart
-    this.block.draggingElement.dragover(event);
+    this.editor.draggingElement.dragover(event);
   }
 
   dragstart = (event) => {
     event.stopPropagation();
 
     // anchor.transformer.block.section.editor
-    this.block.draggingMode = 'rotate';
-    this.block.draggingElement = this;
+    this.editor.draggingMode = 'rotate';
+    this.editor.draggingElement = this;
 
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);

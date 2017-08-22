@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import _ from 'lodash';
 import _u from './util';
-import _config from './config';
+import config from './config';
 import Transformer from './Transformer';
 import BlockContent from './BlockContent';
 import Elements from './Elements';
+import CKEditorConfig from './configs/CKEditorConfig';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -13,7 +14,9 @@ class Block extends Elements {
     super({ parent, el });
     this.blockType = el.dataset.blockType;
 
-    _u.findChildren(this.dom, _config.selectors.content).forEach((dom) => {
+    this.editor = parent.editor;
+
+    _u.findChildren(this.dom, config.selectors.content).forEach((dom) => {
       if (!this.blockContent) {
         this.blockContent = new BlockContent({
           parent: this,
@@ -24,27 +27,33 @@ class Block extends Elements {
       }
     });
 
-    _u.findChildren(this.dom, _config.selectors.transform).forEach((dom) => {
+    _u.findChildren(this.dom, config.selectors.transform).forEach((dom) => {
       _u.remove(dom);
     });
 
-    this.dom.append(_u.create('div', [_config.classnames.transform, 'editing-ui'], _config.styles.transform));
+    this.dom.append(_u.create('div', [config.classnames.transform, 'editing-ui'], config.styles.transform));
 
-    const transformer = _u.findChildren(this.dom, _config.selectors.transform)[0];
+    const transformer = _u.findChildren(this.dom, config.selectors.transform)[0];
     this.blockTransformer = new Transformer({
       parent: this,
       el: transformer,
     });
 
     this.blockTransformer.hide();
+
+    this.D2R = Math.PI / 180;
+    this.updateTransformMatrix();
   }
 
-  setTransform = (degree) => {
-    this.dom.style.transform = `rotate(${Math.round(degree)}deg)`;
-  }
-
-  saveTransform = (degree) => {
-    _u.setAttr(this.dom, 'data-transform', Math.round(degree));
+  updateTransformMatrix() {
+    this.transform = this.getTransform();
+    const rd = this.transform * this.D2R;
+    this.transformMatrix = {
+      m11: Math.cos(rd * this.D2R),
+      m12: Math.sin(rd * this.D2R),
+      m21: -Math.sin(rd * this.D2R),
+      m22: Math.cos(rd * this.D2R),
+    };
   }
 
   getTransform = () => {
@@ -53,6 +62,17 @@ class Block extends Elements {
     }
     return 0;
   };
+
+  setTransform = (degree) => {
+    const rd = Math.round(degree);
+    this.dom.style.transform = `rotate(${rd}deg)`;
+  }
+
+  saveTransform = (degree) => {
+    const rd = Math.round(degree);
+    _u.setAttr(this.dom, 'data-transform', rd);
+    this.updateTransformMatrix();
+  }
 
   toEdit = () => {
     this.parent.blocks.forEach((block) => {
@@ -78,7 +98,7 @@ class Block extends Elements {
           return false;
         });
         if (!initiatedFlag) {
-          this.CKEDITORInstance = CKEDITOR.inline(this.blockContent.dom, _config.ckeditorConfig);
+          this.CKEDITORInstance = CKEDITOR.inline(this.blockContent.dom, CKEditorConfig);
         }
         _u.clearUserSelection();
         break;

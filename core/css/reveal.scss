@@ -1,0 +1,24 @@
+.reveal>.slides{
+    width:960px;
+    height:700px;
+}
+
+.reveal section img{
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sl-block{
+    position: absolute;
+}
+
+.sl-block[data-block-type='text'] *{
+    margin: 0;
+}
+
+.sl-block[data-block-type='text'] pre{
+    padding:5px;
+    width:100%;
+}

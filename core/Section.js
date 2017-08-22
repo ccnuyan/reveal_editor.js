@@ -12,13 +12,18 @@ class Section extends Elements {
   static map = {
     text: TextBlock,
     image: ImageBlock,
+    shape: SVGShapeBlock,
+    icon: SVGIconBlock,
   }
 
   constructor({ parent, el }) {
     super({ parent, el });
-    this.blocks = [];
+
+    this.editor = parent;
+    this.blocks = new Set([]);
+
     _u.findChildren(this.dom, '.sl-block').forEach((block) => {
-      this.blocks.push(new (Section.map[block.dataset.blockType])(
+      this.blocks.add(new (Section.map[block.dataset.blockType])(
         {
           parent: this,
           el: block,
@@ -50,8 +55,9 @@ class Section extends Elements {
       block.toPreview();
     });
   }
+
   afterAdd = (block) => {
-    this.blocks.push(block);
+    this.blocks.add(block);
     this.parent.currentBlock = block;
     block.toManipulate();
   }
@@ -98,8 +104,9 @@ class Section extends Elements {
     const svgBlock = new SVGShapeBlock({
       parent: this,
       el: blockDiv,
-      shape,
     });
+
+    svgBlock.load({ shape });
 
     this.afterAdd(svgBlock);
   }
@@ -118,8 +125,9 @@ class Section extends Elements {
     const svgBlock = new SVGIconBlock({
       parent: this,
       el: blockDiv,
-      icon,
     });
+
+    svgBlock.load({ icon });
 
     this.afterAdd(svgBlock);
   }
@@ -139,7 +147,7 @@ class Section extends Elements {
   }
 
   getSelectedBlocks() {
-    return _.filter(this.blocks, { mode: 'manipulating' });
+    return _.filter([...this.blocks], { mode: 'manipulating' });
   }
 
   toPreview() {

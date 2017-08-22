@@ -12,6 +12,9 @@ class TransformerResizeAnchor extends Elements {
 
     super({ parent, el: anchor });
 
+    this.editor = this.parent.editor;
+    this.block = this.parent.parent;
+
     this.dr = dr;
     this.parent.dom.appendChild(anchor);
 
@@ -20,6 +23,8 @@ class TransformerResizeAnchor extends Elements {
     _u.on(this.dom, 'dragover', this.do);
 
     _u.on(this.dom, 'click', this.onClick);
+
+    this.D2R = Math.PI / 180;
   }
 
   onClick = (event) => {
@@ -30,20 +35,20 @@ class TransformerResizeAnchor extends Elements {
   do = (event) => {
     event.stopPropagation();
     // redirect to the handler where the dragstart
-    this.parent.parent.parent.parent.draggingElement.dragover(event);
+    this.editor.draggingElement.dragover(event);
   }
 
   dragstart = (event) => {
     event.stopPropagation();
 
     // anchor.transformer.block.section.editor
-    this.parent.parent.parent.parent.draggingMode = 'resize';
-    this.parent.parent.parent.parent.draggingElement = this;
+    this.editor.draggingMode = 'resize';
+    this.editor.draggingElement = this;
 
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
 
-    const blockStyle = getComputedStyle(this.parent.parent.dom);
+    const blockStyle = getComputedStyle(this.block.dom);
 
     this.originalStyle = {
       left: parseInt(blockStyle.left),
@@ -51,10 +56,17 @@ class TransformerResizeAnchor extends Elements {
       width: parseInt(blockStyle.width),
       height: parseInt(blockStyle.height),
     };
+
     this.dragfrom = {
       x: event.clientX,
       y: event.clientY,
     };
+
+    this.original = {
+
+    };
+
+    this.transform = this.block.getTransform();
   }
 
   dragover = (event) => {
@@ -65,16 +77,15 @@ class TransformerResizeAnchor extends Elements {
     const offsetX = event.clientX - this.dragfrom.x;
     const offsetY = event.clientY - this.dragfrom.y;
 
-    const bstyle = this.parent.parent.dom.style;
+    const bstyle = this.block.dom.style;
     switch (this.dr) {
-      case 'e': {
+      case 'w': {
         bstyle.left = `${this.originalStyle.left + offsetX}px`;
         bstyle.width = `${this.originalStyle.width - offsetX}px`;
         break;
       }
-      case 'w': {
+      case 'e': {
         bstyle.width = `${this.originalStyle.width + offsetX}px`;
-        bstyle.right = `${this.originalStyle.right - offsetX}px`;
         break;
       }
       case 'n': {
@@ -83,46 +94,41 @@ class TransformerResizeAnchor extends Elements {
         break;
       }
       case 's': {
-        bstyle.bottom = `${this.originalStyle.bottom - offsetY}px`;
         bstyle.height = `${this.originalStyle.height + offsetY}px`;
-        break;
-      }
-      case 'ne': {
-        bstyle.top = `${this.originalStyle.top + offsetY}px`;
-        bstyle.height = `${this.originalStyle.height - offsetY}px`;
-        bstyle.left = `${this.originalStyle.left + offsetX}px`;
-        bstyle.width = `${this.originalStyle.width - offsetX}px`;
         break;
       }
       case 'nw': {
         bstyle.top = `${this.originalStyle.top + offsetY}px`;
         bstyle.height = `${this.originalStyle.height - offsetY}px`;
-        bstyle.width = `${this.originalStyle.width + offsetX}px`;
-        bstyle.right = `${this.originalStyle.right - offsetX}px`;
+        bstyle.left = `${this.originalStyle.left + offsetX}px`;
+        bstyle.width = `${this.originalStyle.width - offsetX}px`;
         break;
       }
-      case 'se': {
-        bstyle.bottom = `${this.originalStyle.bottom - offsetY}px`;
+      case 'ne': {
+        bstyle.top = `${this.originalStyle.top + offsetY}px`;
+        bstyle.height = `${this.originalStyle.height - offsetY}px`;
+        bstyle.width = `${this.originalStyle.width + offsetX}px`;
+        break;
+      }
+      case 'sw': {
         bstyle.height = `${this.originalStyle.height + offsetY}px`;
         bstyle.left = `${this.originalStyle.left + offsetX}px`;
         bstyle.width = `${this.originalStyle.width - offsetX}px`;
         break;
       }
-      case 'sw': {
-        bstyle.bottom = `${this.originalStyle.bottom - offsetY}px`;
+      case 'se': {
         bstyle.height = `${this.originalStyle.height + offsetY}px`;
         bstyle.width = `${this.originalStyle.width + offsetX}px`;
-        bstyle.right = `${this.originalStyle.right - offsetX}px`;
         break;
       }
       default:
     }
 
-    bstyle.width = `${Math.max(parseInt(bstyle.width), this.parent.parent.minsize.width)}px`;
-    bstyle.height = `${Math.max(parseInt(bstyle.height), this.parent.parent.minsize.height)}px`;
+    bstyle.width = `${Math.max(parseInt(bstyle.width), this.block.minsize.width)}px`;
+    bstyle.height = `${Math.max(parseInt(bstyle.height), this.block.minsize.height)}px`;
 
-    if (this.parent.parent.rearrange) {
-      this.parent.parent.rearrange();
+    if (this.block.rearrange) {
+      this.block.rearrange();
     }
   }
 }

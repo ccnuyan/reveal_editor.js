@@ -4,9 +4,8 @@ import Block from './Block';
 /* eslint-disable no-param-reassign, radix */
 
 class SVGShapeBlock extends Block {
-  constructor({ parent, el, shape }) {
+  constructor({ parent, el }) {
     super({ parent, el });
-    this.shape = shape;
 
     this.minsize = {
       width: 20,
@@ -22,8 +21,12 @@ class SVGShapeBlock extends Block {
       fill: 'rgba(0,0,0,0)',
     };
 
-
     this.draw = SVG(this.blockContent.dom).size('100%', '100%');
+  }
+
+  load({ shape }) {
+    this.shape = shape;
+
     this.svgShape = this.getShape().attr({
       ...this.svgConfig,
       'stroke-width': `${this.svgConfig.strokeWidth}px`,

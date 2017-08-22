@@ -32,6 +32,7 @@ class ImageBlock extends Block {
 
     if (this.desiredWidth * parseInt(bstyle.height) < this.desiredHeight * parseInt(bstyle.width)) {
       _u.applyStyle(this.image, config.styles.imageContentImageTall);
+      this.image.style.marginTop = '0px';
     } else {
       _u.applyStyle(this.image, config.styles.imageContentImageWide);
 

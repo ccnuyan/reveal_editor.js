@@ -1,0 +1,35 @@
+.anchor {
+    pointer-events: auto;
+}
+.anchor[data-direction='e'] {
+    left: 100%;
+    top: 50%;
+}
+.anchor[data-direction='w'] {
+    left: 0%;
+    top: 50%;
+}
+.anchor[data-direction='n'] {
+    left: 50%;
+    top: 0;
+}
+.anchor[data-direction='s'] {
+    left: 50%;
+    top: 100%;
+}
+.anchor[data-direction='ne'] {
+    left: 100%;
+    top: 0;
+}
+.anchor[data-direction='nw'] {
+    left: 0%;
+    top: 0;
+}
+.anchor[data-direction='se'] {
+    left: 100%;
+    top: 100%;
+}
+.anchor[data-direction='sw'] {
+    left: 0%;
+    top: 100%;
+}

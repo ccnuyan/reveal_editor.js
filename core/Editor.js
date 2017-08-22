@@ -84,7 +84,7 @@ class Editor {
 
   // this method make sure the currentSection is always exist
   initializeSections = () => {
-    this.sections = [];
+    this.sections = new Set([]);
     const currentSectionDom = window.Reveal.getCurrentSlide();
     expect(currentSectionDom).to.exist;
     _u.findChildren(this.dom, '.slides>section').forEach((section) => {
@@ -93,14 +93,14 @@ class Editor {
         el: section,
       });
 
-      this.sections.push(sec);
+      this.sections.add(sec);
       if (section === currentSectionDom) {
         this.currentSection = sec;
       }
     });
     window.Reveal.addEventListener('slidechanged', (event) => {
       // set current section
-      this.sections.some((section) => {
+      [...this.sections].some((section) => {
         if (event.currentSlide === section.dom) {
           this.currentSection = section;
           return true;

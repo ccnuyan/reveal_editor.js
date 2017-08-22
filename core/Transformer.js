@@ -8,9 +8,14 @@ class Transformer extends Elements {
   constructor({ parent, el }) {
     super({ parent, el });
 
+    this.editor = parent.editor;
+    this.block = parent;
+    this.section = parent.parent;
+
     this.initializeAnchors();
 
     this.dom.setAttribute('draggable', true);
+
     _u.on(this.dom, 'dragstart', this.dragstart);
     _u.on(this.dom, 'dragover', this.do);
 
@@ -24,7 +29,7 @@ class Transformer extends Elements {
 
   onDblclick = (event) => {
     event.stopPropagation();
-    this.parent.toEdit();
+    this.block.toEdit();
   }
 
   initializeAnchors = () => {
@@ -33,11 +38,11 @@ class Transformer extends Elements {
     const ra = new TransformerRotateAnchor({ parent: this });
     this.anchors.push(ra);
 
-    if (!this.parent.dom.dataset.blockType) {
+    if (!this.block.dom.dataset.blockType) {
       return;
     }
 
-    switch (this.parent.dom.dataset.blockType) {
+    switch (this.block.dom.dataset.blockType) {
       case 'text': {
         ['e', 'w'].forEach((dr) => {
           this.anchors.push(new TransformerResizeAnchor({
@@ -63,26 +68,28 @@ class Transformer extends Elements {
   do = (event) => {
     event.stopPropagation();
     // redirect to the handler where the dragstart
-    this.parent.parent.parent.draggingElement.dragover(event);
+    this.editor.draggingElement.dragover(event);
   }
 
   dragstart = (event) => {
     event.stopPropagation();
 
     // transformer.block.section.editor
-    this.parent.parent.parent.draggingMode = 'move';
-    this.parent.parent.parent.draggingElement = this;
+    this.editor.draggingMode = 'move';
+    this.editor.draggingElement = this;
 
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
 
-    const orignalStyle = getComputedStyle(this.parent.dom);
+    this.section.getSelectedBlocks().forEach((block) => {
+      const orignalStyle = getComputedStyle(block.dom);
+      block.originalLocation = {
+        left: parseInt(orignalStyle.left),
+        top: parseInt(orignalStyle.top),
+      };
+    });
 
-    this.originalLocation = {
-      left: parseInt(orignalStyle.left),
-      top: parseInt(orignalStyle.top),
-    };
-    this.dragfrom = {
+    this.editor.dragfrom = {
       x: event.clientX,
       y: event.clientY,
     };
@@ -93,11 +100,13 @@ class Transformer extends Elements {
 
     event.dataTransfer.dropEffect = 'move';
 
-    const offsetX = event.clientX - this.dragfrom.x;
-    const offsetY = event.clientY - this.dragfrom.y;
+    const offsetX = event.clientX - this.editor.dragfrom.x;
+    const offsetY = event.clientY - this.editor.dragfrom.y;
 
-    this.parent.dom.style.left = `${this.originalLocation.left + offsetX}px`;
-    this.parent.dom.style.top = `${this.originalLocation.top + offsetY}px`;
+    this.section.getSelectedBlocks().forEach((block) => {
+      block.dom.style.left = `${block.originalLocation.left + offsetX}px`;
+      block.dom.style.top = `${block.originalLocation.top + offsetY}px`;
+    });
   }
 }
 
