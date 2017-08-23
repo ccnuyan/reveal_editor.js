@@ -1,25 +1,15 @@
 import Block from './Block';
 import _u from './util';
-
+import svgMap from './svglib/svgMap';
 /* eslint-disable no-param-reassign, radix, import/no-unresolved */
-import eye from './svgLib/eye.svg';
 
 
 class SVGIconBlock extends Block {
-
-  static svgMap = {
-    eye,
-  }
-
   constructor({ parent, el }) {
     super({ parent, el });
 
     this.state.blockType = 'icon';
 
-    this.minsize = {
-      width: 20,
-      height: 20,
-    };
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
     this.state.fill = 'rgba(0,0,0,1)';
@@ -28,7 +18,7 @@ class SVGIconBlock extends Block {
   load({ icon }) {
     this.state.icon = icon;
 
-    _u.setHTML(this.blockContent.dom, SVGIconBlock.svgMap[icon]);
+    _u.setHTML(this.blockContent.dom, svgMap[icon]);
     this.svgIcon = this.blockContent.dom.querySelector('svg');
     _u.setAttr(this.svgIcon, 'width', '100%');
     _u.setAttr(this.svgIcon, 'height', '100%');

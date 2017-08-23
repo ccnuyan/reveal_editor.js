@@ -61,16 +61,16 @@ class FontSizeOptions extends Component {
           <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Font Size'}</div> :
           <div>{this.props.label ? this.props.label : 'Color'}</div>}
         <div className="ui buttons">
-          <button className="ui icon button" onClick={ this.changeFontSize } data-change-direction='-'>
+          <button className="ui icon button" onTouchTap={ this.changeFontSize } data-change-direction='-'>
             <i className="minus icon"></i>
           </button>
           <button className="ui button">
             {selectedBlock.fontSize}
           </button>
-          <button className="ui icon button" onClick={ this.changeFontSize } data-change-direction='+'>
+          <button className="ui icon button" onTouchTap={ this.changeFontSize } data-change-direction='+'>
             <i className="plus icon"></i>
           </button>
-          <button className="ui icon button" onClick={ this.changeFontSize } data-change-direction='0'>
+          <button className="ui icon button" onTouchTap={ this.changeFontSize } data-change-direction='0'>
             <i className="remove icon"></i>
           </button>
         </div>

@@ -1,8 +1,7 @@
-# move when transforming
-# z-depth
-# border
-# state in components
+# latex
 # line
 # fragments
-# presentation css and editor only css
 # set background, overflow check, animation
+# move when transforming
+# copy & paste
+# undo redo

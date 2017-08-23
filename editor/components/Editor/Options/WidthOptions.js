@@ -10,6 +10,7 @@ class WidthOptions extends Component {
   static propTypes = {
     label: PropTypes.string,
     suffix: PropTypes.string.isRequired,
+    isMain: PropTypes.bool,
     blockProp: PropTypes.string.isRequired,
     selectedBlocks: PropTypes.array.isRequired,
     set_current_block: PropTypes.func.isRequired,
@@ -42,8 +43,10 @@ class WidthOptions extends Component {
     const selectedBlock = this.props.selectedBlocks[0];
 
     return (
-      <div className="block-option">
-        <div>{this.props.label ? this.props.label : 'Width'}</div>
+      <div className="block-option" style={ { textAlign: 'left' } }>
+        {this.props.isMain ?
+          <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Width'}</div> :
+          <div>{this.props.label ? this.props.label : 'Width'}</div>}
         <div className="ui right labeled input" style={ { width: '175px' } }>
           <input onWheel={ this.onWheel }
             onChange={ this.onWidthChange }

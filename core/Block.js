@@ -15,6 +15,11 @@ class Block extends Elements {
     this.editor = parent.editor;
     this.section = this.parent;
 
+    this.minsize = {
+      width: 24,
+      height: 24,
+    };
+
     _u.findChildren(this.dom, config.selectors.content).forEach((dom) => {
       if (!this.blockContent) {
         this.blockContent = new BlockContent({

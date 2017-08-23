@@ -9,25 +9,25 @@ class Elements extends Component {
   render = () => {
     return (
       <div id='editor_elements' className={ 'elements-list ui center aligned segment' }>
-        <button onClick={ this.onAddNewText } className={ 'elements-add-block-option' }>
+        <button onTouchTap={ this.onAddNewText } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="font big icon"></i>
           </span>
           <span className={ 'elements-add-block-option-label' }>文字</span>
         </button>
-        <button onClick={ this.onAddNewImage } className={ 'elements-add-block-option' }>
+        <button onTouchTap={ this.onAddNewImage } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="image big icon"></i>
           </span>
           <span className={ 'elements-add-block-option-label' }>图片</span>
         </button>
-        <button onClick={ this.onAddSVGShape } className={ 'elements-add-block-option' }>
+        <button onTouchTap={ this.onAddSVGShape } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="square big icon"></i>
           </span>
           <span className={ 'elements-add-block-option-label' }>形状</span>
         </button>
-        <button onClick={ this.onAddSVGIcon } className={ 'elements-add-block-option' }>
+        <button onTouchTap={ this.onAddSVGIcon } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="smile big icon"></i>
           </span>

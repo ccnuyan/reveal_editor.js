@@ -46,13 +46,13 @@ class BorderOptions extends Component {
 
     return (
       <div className="ui container block-option">
-        <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Border'}</div>
+        <div className="ui horizontal inverted divider" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Border'}</div>
         <div style={ { display: 'block', width: 'auto', textAlign: 'left' } } className="ui checkbox">
           <input checked={ selectedBlock.borderStyle !== 'none' } onChange={ this.onChange } type="checkbox" name="example"/>
           <label htmlFor="example" style={ { color: 'white' } }>Enable</label>
         </div>
-        {selectedBlock.borderStyle !== 'none' ? <WidthOptions suffix={ 'px' } blockProp={ 'borderWidth' }/> : ''}
-        {selectedBlock.borderStyle !== 'none' ? <ColorOptions blockProp={ 'borderColor' }/> : ''}
+        {selectedBlock.borderStyle !== 'none' ? <WidthOptions isMain={ true } suffix={ 'px' } blockProp={ 'borderWidth' }/> : ''}
+        {selectedBlock.borderStyle !== 'none' ? <ColorOptions isMain={ true } blockProp={ 'borderColor' }/> : ''}
       </div>
     );
   }

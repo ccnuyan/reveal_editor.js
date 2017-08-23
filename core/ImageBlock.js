@@ -10,11 +10,6 @@ class ImageBlock extends Block {
 
     this.state.blockType = 'image';
 
-    this.minsize = {
-      width: 36,
-      height: 36,
-    };
-
     this.image = this.blockContent.dom.querySelector('img');
 
     _u.on(this.image, 'load', () => {
@@ -45,6 +40,8 @@ class ImageBlock extends Block {
         this.dom.style[key] = params[key];
       }
     });
+
+    this.rearrange();
   }
 
   toEdit = () => {
@@ -56,7 +53,8 @@ class ImageBlock extends Block {
   }
 
   rearrange = () => {
-    const bstyle = this.dom.style;
+    const bstyle = getComputedStyle(this.dom);
+    const istyle = getComputedStyle(this.image);
 
     if (this.desiredWidth * parseInt(bstyle.height) < this.desiredHeight * parseInt(bstyle.width)) {
       _u.applyStyle(this.image, config.styles.imageContentImageTall);
@@ -67,10 +65,11 @@ class ImageBlock extends Block {
       // here is a scale transform, and don't ask me why.
       const bw = parseInt(bstyle.width);
       const bh = parseInt(bstyle.height);
+      const ibw = parseInt(istyle.borderWidth);
       const dw = this.desiredWidth;
       const dh = this.desiredHeight;
 
-      this.image.style.marginTop = `${(bh / 2) - (((dh * bw) / dw) / 2)}px`;
+      this.image.style.marginTop = `${(bh / 2) - (((dh * bw) / dw) / 2) - (ibw / 2)}px`;
     }
   }
 }

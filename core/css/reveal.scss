@@ -1,3 +1,13 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.reveal .slides > section, .reveal .slides > section > section {
+    line-height: 0;
+}
+
 .reveal>.slides{
     width:960px;
     height:700px;
@@ -16,7 +26,16 @@
 }
 
 .sl-block[data-block-type='text'] *{
-    margin: 0;
+    color: inherit;
+}
+
+.sl-block[data-block-type='text']>div.sl-block-content{
+    padding: 10px;
+}
+
+.sl-block[data-block-type='text']>div.sl-block-content>*{
+    padding: 0px;
+    margin: 0px;
 }
 
 .sl-block[data-block-type='text'] pre{

@@ -19,6 +19,7 @@ class Editor {
     this.services = services(this);
     this.linkDomEvents();
 
+    this.mode = 'editing';
     this.emitter = new Emitter();
 
     _u.setHTML(document.querySelector('.reveal'), initialHTML);
@@ -75,6 +76,9 @@ class Editor {
             block.toPreview();
           });
         });
+      }
+      if (this.mode === 'editing') {
+        this.dom.setAttribute('draggable', true);
       }
     });
   }

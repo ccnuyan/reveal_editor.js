@@ -9,11 +9,6 @@ class SVGShapeBlock extends Block {
 
     this.state.blockType = 'shape';
 
-    this.minsize = {
-      width: 20,
-      height: 20,
-    };
-
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
 
@@ -68,11 +63,12 @@ class SVGShapeBlock extends Block {
   }
 
   rearrange() {
-    const style = this.dom.style;
+    const style = getComputedStyle(this.dom);
     const sw = this.state.strokeWidth;
     switch (this.state.shape) {
       case 'Rect': {
         this.svgShape.size(parseInt(style.width) - sw, parseInt(style.height) - sw);
+        this.svgShape.center(parseInt(style.width) / 2, parseInt(style.height) / 2);
         break;
       }
       case 'Circle': {
