@@ -71,6 +71,7 @@
     "postcss-url": "^6.0.4",
     "pre-commit": "^1.2.2",
     "react": "^15.6.1",
+    "react-color": "^2.13.5",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",

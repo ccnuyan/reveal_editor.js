@@ -31,7 +31,7 @@ const styles = {
     top: '0px',
     zIndex: '255',
     cursor: 'pointer',
-    border: '2px solid rgba(27, 173, 225, 0.7)',
+    border: '1px solid rgba(27, 173, 225, 0.7)',
     background: 'rgba(0,0,0,0.1)',
   },
   dragSelectRect: {
@@ -70,12 +70,12 @@ const styles = {
     height: '100%',
   },
   imageContentImageWide: {
-    border: '0px solid transparent',
+    // border: '0px solid transparent',
     width: 'inherit',
     height: 'auto',
   },
   imageContentImageTall: {
-    border: '0px solid transparent',
+    // border: '0px solid transparent',
     width: 'auto',
     height: 'inherit',
   },

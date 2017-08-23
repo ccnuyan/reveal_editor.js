@@ -2,59 +2,75 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import actions from '../../../store/actions';
+import './index.scss';
 
 class Elements extends Component {
 
-  constructor() {
-    super();
-    window.RevealEditor.emitter.on('editorCurrentBlocksChanged', (event) => {
-      console.log(event);
-    });
-    window.RevealEditor.emitter.on('editorRequestEditImage', (event) => {
-      console.log(event);
-    });
-    window.RevealEditor.emitter.on('editorCurrentSlideChanged', (event) => {
-      console.log(event);
-    });
-  }
-
   render = () => {
     return (
-      <div id='editor_elements' className="ui center aligned segment">
-        <div className="ui list">
-          <div className="item">
-            <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewText }>
-              <i className="font big icon"></i>
-            </div>
-          </div>
-          <div className="item">
-            <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewImage }>
-              <i className="image big icon"></i>
-            </div>
-          </div>
-          <div className="item">
-            <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGShape }>
-              <i className="square outline big icon"></i>
-            </div>
-          </div>
-          <div className="item">
-            <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGIcon }>
-              <i className="smile big icon"></i>
-            </div>
-          </div>
-          <div className="item">
-            <div className="ui inverted massive icon button">
-              <i className="long arrow right big icon"></i>
-            </div>
-          </div>
-          <div className="item">
-            <div className="ui inverted massive icon button" onTouchTap={ this.onTest }>
-              <i className="star big icon"></i>
-            </div>
-          </div>
-        </div>
+      <div id='editor_elements' className={ 'elements-list ui center aligned segment' }>
+        <button onClick={ this.onAddNewText } className={ 'elements-add-block-option' }>
+          <span className={ 'elements-add-block-option-icon' }>
+            <i className="font big icon"></i>
+          </span>
+          <span className={ 'elements-add-block-option-label' }>文字</span>
+        </button>
+        <button onClick={ this.onAddNewImage } className={ 'elements-add-block-option' }>
+          <span className={ 'elements-add-block-option-icon' }>
+            <i className="image big icon"></i>
+          </span>
+          <span className={ 'elements-add-block-option-label' }>图片</span>
+        </button>
+        <button onClick={ this.onAddSVGShape } className={ 'elements-add-block-option' }>
+          <span className={ 'elements-add-block-option-icon' }>
+            <i className="square big icon"></i>
+          </span>
+          <span className={ 'elements-add-block-option-label' }>形状</span>
+        </button>
+        <button onClick={ this.onAddSVGIcon } className={ 'elements-add-block-option' }>
+          <span className={ 'elements-add-block-option-icon' }>
+            <i className="smile big icon"></i>
+          </span>
+          <span className={ 'elements-add-block-option-label' }>图标</span>
+        </button>
       </div>
     );
+    // return (
+    //   <div id='editor_elements' className="ui center aligned segment">
+    //     <div className="ui list">
+    //       <div className="item">
+    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewText }>
+    //           <i className="font big icon"></i>
+    //         </div>
+    //       </div>
+    //       <div className="item">
+    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewImage }>
+    //           <i className="image big icon"></i>
+    //         </div>
+    //       </div>
+    //       <div className="item">
+    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGShape }>
+    //           <i className="square outline big icon"></i>
+    //         </div>
+    //       </div>
+    //       <div className="item">
+    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGIcon }>
+    //           <i className="smile big icon"></i>
+    //         </div>
+    //       </div>
+    //       <div className="item">
+    //         <div className="ui inverted massive icon button">
+    //           <i className="long arrow right big icon"></i>
+    //         </div>
+    //       </div>
+    //       <div className="item">
+    //         <div className="ui inverted massive icon button" onTouchTap={ this.onTest }>
+    //           <i className="star big icon"></i>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // );
   }
 
   onAddNewText = () => {

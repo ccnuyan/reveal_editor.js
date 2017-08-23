@@ -7,6 +7,8 @@ class SVGShapeBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
 
+    this.state.blockType = 'shape';
+
     this.minsize = {
       width: 20,
       height: 20,
@@ -15,50 +17,50 @@ class SVGShapeBlock extends Block {
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
 
-    this.svgConfig = {
-      strokeWidth: 20,
-      stroke: 'rgba(0,0,0,1)',
-      fill: 'rgba(0,0,0,0)',
-    };
+    this.state.strokeWidth = 3;
+    this.state.stroke = 'rgba(0,0,0,1)';
+    this.state.fill = 'rgba(0,0,0,0)';
 
     this.draw = SVG(this.blockContent.dom).size('100%', '100%');
   }
 
   load({ shape }) {
-    this.shape = shape;
+    this.state.shape = shape;
 
     this.svgShape = this.getShape().attr({
-      ...this.svgConfig,
-      'stroke-width': `${this.svgConfig.strokeWidth}px`,
+      ...this.state,
+      'stroke-width': `${this.state.strokeWidth}px`,
     });
   }
 
   setStoke({ stroke }) {
-    this.svgConfig.stroke = stroke;
+    this.state.stroke = stroke;
     this.svgShape.attr({ stroke });
   }
 
   setStrokeWidth({ strokeWidth }) {
-    this.svgConfig.strokeWidth = strokeWidth;
+    this.state.strokeWidth = strokeWidth;
     this.svgShape.attr({ 'stroke-width': strokeWidth });
     this.rearrange();
   }
 
-  setfill({ fill }) {
-    this.svgConfig.fill = fill;
+  setFill({ fill }) {
+    this.state.fill = fill;
     this.svgShape.attr({ fill });
   }
 
   getShape() {
-    switch (this.shape) {
+    const sw = this.state.strokeWidth;
+
+    switch (this.state.shape) {
       case 'Rect': {
-        return this.draw.rect(200 - this.svgConfig.strokeWidth, 200 - this.svgConfig.strokeWidth).center(100, 100);
+        return this.draw.rect(200 - sw, 200 - sw).center(100, 100);
       }
       case 'Circle': {
-        return this.draw.circle(200 - this.svgConfig.strokeWidth).center(100, 100);
+        return this.draw.circle(200 - sw).center(100, 100);
       }
       case 'Ellipse': {
-        return this.draw.ellipse(200 - this.svgConfig.strokeWidth, 200 - this.svgConfig.strokeWidth).center(100, 100);
+        return this.draw.ellipse(200 - sw, 200 - sw).center(100, 100);
       }
       default:
         return null;
@@ -67,22 +69,42 @@ class SVGShapeBlock extends Block {
 
   rearrange() {
     const style = this.dom.style;
-    switch (this.shape) {
+    const sw = this.state.strokeWidth;
+    switch (this.state.shape) {
       case 'Rect': {
-        this.svgShape.size(parseInt(style.width) - this.svgConfig.strokeWidth, parseInt(style.height) - this.svgConfig.strokeWidth);
+        this.svgShape.size(parseInt(style.width) - sw, parseInt(style.height) - sw);
         break;
       }
       case 'Circle': {
-        this.svgShape.size(Math.min(parseInt(style.width) - this.svgConfig.strokeWidth, parseInt(style.height) - this.svgConfig.strokeWidth));
+        this.svgShape.size(Math.min(parseInt(style.width) - sw, parseInt(style.height) - sw));
         this.svgShape.center(parseInt(style.width) / 2, parseInt(style.height) / 2);
         break;
       }
       case 'Ellipse': {
-        this.svgShape.size(parseInt(style.width) - this.svgConfig.strokeWidth, parseInt(style.height) - this.svgConfig.strokeWidth);
+        this.svgShape.size(parseInt(style.width) - sw, parseInt(style.height) - sw);
         this.svgShape.center(parseInt(style.width) / 2, parseInt(style.height) / 2);
         break;
       }
       default:
+    }
+  }
+
+  getState = () => {
+    return this.state;
+  }
+
+  setState = (params) => {
+    if (params.shape) {
+      this.load({ shape: params.shape });
+    }
+    if (params.stroke) {
+      this.setStoke(params);
+    }
+    if (params.strokeWidth) {
+      this.setStrokeWidth(params);
+    }
+    if (params.fill) {
+      this.setFill(params);
     }
   }
 }

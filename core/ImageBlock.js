@@ -8,6 +8,8 @@ class ImageBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
 
+    this.state.blockType = 'image';
+
     this.minsize = {
       width: 36,
       height: 36,
@@ -24,19 +26,31 @@ class ImageBlock extends Block {
   }
 
   getState = () => {
+    const style = getComputedStyle(this.image);
     return {
+      ...this.state,
       src: _u.getAttribute(this.image, 'src'),
+      borderWidth: style.borderWidth,
+      borderStyle: style.borderStyle,
+      borderColor: style.borderColor,
+      zIndex: style.zIndex === 'auto' ? 0 : style.zIndex,
     };
   }
 
-  setState = (src) => {
-    _u.setAttr(this.image, 'src', src);
+  setState = (params) => {
+    Object.keys(params).forEach((key) => {
+      if (key.startsWith('border') || key === 'src') {
+        this.image.style[key] = params[key];
+      } else {
+        this.dom.style[key] = params[key];
+      }
+    });
   }
 
   toEdit = () => {
     this.editor.emitter.emit('editorRequestEditImage', {
-      activeSection: this.editor.currentSection,
-      imageBlock: this,
+      currentSection: this.editor.currentSection,
+      block: this,
       state: this.getState(),
     });
   }

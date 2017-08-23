@@ -7,7 +7,7 @@
     position: absolute;
     top:0;
     left:0;
-    width:270px;
+    width:320px;
     height:100%;
 }
 
@@ -20,7 +20,7 @@
 
 #wrapper>#reveal_container{
     position: absolute;
-    left:270px;
+    left:310px;
     right:0;
     top:0;
     height:100%;
@@ -28,11 +28,21 @@
 
 #editor_manipulations{
     width:70px;
+    left:0;
+    position: absolute;
     padding: 8px 0;
 }
 
 #editor_elements{
-    width:200px;
+    width:250px;
+    left:70px;
+    position: absolute;
+}
+
+#editor_options{
+    width:250px;
+    left:70px;
+    position: absolute;
 }
 
 #wrapper .button{
@@ -45,4 +55,11 @@
 
 #preview_panel{
     margin:16px;
+}
+
+.block-option{
+    // color:white;
+    width: 100%;
+    text-align: left;
+    margin:20px 0 20px 0;
 }

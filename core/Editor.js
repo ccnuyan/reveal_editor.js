@@ -24,27 +24,38 @@ class Editor {
     _u.setHTML(document.querySelector('.reveal'), initialHTML);
     window.Reveal.initialize(revealConf.editingConf);
 
-    // paint the axis
-    this.axis = new Axis({ editor: this });
-    this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
+    Reveal.addEventListener('ready', (event) => {
+      // paint the axis
+      this.axis = new Axis({ editor: this });
+      this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
 
-    // select rect
-    this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
-    this.dom.appendChild(this.selectRect);
+      // select rect
+      this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
+      this.dom.appendChild(this.selectRect);
 
-    this.initializeSections();
+      this.initializeSections();
+      this.linkRevealEvents();
 
-    this.linkRevealEvents();
+      this.currentSection.state.h = event.indexh;
+      this.currentSection.state.v = event.indexv;
 
-    this.emitter.emit('editorInitialized', {
-      editor: this,
+      this.emitter.emit('editorInitialized', {
+        editor: this,
+        currentSection: this.currentSection,
+      });
     });
   }
 
   debouncedEventEmit = _.debounce(() => {
+    const selectedBlocks = this.currentSection.getSelectedBlocks();
+
+    selectedBlocks.forEach((block) => {
+      block.state = block.getState();
+    });
+
     this.emitter.emit('editorCurrentBlocksChanged', {
-      activeSection: this.currentSection,
-      activeBlocks: this.currentSection.getSelectedBlocks(),
+      currentSection: this.currentSection,
+      selectedBlocks,
     });
   }, 100);
 
@@ -125,9 +136,11 @@ class Editor {
         return false;
       });
 
+      this.currentSection.state.h = event.indexh;
+      this.currentSection.state.v = event.indexv;
 
       this.emitter.emit('editorCurrentSlideChanged', {
-        activeSection: this.currentSection,
+        currentSection: this.currentSection,
       });
     });
   }

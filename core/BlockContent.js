@@ -25,6 +25,8 @@ class BlockContent extends Elements {
           block.toPreview();
         });
         this.parent.toManipulate();
+      } else {
+        event.stopPropagation();
       }
     });
   }

@@ -8,6 +8,7 @@ class Elements {
     expect(el).to.exist;
     this.parent = parent;
     this.dom = el;
+    this.state = {};
   }
   show = () => {
     _u.show(this.dom);
