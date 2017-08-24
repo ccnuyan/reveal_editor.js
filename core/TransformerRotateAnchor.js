@@ -39,7 +39,8 @@ class TransformerAnchor extends Elements {
     _u.setAttr(this.svg, 'fill', 'lightgrey');
 
     _u.on(this.dom, 'mouseover', () => {
-      _u.setAttr(this.svg, 'fill', 'black');
+      const theme = this.editor.services.theme.getTheme();
+      _u.setAttr(this.svg, 'fill', theme.rotateAnchor);
     });
 
     _u.on(this.dom, 'mouseleave', () => {

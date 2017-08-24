@@ -8,6 +8,7 @@ class themeService {
   themes = {
     white: {
       css: '/reveal/css/theme/white.css',
+      rotateAnchor: 'black',
       shape: {
         stroke: 'rgba(0, 0, 0, 1)',
       },
@@ -17,6 +18,7 @@ class themeService {
     },
     black: {
       css: '/reveal/css/theme/black.css',
+      rotateAnchor: 'white',
       shape: {
         stroke: 'rgba(255, 255, 255, 1)',
       },

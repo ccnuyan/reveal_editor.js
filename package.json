@@ -52,6 +52,7 @@
     "immutable": "^3.8.1",
     "lodash": "^4.17.4",
     "markdown-loader": "^2.0.1",
+    "material-colors": "^1.2.5",
     "node-sass": "^4.5.3",
     "pixrem": "^4.0.1",
     "pleeease-filters": "^4.0.0",
@@ -118,7 +119,7 @@
     },
     "globals": {
       "$": true,
-      "katex":true,
+      "katex": true,
       "printError": true,
       "printMessage": true,
       "CKEDITOR": true,

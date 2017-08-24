@@ -110,21 +110,42 @@ class Editor {
     this.initializeSections();
   }
 
+  bornNewSection(sectionDom, h, v, isSub) {
+    const currentSectionDom = window.Reveal.getCurrentSlide();
+    const section = new Section({
+      parent: this,
+      el: sectionDom,
+    });
+
+    section.state.h = h;
+    section.state.v = v;
+    section.state.isSub = isSub;
+
+    this.sections.add(section);
+    if (sectionDom === currentSectionDom) {
+      this.currentSection = section;
+    }
+  }
+
   // this method make sure the currentSection is always exist
   initializeSections = () => {
     this.sections = new Set([]);
     const currentSectionDom = window.Reveal.getCurrentSlide();
     expect(currentSectionDom).to.exist;
-    _u.findChildren(this.dom, '.slides>section').forEach((section) => {
-      const sec = new Section({
-        parent: this,
-        el: section,
-      });
 
-      this.sections.add(sec);
-      if (section === currentSectionDom) {
-        this.currentSection = sec;
+    let h = 0;
+    _u.findChildren(this.dom, '.slides>section').forEach((section) => {
+      const subSections = section.querySelectorAll('section');
+      let v = 0;
+      if (subSections.length > 0) {
+        subSections.forEach((subsection) => {
+          this.bornNewSection(subsection, h, v, true);
+          v += 1;
+        });
+      } else {
+        this.bornNewSection(section, h, v, false);
       }
+      h += 1;
     });
     window.Reveal.addEventListener('slidechanged', (event) => {
       // set current section

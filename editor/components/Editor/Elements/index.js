@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import actions from '../../../store/actions';
 import './index.scss';
 
+import BackgroundColorPicker from './BackgroundColorPicker';
+
 class Elements extends Component {
 
   render = () => {
@@ -13,14 +15,17 @@ class Elements extends Component {
           Theme
         </div>
         <div className="ui buttons">
-          <button className="ui big icon button" onTouchTap={ this.switchTheme } data-theme="white">
+          <button className="ui icon button" onTouchTap={ this.switchTheme } data-theme="white">
+            LIGHT
             <i className="circle thin icon" />
           </button>
           <div className="or"></div>
-          <button className="ui big icon button" onTouchTap={ this.switchTheme } data-theme="black">
+          <button className="ui right icon button" onTouchTap={ this.switchTheme } data-theme="black">
             <i className="circle icon" />
+            DARK
           </button>
         </div>
+        <BackgroundColorPicker/>
         <div className="ui horizontal inverted divider">
           Elements
         </div>

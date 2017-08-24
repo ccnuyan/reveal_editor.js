@@ -78,6 +78,7 @@ class ColorOptions extends Component {
   createPicker = () => {
     const selectedBlock = this.props.selectedBlocks[0];
     return React.createElement(pickerMap[this.state.picker], {
+      width: 200,
       color: selectedBlock[this.props.blockProp],
       onChange: this.handleChange,
     });
