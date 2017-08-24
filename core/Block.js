@@ -15,6 +15,8 @@ class Block extends Elements {
     this.editor = parent.editor;
     this.section = this.parent;
 
+    this.state.mode = 'previewing';
+
     this.minsize = {
       width: 24,
       height: 24,
@@ -87,14 +89,14 @@ class Block extends Elements {
         block.toPreview();
       }
     });
-    this.mode = 'editing';
+    this.state.mode = 'editing';
     this.blockTransformer.hide();
     this.editor.debouncedEventEmit();
   }
 
   // when selected;
   toManipulate = () => {
-    this.mode = 'manipulating';
+    this.state.mode = 'manipulating';
     this.blockTransformer.show();
     this.editor.debouncedEventEmit();
   }
@@ -103,7 +105,7 @@ class Block extends Elements {
     if (this.beforeToPreview) {
       this.beforeToPreview();
     }
-    this.mode = 'previewing';
+    this.state.mode = 'previewing';
     this.blockTransformer.hide();
     this.editor.debouncedEventEmit();
   }

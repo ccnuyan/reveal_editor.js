@@ -1,11 +1,8 @@
 
-import { expect } from 'chai';
 import _u from './util';
 
 class Elements {
   constructor({ parent, el }) {
-    expect(parent).to.exist;
-    expect(el).to.exist;
     this.parent = parent;
     this.dom = el;
     this.state = {};

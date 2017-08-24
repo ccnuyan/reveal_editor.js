@@ -21,6 +21,10 @@ class Transformer extends Elements {
 
     _u.on(this.dom, 'click', this.onClick);
     _u.on(this.dom, 'dblclick', this.onDblclick);
+
+    window.Reveal.addEventListener('overviewshown', () => {
+      this.hide();
+    });
   }
 
   onClick = (event) => {

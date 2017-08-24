@@ -6,8 +6,9 @@ class BlockContent extends Elements {
     super({ parent, el });
     this.linkBlockContentEvents();
 
-    this.block = this.parent;
     this.editor = this.parent.editor;
+    this.section = this.parent.section;
+    this.block = this.parent;
   }
 
   linkBlockContentEvents = () => {
@@ -16,15 +17,18 @@ class BlockContent extends Elements {
     });
 
     _u.on(this.dom, 'click', (event) => {
-      if (this.editor.mode === 'previewing') {
+      if (this.editor.state.mode === 'previewing') {
         return;
       }
-      if (this.block.mode !== 'editing') {
+      if (this.block.state.mode !== 'editing') {
         event.stopPropagation();
-        this.parent.parent.blocks.forEach((block) => {
-          block.toPreview();
+        this.section.blocks.forEach((block) => {
+          if (block === this.block) {
+            block.toManipulate();
+          } else {
+            block.toPreview();
+          }
         });
-        this.parent.toManipulate();
       } else {
         event.stopPropagation();
       }

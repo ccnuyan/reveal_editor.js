@@ -2,13 +2,7 @@ import _u from './util';
 import Elements from './Elements';
 
 class Axis extends Elements {
-  constructor({ editor }) {
-    const slides = editor.dom.querySelector('.slides');
-
-    if (!slides) {
-      throw new Error('slides not found!');
-    }
-
+  constructor({ section }) {
     const axis = _u.create('canvas', ['axis', 'editing-ui'], {
       position: 'absolute',
       left: '50%',
@@ -24,9 +18,9 @@ class Axis extends Elements {
       border: '2px solid rgba(128,128,128,0.3)',
     });
 
-    super({ parent: editor, el: axis });
+    super({ parent: section, el: axis });
 
-    this.slides = slides;
+    this.section = section;
 
     this.dom.setAttribute('width', '960');
     this.dom.setAttribute('height', '700');
@@ -47,7 +41,14 @@ class Axis extends Elements {
     }
 
     initGrid(this.dom);
-    this.slides.appendChild(this.dom);
+    this.section.dom.appendChild(this.dom);
+
+    window.Reveal.addEventListener('overviewshown', () => {
+      this.hide();
+    });
+    window.Reveal.addEventListener('overviewhidden', () => {
+      this.show();
+    });
 
   // this.editor.addEventListener('onEnterEditMode', () => {
   //   if (Reveal.isOverview()) {

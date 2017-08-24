@@ -45,7 +45,7 @@ class TextBlock extends Block {
   beforeToEdit() {
     this.editor.dom.setAttribute('draggable', false);
 
-    this.mode = 'editing';
+    this.state.mode = 'editing';
     this.editor.debouncedEventEmit();
 
     this.blockContent.dom.setAttribute('contenteditable', 'true');

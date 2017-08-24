@@ -7,6 +7,8 @@ import ImageBlock from './ImageBlock';
 import SVGShapeBlock from './SVGShapeBlock';
 import SVGIconBlock from './SVGIconBlock';
 import KatexBlock from './KatexBlock';
+import SectionArrangement from './SectionArrangement';
+import Axis from './Axis';
 
 class Section extends Elements {
   // block type to Element Type
@@ -22,6 +24,10 @@ class Section extends Elements {
 
     this.editor = parent;
     this.blocks = new Set([]);
+
+    // re-paint the axis
+    this.axis = new Axis({ section: this });
+    this.arrangment = new SectionArrangement({ parent: this });
 
     _u.findChildren(this.dom, '.sl-block').forEach((block) => {
       this.blocks.add(new (Section.map[block.dataset.blockType])(
@@ -158,7 +164,7 @@ class Section extends Elements {
     this.parent.services.undoredo.enqueue();
     const toBeRemoved = [];
     this.blocks.forEach((block) => {
-      if (block.mode === 'manipulating') {
+      if (block.state.mode === 'manipulating') {
         toBeRemoved.push(block);
       }
     });
@@ -169,13 +175,35 @@ class Section extends Elements {
   }
 
   getSelectedBlocks() {
-    return _.filter([...this.blocks], { mode: 'manipulating' });
+    return _.filter([...this.blocks], { state: { mode: 'manipulating' } });
   }
 
   toPreview() {
     this.blocks.forEach((block) => {
       block.toPreview();
     });
+    this.axis.hide();
+  }
+
+  toEdit = () => {
+    this.axis.show();
+  }
+
+  remove = () => {
+    // const h = this.section.state.h;
+    // const v = this.section.state.v;
+    // if (this.state.isSub) {
+    //   if (this.dom.parentNode.querySelectorAll('section').length > 1) {
+    //     this.dom.parentNode.removeChild(this.dom);
+    //     this.editor.reload({ toOverview: true });
+    //     window.Reveal.navigateTo(h, v);
+    //   }
+    //   if (this.dom.parentNode.querySelectorAll('section').length === 1) {
+    //     this.dom.parentNode.parentNode.removeChild(this.dom.parentNode);
+    //     this.editor.reload({ toOverview: true });
+    //     window.Reveal.navigateTo(h - 1, 0);
+    //   }
+    // }
   }
 }
 

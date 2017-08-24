@@ -1,11 +1,9 @@
-import { expect } from 'chai';
 import _ from 'lodash';
 import './CKEDITORPlugins';
 import _u from './util';
 import revealConf from './revealConf';
 import config from './config';
 import Section from './Section';
-import Axis from './Axis';
 import services from './services';
 import Emitter from './Emitter';
 
@@ -19,15 +17,15 @@ class Editor {
     this.services = services(this);
     this.linkDomEvents();
 
-    this.mode = 'editing';
+    this.state = { mode: 'editing' };
+
     this.emitter = new Emitter();
 
     _u.setHTML(document.querySelector('.reveal'), initialHTML);
     window.Reveal.initialize(revealConf.editingConf);
 
-    Reveal.addEventListener('ready', (event) => {
+    Reveal.addEventListener('ready', () => {
       // paint the axis
-      this.axis = new Axis({ editor: this });
       this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
 
       // select rect
@@ -35,10 +33,6 @@ class Editor {
       this.dom.appendChild(this.selectRect);
 
       this.initializeSections();
-      this.linkRevealEvents();
-
-      this.currentSection.state.h = event.indexh;
-      this.currentSection.state.v = event.indexv;
 
       this.emitter.emit('editorInitialized', {
         editor: this,
@@ -71,39 +65,38 @@ class Editor {
     _u.on(this.dom, 'click', (event) => {
       event.stopPropagation();
       if (event.currentTarget === this.dom) {
-        this.currentSection.toPreview();
+        this.currentSection.blocks.forEach((block) => {
+          block.toPreview();
+        });
       }
-      if (this.mode === 'editing') {
+      if (this.state.mode === 'editing') {
         this.dom.setAttribute('draggable', true);
       }
     });
   }
 
-  linkRevealEvents = () => {
-    window.Reveal.addEventListener('overviewshown', () => {
-      this.axis.hide();
-    });
-    window.Reveal.addEventListener('overviewhidden', () => {
-      this.axis.show();
-    });
-  }
-
-  reload({ html }) {
+  reload({ html, toOverview }) {
     // save the old configuration and position
     const oldConf = window.Reveal.getConfig();
     const h = Reveal.getIndices().h;
     const v = Reveal.getIndices().v;
 
     const virReveal = document.createElement('div');
-    _u.setHTML(virReveal, html);
-    _u.setHTML(this.slidesDom, virReveal.querySelector('.slides').innerHTML);
+    if (html) {
+      _u.setHTML(virReveal, html);
+      _u.setHTML(this.slidesDom, virReveal.querySelector('.slides').innerHTML);
+    } else {
+      _u.setHTML(this.slidesDom, this.slidesDom.innerHTML);
+    }
 
     // reinitialize reveal
     window.Reveal.initialize(oldConf);
     window.Reveal.navigateTo(h, v);
 
-    // re-paint the axis
-    this.axis = new Axis({ editor: this });
+    if (toOverview) {
+      window.Reveal.toOverview();
+    }
+
     this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
 
     // reinitialize the sections
@@ -130,16 +123,19 @@ class Editor {
   // this method make sure the currentSection is always exist
   initializeSections = () => {
     this.sections = new Set([]);
-    const currentSectionDom = window.Reveal.getCurrentSlide();
-    expect(currentSectionDom).to.exist;
+
+    this.state.struct = {};
 
     let h = 0;
     _u.findChildren(this.dom, '.slides>section').forEach((section) => {
+      this.state.struct[h] = true;
       const subSections = section.querySelectorAll('section');
       let v = 0;
       if (subSections.length > 0) {
+        this.state.struct[h] = {};
         subSections.forEach((subsection) => {
           this.bornNewSection(subsection, h, v, true);
+          this.state.struct[h][v] = true;
           v += 1;
         });
       } else {
@@ -156,9 +152,6 @@ class Editor {
         }
         return false;
       });
-
-      this.currentSection.state.h = event.indexh;
-      this.currentSection.state.v = event.indexv;
 
       this.emitter.emit('editorCurrentSlideChanged', {
         currentSection: this.currentSection,
@@ -232,17 +225,18 @@ class Editor {
 
   toPreview() {
     this.dom.setAttribute('draggable', false);
-    this.axis.hide();
     this.sections.forEach((section) => {
       section.toPreview();
     });
-    this.mode = 'previewing';
+    this.state.mode = 'previewing';
   }
 
   toEdit() {
     this.dom.setAttribute('draggable', true);
-    this.axis.show();
-    this.mode = 'editing';
+    this.state.mode = 'editing';
+    this.sections.forEach((section) => {
+      section.toEdit();
+    });
   }
 }
 
