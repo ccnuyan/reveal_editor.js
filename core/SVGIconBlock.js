@@ -10,9 +10,13 @@ class SVGIconBlock extends Block {
 
     this.state.blockType = 'icon';
 
+    this.editor = this.parent.editor;
+
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
-    this.state.fill = 'rgba(0,0,0,1)';
+
+    const theme = this.editor.services.theme.getTheme();
+    this.state.fill = theme.icon.fill;
   }
 
   load({ icon }) {

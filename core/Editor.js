@@ -71,11 +71,7 @@ class Editor {
     _u.on(this.dom, 'click', (event) => {
       event.stopPropagation();
       if (event.currentTarget === this.dom) {
-        this.sections.forEach((section) => {
-          section.blocks.forEach((block) => {
-            block.toPreview();
-          });
-        });
+        this.currentSection.toPreview();
       }
       if (this.mode === 'editing') {
         this.dom.setAttribute('draggable', true);

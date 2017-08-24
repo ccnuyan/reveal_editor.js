@@ -88,6 +88,7 @@ class Block extends Elements {
       }
     });
     this.mode = 'editing';
+    this.blockTransformer.hide();
     this.editor.debouncedEventEmit();
   }
 
@@ -103,6 +104,7 @@ class Block extends Elements {
       this.beforeToPreview();
     }
     this.mode = 'previewing';
+    this.blockTransformer.hide();
     this.editor.debouncedEventEmit();
   }
 

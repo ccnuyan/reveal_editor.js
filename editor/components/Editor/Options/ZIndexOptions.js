@@ -47,7 +47,7 @@ class ZIndexOptions extends Component {
     return (
       <div className="block-option">
         {this.props.isMain ?
-          <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Depth'}</div> :
+          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Depth'}</div> :
           <div>{this.props.label ? this.props.label : 'Depth'}</div>}
         <div className="ui buttons">
           <button className="ui icon button" onTouchTap={ this.changeZIndex } data-change-direction='-'>

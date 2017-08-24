@@ -13,7 +13,8 @@ class SVGShapeBlock extends Block {
     this.blockContent.dom.style.height = '100%';
 
     this.state.strokeWidth = 3;
-    this.state.stroke = 'rgba(0,0,0,1)';
+    const theme = this.editor.services.theme.getTheme();
+    this.state.stroke = theme.stroke;
     this.state.fill = 'rgba(0,0,0,0)';
 
     this.draw = SVG(this.blockContent.dom).size('100%', '100%');

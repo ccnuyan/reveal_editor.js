@@ -44,7 +44,7 @@ class ImageBlock extends Block {
     this.rearrange();
   }
 
-  toEdit = () => {
+  beforeToEdit = () => {
     this.editor.emitter.emit('editorRequestEditImage', {
       currentSection: this.editor.currentSection,
       block: this,

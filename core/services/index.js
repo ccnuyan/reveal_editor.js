@@ -1,9 +1,9 @@
-import StoreService from './storeService';
+import ThemeService from './themeService';
 import UndoRedoService from './undoredo';
 
 export default (editor) => {
   return {
-    store: new StoreService(editor),
+    theme: new ThemeService(editor),
     undoredo: new UndoRedoService(editor),
   };
 };

@@ -5,7 +5,7 @@
 }
 
 .reveal .slides > section, .reveal .slides > section > section {
-    line-height: 0;
+    line-height: 1;
 }
 
 .reveal>.slides{
@@ -56,4 +56,8 @@
     white-space: nowrap;
     text-indent: 0;
     text-rendering: auto;
+}
+
+.reveal section img{
+    box-shadow: none;
 }

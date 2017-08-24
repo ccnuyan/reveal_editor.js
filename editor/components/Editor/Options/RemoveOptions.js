@@ -26,7 +26,7 @@ class RemoveOptions extends Component {
     return (
       <div className="block-option">
         {this.props.isMain ?
-          <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Remove'}</div> :
+          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Remove'}</div> :
           <div>{this.props.label ? this.props.label : 'Remove'}</div>}
         <div className="ui buttons">
           <button className="ui labeled icon button" onTouchTap={ this.onRemove } data-change-direction='+'>

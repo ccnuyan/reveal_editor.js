@@ -36,7 +36,7 @@ class Elements extends Component {
   render = () => {
     const sb = this.props.selectedBlocks;
     return (
-      <div id='editor_elements' className="ui center aligned segment">
+      <div id='editor_options' className="ui center aligned segment">
         {
           sb.length === 1 ? this.getBlockOptions(sb) : ''
         }

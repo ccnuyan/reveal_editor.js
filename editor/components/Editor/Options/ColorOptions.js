@@ -88,7 +88,7 @@ class ColorOptions extends Component {
     return (
       <div className="block-option">
         {this.props.isMain ?
-          <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Color'}</div> :
+          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Color'}</div> :
           <div>{this.props.label ? this.props.label : 'Color'}</div>}
         <div>
           <div style={ this.styles.swatch } onTouchTap={ this.handleClick } data-picker="SwatchesPicker">

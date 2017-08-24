@@ -12,7 +12,6 @@
 }
 
 #editor_panel{
-    background: #555;
     height:100%;
     margin: 0;
     border-radius: 0;
@@ -20,7 +19,7 @@
 
 #wrapper>#reveal_container{
     position: absolute;
-    left:310px;
+    left:320px;
     right:0;
     top:0;
     height:100%;
@@ -31,18 +30,23 @@
     left:0;
     position: absolute;
     padding: 8px 0;
+    background-color: #333;
 }
 
 #editor_elements{
     width:250px;
     left:70px;
     position: absolute;
+    background-color: #404040;
 }
 
 #editor_options{
     width:250px;
     left:70px;
+    background-color: #505050;
     position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #wrapper .button{
@@ -58,8 +62,7 @@
 }
 
 .block-option{
-    // color:white;
     width: 100%;
     text-align: center;
-    margin:20px 0 20px 0;
+    margin:0 0 20px 0;
 }

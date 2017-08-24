@@ -45,7 +45,7 @@ class WidthOptions extends Component {
     return (
       <div className="block-option" style={ { textAlign: 'left' } }>
         {this.props.isMain ?
-          <div className="ui horizontal inverted divider header" style={ { fontSize: '120%' } }>{this.props.label ? this.props.label : 'Width'}</div> :
+          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Width'}</div> :
           <div>{this.props.label ? this.props.label : 'Width'}</div>}
         <div className="ui right labeled input" style={ { width: '175px' } }>
           <input onWheel={ this.onWheel }

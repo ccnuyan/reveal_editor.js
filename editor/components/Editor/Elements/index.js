@@ -9,6 +9,21 @@ class Elements extends Component {
   render = () => {
     return (
       <div id='editor_elements' className={ 'elements-list ui center aligned segment' }>
+        <div className="ui horizontal inverted divider">
+          Theme
+        </div>
+        <div className="ui buttons">
+          <button className="ui big icon button" onTouchTap={ this.switchTheme } data-theme="white">
+            <i className="circle thin icon" />
+          </button>
+          <div className="or"></div>
+          <button className="ui big icon button" onTouchTap={ this.switchTheme } data-theme="black">
+            <i className="circle icon" />
+          </button>
+        </div>
+        <div className="ui horizontal inverted divider">
+          Elements
+        </div>
         <button onTouchTap={ this.onAddNewText } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="font big icon"></i>
@@ -41,6 +56,10 @@ class Elements extends Component {
         </button>
       </div>
     );
+  }
+
+  switchTheme = (event) => {
+    window.RevealEditor.services.theme.loadTheme(event.currentTarget.dataset.theme);
   }
 
   onAddNewText = () => {
