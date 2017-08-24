@@ -34,10 +34,15 @@ class TextBlock extends Block {
     });
   }
 
-  toEdit() {
-    this.section.blocks.forEach((block) => {
-      block.toPreview();
-    });
+  beforeToPreview = () => {
+    if (this.CKEDITORInstance) {
+      this.CKEDITORInstance.destroy();
+    }
+    this.blockContent.dom.setAttribute('contenteditable', false);
+    this.blockTransformer.hide();
+  }
+
+  beforeToEdit() {
     this.editor.dom.setAttribute('draggable', false);
 
     this.mode = 'editing';
@@ -59,9 +64,8 @@ class TextBlock extends Block {
     if (!initiatedFlag) {
       this.CKEDITORInstance = CKEDITOR.inline(this.blockContent.dom, CKEditorConfig);
     }
+    this.blockTransformer.hide();
     _u.clearUserSelection();
-
-    this.editor.debouncedEventEmit();
   }
 }
 

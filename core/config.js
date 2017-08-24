@@ -58,6 +58,14 @@ const styles = {
     top: '100px',
     left: '150px',
   },
+  latexBlock: {
+    position: 'absolute',
+    padding: '20px',
+    width: 'auto',
+    height: 'auto',
+    top: '100px',
+    left: '150px',
+  },
   imageBlock: {
     position: 'absolute',
     width: '480px',

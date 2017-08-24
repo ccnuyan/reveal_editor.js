@@ -42,3 +42,18 @@
     padding:5px;
     width:100%;
 }
+
+.reveal .katex { 
+    font-style: normal;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    font-variant-numeric: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-size: 1em;
+    font-family: KaTeX_Main, "Times New Roman", serif;
+    line-height: 1;
+    white-space: nowrap;
+    text-indent: 0;
+    text-rendering: auto;
+}

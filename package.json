@@ -118,6 +118,7 @@
     },
     "globals": {
       "$": true,
+      "katex":true,
       "printError": true,
       "printMessage": true,
       "CKEDITOR": true,

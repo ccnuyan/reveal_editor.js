@@ -33,44 +33,14 @@ class Elements extends Component {
           </span>
           <span className={ 'elements-add-block-option-label' }>图标</span>
         </button>
+        <button onTouchTap={ this.onAddLatex } className={ 'elements-add-block-option' }>
+          <span className={ 'elements-add-block-option-icon' }>
+            <i className="superscript big icon"></i>
+          </span>
+          <span className={ 'elements-add-block-option-label' }>Latex公式</span>
+        </button>
       </div>
     );
-    // return (
-    //   <div id='editor_elements' className="ui center aligned segment">
-    //     <div className="ui list">
-    //       <div className="item">
-    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewText }>
-    //           <i className="font big icon"></i>
-    //         </div>
-    //       </div>
-    //       <div className="item">
-    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddNewImage }>
-    //           <i className="image big icon"></i>
-    //         </div>
-    //       </div>
-    //       <div className="item">
-    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGShape }>
-    //           <i className="square outline big icon"></i>
-    //         </div>
-    //       </div>
-    //       <div className="item">
-    //         <div className="ui inverted massive icon button" onTouchTap={ this.onAddSVGIcon }>
-    //           <i className="smile big icon"></i>
-    //         </div>
-    //       </div>
-    //       <div className="item">
-    //         <div className="ui inverted massive icon button">
-    //           <i className="long arrow right big icon"></i>
-    //         </div>
-    //       </div>
-    //       <div className="item">
-    //         <div className="ui inverted massive icon button" onTouchTap={ this.onTest }>
-    //           <i className="star big icon"></i>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // );
   }
 
   onAddNewText = () => {
@@ -94,6 +64,12 @@ class Elements extends Component {
     event.preventDefault();
     window.RevealEditor.currentSection.addSVGIcon({ icon: 'eye' });
   }
+
+  onAddLatex = () => {
+    event.preventDefault();
+    window.RevealEditor.currentSection.addLatex({ latex: 'a^2+2ab+b^2=(a+b)^2' });
+  }
+
 
   onTest = () => {
     event.preventDefault();

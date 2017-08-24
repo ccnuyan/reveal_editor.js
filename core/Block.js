@@ -78,6 +78,19 @@ class Block extends Elements {
     this.updateTransformMatrix();
   }
 
+  toEdit = () => {
+    if (this.beforeToEdit) {
+      this.beforeToEdit();
+    }
+    this.section.blocks.forEach((block) => {
+      if (block.dom !== this.dom) {
+        block.toPreview();
+      }
+    });
+    this.mode = 'editing';
+    this.editor.debouncedEventEmit();
+  }
+
   // when selected;
   toManipulate = () => {
     this.mode = 'manipulating';
@@ -86,12 +99,10 @@ class Block extends Elements {
   }
 
   toPreview = () => {
-    this.mode = 'previewing';
-    if (this.CKEDITORInstance) {
-      this.CKEDITORInstance.destroy();
+    if (this.beforeToPreview) {
+      this.beforeToPreview();
     }
-    this.blockContent.dom.setAttribute('contenteditable', false);
-    this.blockTransformer.hide();
+    this.mode = 'previewing';
     this.editor.debouncedEventEmit();
   }
 

@@ -6,6 +6,7 @@ import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
 import SVGShapeBlock from './SVGShapeBlock';
 import SVGIconBlock from './SVGIconBlock';
+import KatexBlock from './KatexBlock';
 
 class Section extends Elements {
   // block type to Element Type
@@ -109,6 +110,27 @@ class Section extends Elements {
     svgBlock.load({ shape });
 
     this.afterAdd(svgBlock);
+  }
+
+  addLatex = ({ latex }) => {
+    this.beforeAdd();
+
+    const content = _u.create('div', config.classnames.content);
+    this.dom.appendChild(content);
+    const blockDiv = _u.create('div', 'sl-block', config.styles.latexBlock);
+    blockDiv.setAttribute('data-block-type', 'katex');
+    blockDiv.appendChild(content);
+
+    this.dom.appendChild(blockDiv);
+
+    const ktBLock = new KatexBlock({
+      parent: this,
+      el: blockDiv,
+    });
+
+    ktBLock.load({ latex });
+
+    this.afterAdd(ktBLock);
   }
 
   addSVGIcon = ({ icon }) => {
