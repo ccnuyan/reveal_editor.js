@@ -13,7 +13,8 @@ class BackgroundColorPicker extends Component {
     label: PropTypes.string,
     isMain: PropTypes.bool,
     editor: PropTypes.object.isRequired,
-    // set_editor: PropTypes.func.isRequired,
+    currentSection: PropTypes.object.isRequired,
+    set_current_section: PropTypes.func.isRequired,
   }
 
   state = {
@@ -29,7 +30,11 @@ class BackgroundColorPicker extends Component {
   };
 
   handleChange = (color) => {
-    const rgba = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a ? color.rgb.a : 1})`;
+    const currentSection = this.props.currentSection;
+    const hex = color.hex;
+    currentSection.backgroundColor = hex;
+    window.RevealEditor.currentSection.setState({ backgroundColor: hex });
+    this.props.set_current_section(currentSection);
   };
 
   styles = reactCSS({
@@ -80,8 +85,8 @@ class BackgroundColorPicker extends Component {
         material.green['900'],
         material.lightGreen['900'],
         material.lime['900'],
-        material.yellow['900'],
-        material.amber['900'],
+        // material.yellow['900'],
+        // material.amber['900'],
         material.orange['900'],
         material.deepOrange['900'],
         material.brown['900'],
@@ -101,8 +106,8 @@ class BackgroundColorPicker extends Component {
         material.lightGreen['100'],
         material.lime['100'],
         material.yellow['100'],
-        material.amber['100'],
-        material.orange['100'],
+        // material.amber['100'],
+        // material.orange['100'],
         material.deepOrange['100'],
         material.brown['100'],
         material.blueGrey['100'],
@@ -111,10 +116,14 @@ class BackgroundColorPicker extends Component {
     if (this.props.editor.theme === 'dark') {
       return colors.dark;
     }
-    return colors.light;
+    if (this.props.editor.theme === 'light') {
+      return colors.light;
+    }
+    return [];
   }
 
   render = () => {
+    const colors = this.getColors();
     return (
       <div className="block-option">
         <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Background'}</div>
@@ -125,7 +134,7 @@ class BackgroundColorPicker extends Component {
           { this.state.displayColorPicker ?
             <div style={ this.styles.popover }>
               <div style={ this.styles.cover } onTouchTap={ this.handleClose }/>
-              <BlockPicker colors={ this.getColors() } width={ 205 } height={ 500 } color={ this.props.editor.background } onChange={ this.onChange }/>
+              <BlockPicker colors={ colors } width={ 205 } height={ 500 } color={ this.props.editor.background } onChange={ this.handleChange }/>
             </div> : null }
         </div>
       </div>
@@ -135,14 +144,14 @@ class BackgroundColorPicker extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    selectedBlocks: state.editor.toJSON().currentSection.selectedBlocks,
+    currentSection: state.editor.toJSON().currentSection,
     editor: state.editor.toJSON(),
   };
 };
 
 const mapActionsToProps = (dispacher) => {
   return {
-    set_current_block: actions.set_current_block(dispacher),
+    set_current_section: actions.set_current_section(dispacher),
   };
 };
 

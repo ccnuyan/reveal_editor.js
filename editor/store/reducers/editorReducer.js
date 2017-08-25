@@ -1,36 +1,29 @@
 import { fromJS } from 'immutable';
 import actionTypes from '../actionTypes';
 
-
-const currentSection = {
-  h: 0,
-  v: 0,
-  initialized: false,
-  selectedBlocks: [],
-};
-
-if (window.RevealEditor.currentSection) {
-  currentSection.initialized = true;
-  currentSection.h = window.RevealEditor.currentSection.state.h;
-  currentSection.v = window.RevealEditor.currentSection.state.v;
-}
-
 const editorInit = fromJS({
-  presentation_mode: 'editing',
-  currentSection,
+  initialized: false,
+  currentSection: {
+    selectedBlocks: [],
+  },
 });
 
 /* eslint-disable no-param-reassign */
 export default (state = editorInit, action) => {
   switch (action.type) {
 
+    case actionTypes.SET_EDITOR: {
+      state = state.merge(fromJS(action.payload));
+      return state;
+    }
+
     case actionTypes.SET_EDIT_MODE: {
-      state = state.set('presentation_mode', 'editing');
+      state = state.set('mode', 'editing');
       return state;
     }
 
     case actionTypes.SET_PREVIEW_MODE: {
-      state = state.set('presentation_mode', 'previewing');
+      state = state.set('mode', 'previewing');
       return state;
     }
 

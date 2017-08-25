@@ -16,29 +16,49 @@ class Editor {
     this.dom = reveal;
     this.reveal = this.dom;
     this.services = services(this);
-    this.linkDomEvents();
+    this.state = {};
 
-    this.state = { mode: 'editing' };
     this.emitter = new Emitter();
     this.reveal.innerHTML = initialHTML;
 
     Reveal.addEventListener('ready', () => {
+      this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
+      this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
+      this.reveal.appendChild(this.selectRect);
+      this.linkDomEvents();
+
+      this.state.mode = 'editing';
+      this.state.initialized = true;
+      this.state.theme = this.services.theme.loadTheme(this.slidesDom.dataset.theme);
+
       this.emitter.emit('editorInitialized', {
-        editor: this,
-        currentSection: this.currentSection,
+        editor: this.getState(),
       });
     });
 
-    this.reload({});
+    window.Reveal.initialize(revealConf.editingConf);
+
+    // reinitialize the sections
+    this.initializeSections();
+  }
+
+  getState = () => {
+    return {
+      ...this.state,
+      currentSection: this.currentSection.getState(),
+    };
+  }
+
+  setState = ({ theme }) => {
+    this.state.theme = this.services.theme.loadTheme(theme);
   }
 
   debouncedEventEmit = _.debounce(() => {
-    const selectedBlocks = this.currentSection.getSelectedBlocks();
+    const selectedBlocks = [];
 
-    selectedBlocks.forEach((block) => {
-      block.state = block.getState();
+    this.currentSection.getSelectedBlocks().forEach((block) => {
+      selectedBlocks.push(block.getState());
     });
-
     this.emitter.emit('editorCurrentBlocksChanged', {
       currentSection: this.currentSection,
       selectedBlocks,
@@ -69,41 +89,17 @@ class Editor {
   reload({ html, toOverview, h, v }) {
     if (h === undefined) h = Reveal.getIndices().h;
     if (v === undefined) v = Reveal.getIndices().v;
-
-    if (!this.slidesDom) {
-      this.slidesDom = this.reveal.querySelector('div.slides');
-    }
-
     if (html) {
       this.slidesDom.innerHTML = html;
     } else {
       this.slidesDom.innerHTML = this.services.snapshot(this);
     }
 
-    this.reveal.classList = ['reveal'];
-    this.reveal.removeAttribute('role');
-
-    Array.prototype.forEach.call(this.reveal.children, (el) => {
-      if (el !== this.slidesDom) {
-        el.parentNode.removeChild(el);
-      }
-    });
-
-    // reinitialize reveal
-    window.Reveal.initialize(revealConf.editingConf);
+    window.Reveal.sync();
     window.Reveal.navigateTo(h, v);
-
     if (toOverview && !window.Reveal.isOverview()) {
       window.Reveal.toggleOverview();
     }
-
-    this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
-
-     // select rect
-    this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
-    this.reveal.appendChild(this.selectRect);
-
-    // reinitialize the sections
     this.initializeSections();
   }
 
@@ -163,7 +159,10 @@ class Editor {
       });
 
       this.emitter.emit('editorCurrentSlideChanged', {
-        currentSection: this.currentSection,
+        currentSection: {
+          ...this.currentSection.getState(),
+          selectedBlocks: this.currentSection.getSelectedBlocks(),
+        },
       });
     });
   }

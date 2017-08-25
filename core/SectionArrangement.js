@@ -28,85 +28,62 @@ class SectionArrangement {
     this.bottomAdd.innerHTML = plusSvg;
     this.bottomAdd.dataset.direction = 'bottom';
 
-    this.rightAdd.classList.add('editing-ui');
-    this.rightAdd.classList.add('section-add');
-    this.bottomAdd.classList.add('editing-ui');
-    this.bottomAdd.classList.add('section-add');
-
-    this.rightAdd.addEventListener('mouseenter', (event) => {
-      const theme = this.editor.services.theme.getTheme();
-      event.currentTarget.querySelector('svg').style.fill = theme.sectionAdd;
-    });
-    this.bottomAdd.addEventListener('mouseenter', (event) => {
-      const theme = this.editor.services.theme.getTheme();
-      event.currentTarget.querySelector('svg').style.fill = theme.sectionAdd;
-    });
-
-    this.rightAdd.addEventListener('mouseleave', (event) => {
-      event.currentTarget.querySelector('svg').style.fill = 'lightgrey';
-    });
-    this.bottomAdd.addEventListener('mouseleave', (event) => {
-      event.currentTarget.querySelector('svg').style.fill = 'lightgrey';
-    });
+    this.rightAdd.classList.add('editing-ui', 'section-manipulator', 'section-add');
+    this.bottomAdd.classList.add('editing-ui', 'section-manipulator', 'section-add');
 
     this.section.dom.appendChild(this.rightAdd);
     this.section.dom.appendChild(this.bottomAdd);
 
     this.rightAdd.addEventListener('click', this.createSection);
     this.bottomAdd.addEventListener('click', this.createSection);
+
+    this.addButtons = [this.rightAdd, this.bottomAdd];
   }
 
   initializeArrangementButtons = () => {
     this.left = document.createElement('div');
     this.left.innerHTML = arrowLeft;
     this.left.dataset.direction = 'left';
-    this.left.classList.add('arranging-ui');
+    this.left.classList.add('section-manipulator', 'arranging-ui');
     this.right = document.createElement('div');
     this.right.innerHTML = arrowRight;
     this.right.dataset.direction = 'right';
-    this.right.classList.add('arranging-ui');
+    this.right.classList.add('section-manipulator', 'arranging-ui');
     this.up = document.createElement('div');
     this.up.innerHTML = arrowUp;
     this.up.dataset.direction = 'up';
-    this.up.classList.add('arranging-ui');
+    this.up.classList.add('section-manipulator', 'arranging-ui');
     this.down = document.createElement('div');
     this.down.innerHTML = arrowDown;
     this.down.dataset.direction = 'down';
-    this.down.classList.add('arranging-ui');
+    this.down.classList.add('section-manipulator', 'arranging-ui');
 
     this.embedleft = document.createElement('div');
     this.embedleft.innerHTML = embedLeft;
     this.embedleft.dataset.direction = 'embedleft';
-    this.embedleft.classList.add('arranging-ui');
+    this.embedleft.classList.add('section-manipulator', 'arranging-ui');
     this.embedright = document.createElement('div');
     this.embedright.innerHTML = embedRight;
     this.embedright.dataset.direction = 'embedright';
-    this.embedright.classList.add('arranging-ui');
+    this.embedright.classList.add('section-manipulator', 'arranging-ui');
 
     this.batchleft = document.createElement('div');
     this.batchleft.innerHTML = batchLeft;
     this.batchleft.dataset.direction = 'batchleft';
-    this.batchleft.classList.add('arranging-ui');
+    this.batchleft.classList.add('section-manipulator', 'arranging-ui');
     this.batchright = document.createElement('div');
     this.batchright.innerHTML = batchRight;
     this.batchright.dataset.direction = 'batchright';
-    this.batchright.classList.add('arranging-ui');
+    this.batchright.classList.add('section-manipulator', 'arranging-ui');
 
     this.remove = document.createElement('div');
     this.remove.innerHTML = bin;
     this.remove.dataset.direction = 'remove';
-    this.remove.classList.add('arranging-ui');
+    this.remove.classList.add('section-manipulator', 'arranging-ui');
 
     this.arrangingButtons = this.getEnabledArrangingButtons();
 
     this.arrangingButtons.forEach((dom) => {
-      dom.addEventListener('mouseenter', (event) => {
-        const theme = this.editor.services.theme.getTheme();
-        event.currentTarget.querySelector('svg').style.fill = theme.sectionAdd;
-      });
-      dom.addEventListener('mouseleave', (event) => {
-        event.currentTarget.querySelector('svg').style.fill = 'lightgrey';
-      });
       this.section.dom.appendChild(dom);
       dom.addEventListener('click', this.moveSection);
       dom.style.display = this.editor.isOverview() ? 'block' : 'none';

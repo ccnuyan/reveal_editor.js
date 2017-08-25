@@ -5,7 +5,7 @@ const rules = {
   },
   section: {
     classesAllowed: [],
-    attributesAllowed: ['data-id'],
+    attributesAllowed: ['data-id', 'data-background-color'],
   },
   block: {
     classesAllowed: ['sl-block'],
@@ -47,7 +47,7 @@ const removeAttrNotExistedInArray = (el, array) => {
 };
 
 const getSnapshot = (editor) => {
-  const cwp = editor.dom.cloneNode(true);
+  const cwp = editor.reveal.cloneNode(true);
   const slides = cwp.querySelector('div.slides');
 
   // const removeSelectors = ['.editing-ui', '.arranging-ui', 'div.slides>div'];
@@ -64,25 +64,21 @@ const getSnapshot = (editor) => {
   const blocks = slides.querySelectorAll('div.sl-block');
 
   removeClassNotExistedInArray(slides, rules.slides.classesAllowed);
-
   Array.prototype.forEach.call(sections, (el) => {
     removeClassNotExistedInArray(el, rules.section.classesAllowed);
   });
-
   Array.prototype.forEach.call(blocks, (el) => {
     removeClassNotExistedInArray(el, rules.block.classesAllowed);
   });
 
   removeAttrNotExistedInArray(slides, rules.slides.attributesAllowed);
-
   Array.prototype.forEach.call(sections, (el) => {
     removeAttrNotExistedInArray(el, rules.section.attributesAllowed);
   });
-
   Array.prototype.forEach.call(blocks, (el) => {
     removeAttrNotExistedInArray(el, rules.block.attributesAllowed);
   });
-  console.log(slides);
+
   return slides.innerHTML;
 };
 

@@ -46,7 +46,13 @@ class Axis extends Elements {
 
     this.dom.style.display = this.editor.isOverview() ? 'none' : 'block';
     window.Reveal.addEventListener('overviewshown', () => this.hide());
-    window.Reveal.addEventListener('overviewhidden', () => this.show());
+    window.Reveal.addEventListener('overviewhidden', () => {
+      if (this.editor.state.mode === 'editing') {
+        this.show();
+      } else {
+        this.hide();
+      }
+    });
 
   // this.editor.addEventListener('onEnterEditMode', () => {
   //   if (Reveal.isOverview()) {

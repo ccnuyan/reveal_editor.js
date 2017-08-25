@@ -13,52 +13,41 @@ class Main extends Component {
   static propTypes = {
     editor: PropTypes.object.isRequired,
     currentSection: PropTypes.object.isRequired,
+    set_editor: PropTypes.func.isRequired,
     set_current_section: PropTypes.func.isRequired,
     set_selected_blocks: PropTypes.func.isRequired,
   }
 
-  constructor() {
-    super();
-    window.RevealEditor.emitter.on('editorInitialized', (event) => {
-      const currentSection = {
-        selectedBlocks: [],
-      };
-      currentSection.initialized = true;
-      currentSection.h = event.currentSection.state.h;
-      currentSection.v = event.currentSection.state.v;
-      this.props.set_current_section(currentSection);
-    });
-    window.RevealEditor.emitter.on('editorCurrentBlocksChanged', (event) => {
-      const selectedBlocks = [];
-      event.selectedBlocks.forEach((block) => {
-        selectedBlocks.push(block.state);
+  componentDidMount() {
+    if (window.RevealEditor.state.initialized) {
+      const editor = window.RevealEditor.getState();
+      this.props.set_editor(editor);
+    } else {
+      window.RevealEditor.emitter.on('editorInitialized', (event) => {
+        this.props.set_editor(event.editor);
       });
-      this.props.set_selected_blocks(selectedBlocks);
+    }
+    window.RevealEditor.emitter.on('editorCurrentBlocksChanged', (event) => {
+      this.props.set_selected_blocks(event.selectedBlocks);
     });
     window.RevealEditor.emitter.on('editorRequestEditImage', (event) => {
       console.log(event);
     });
     window.RevealEditor.emitter.on('editorCurrentSlideChanged', (event) => {
-      const currentSection = {
-        selectedBlocks: [],
-      };
-      currentSection.initialized = true;
-      currentSection.h = event.currentSection.state.h;
-      currentSection.v = event.currentSection.state.v;
-      this.props.set_current_section(currentSection);
+      this.props.set_current_section(event.currentSection);
     });
   }
 
   render =() => {
-    if (this.props.editor.presentation_mode === 'editing' && this.props.currentSection.initialized) {
+    if (this.props.editor.mode === 'editing' && this.props.editor.initialized) {
       return (<Editor></Editor>);
     }
 
-    if (this.props.editor.presentation_mode === 'previewing') {
+    if (this.props.editor.mode === 'previewing') {
       return (<Previewer></Previewer>);
     }
 
-    return <div>unknown mode</div>;
+    return <div>LOADING</div>;
   }
 }
 
@@ -72,6 +61,7 @@ const mapStateToProps = (state) => {
 
 const mapActionsToProps = (dispacher) => {
   return {
+    set_editor: actions.set_editor(dispacher),
     set_current_section: actions.set_current_section(dispacher),
     set_selected_blocks: actions.set_selected_blocks(dispacher),
   };

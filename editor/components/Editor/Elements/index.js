@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import actions from '../../../store/actions';
@@ -8,6 +9,11 @@ import BackgroundColorPicker from './BackgroundColorPicker';
 
 class Elements extends Component {
 
+  static propTypes = {
+    editor: PropTypes.object.isRequired,
+    set_editor: PropTypes.func.isRequired,
+  }
+
   render = () => {
     return (
       <div id='editor_elements' className={ 'elements-list ui center aligned segment' }>
@@ -15,12 +21,12 @@ class Elements extends Component {
           Theme
         </div>
         <div className="ui buttons">
-          <button className="ui icon button" onTouchTap={ this.switchTheme } data-theme="white">
+          <button className="ui icon button" onTouchTap={ this.switchTheme } data-theme="light">
             LIGHT
             <i className="circle thin icon" />
           </button>
           <div className="or"></div>
-          <button className="ui right icon button" onTouchTap={ this.switchTheme } data-theme="black">
+          <button className="ui right icon button" onTouchTap={ this.switchTheme } data-theme="dark">
             <i className="circle icon" />
             DARK
           </button>
@@ -65,6 +71,8 @@ class Elements extends Component {
 
   switchTheme = (event) => {
     window.RevealEditor.services.theme.loadTheme(event.currentTarget.dataset.theme);
+    this.props.editor.theme = event.currentTarget.dataset.theme;
+    this.props.set_editor(this.props.editor);
   }
 
   onAddNewText = () => {
@@ -108,7 +116,7 @@ const mapStateToProps = (state) => {
 
 const mapActionsToProps = (dispacher) => {
   return {
-    add_new_text: actions.set_preview(dispacher),
+    set_editor: actions.set_editor(dispacher),
   };
 };
 

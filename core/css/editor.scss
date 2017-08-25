@@ -40,11 +40,7 @@
     position: absolute;
 }
 .reveal .section-add>svg{
-    fill:lightgrey;
-}
-
-.reveal .section-add:active{
-    opacity: 0.5;
+    margin: 8px;
 }
 
 .reveal .section-add[data-direction='right'] {
@@ -58,19 +54,13 @@
     bottom: -60px;
     margin-left: -24px;
 }
-
 .reveal .arranging-ui{
     width: 160px;
     height: 160px;
     position: absolute;
-    opacity: 0;
-    // border-radius: 40px;
-    // border-width: 10px;
-    // border-color:rgba(200,200,200,0.5);
 }
-
-.reveal .arranging-ui svg{
-    fill:lightgray;
+.reveal .arranging-ui>*{
+    margin:28px;
 }
 
 .reveal .arranging-ui :active{
@@ -126,4 +116,28 @@
 .reveal .arranging-ui[data-direction='remove'] {
     right: 200px;
     bottom: 20px;
+}
+
+.reveal .section-manipulator{
+    border-radius: 50%;
+    background-color: lightgray;
+}
+
+.reveal .section-manipulator>svg{
+    z-index: -1;
+    fill:#333;
+}
+
+.reveal .section-manipulator{
+    opacity:0.2;
+    z-index: 255;
+}
+
+.reveal .section-manipulator>svg{
+    z-index: -1;
+    fill:white;
+}
+
+.reveal .section-manipulator:hover{
+    opacity:1;
 }

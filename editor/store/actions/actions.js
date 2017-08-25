@@ -14,6 +14,11 @@ const set_edit = dispatch => () => {
   $('#preview_panel').css({ display: 'none' });
 };
 
+const set_editor = dispatch => (editor) => {
+  dispatch({ type: actionTypes.SET_EDITOR, payload: editor });
+};
+
+
 const set_current_section = dispatch => (currentSection) => {
   dispatch({ type: actionTypes.SET_CURRENT_SECTION, payload: currentSection });
 };
@@ -28,6 +33,7 @@ const set_current_block = dispatch => (selectedBlock) => {
 
 export default {
   set_preview,
+  set_editor,
   set_edit,
   set_current_section,
   set_selected_blocks,

@@ -42,41 +42,8 @@ class Section extends Elements {
 
   afterInitialize = () => {
     this.arrangment = new SectionArrangement({ parent: this });
-
-    if (window.Reveal.isOverview()) {
-      this.dom.style.border = '10px solid gray';
-      const bk = this.editor.slidesDom.querySelector('.backgrounds');
-      bk && (bk.style.display = 'none');
-    } else {
-      this.dom.style.borderStyle = 'none';
-      const bk = this.editor.slidesDom.querySelector('.backgrounds');
-      bk && (bk.style.display = 'block');
-    }
-
-    window.Reveal.addEventListener('overviewshown', () => {
-      this.dom.style.border = '10px solid gray';
-      const bk = this.editor.slidesDom.querySelector('.backgrounds');
-      bk && (bk.style.display = 'none');
-    });
-    window.Reveal.addEventListener('overviewhidden', () => {
-      this.dom.style.borderStyle = 'none';
-      const bk = this.editor.slidesDom.querySelector('.backgrounds');
-      bk && (bk.style.display = 'block');
-    });
-
-    this.dom.addEventListener('mouseenter', () => {
-      this.arrangment.arrangingButtons.forEach((bt) => {
-        bt.style.opacity = 1;
-      });
-    });
-    this.dom.addEventListener('mouseleave', () => {
-      this.arrangment.arrangingButtons.forEach((bt) => {
-        bt.style.opacity = 0.1;
-      });
-    });
   }
 
-  // for text and image
   getNewBlock = (type, content) => {
     const blockDiv = _u.create('div', 'sl-block', config.styles[`${type}Block`]);
 
@@ -91,6 +58,26 @@ class Section extends Elements {
     });
 
     return block;
+  }
+
+  getState = () => {
+    const selectedBlocks = [];
+
+    this.getSelectedBlocks().forEach((block) => {
+      selectedBlocks.push(block.getState());
+    });
+    return {
+      ...this.state,
+      backgroundColor: this.dom.dataset.backgroundColor ? this.dom.dataset.backgroundColor : 'transparent',
+      selectedBlocks,
+    };
+  }
+
+  setState = ({ backgroundColor }) => {
+    if (backgroundColor) {
+      this.dom.dataset.backgroundColor = backgroundColor;
+    }
+    window.Reveal.sync();
   }
 
   beforeAdd = () => {
@@ -220,27 +207,16 @@ class Section extends Elements {
       block.toPreview();
     });
     this.axis.hide();
+    this.arrangment.addButtons.forEach((dom) => {
+      dom.style.display = 'none';
+    });
   }
 
   toEdit = () => {
     this.axis.show();
-  }
-
-  remove = () => {
-    // const h = this.state.h;
-    // const v = this.state.v;
-    // if (this.state.isSub) {
-    //   if (this.dom.parentNode.querySelectorAll('section').length > 1) {
-    //     this.dom.parentNode.removeChild(this.dom);
-    //     this.editor.reload({ toOverview: true });
-    //     window.Reveal.navigateTo(h, v);
-    //   }
-    //   if (this.dom.parentNode.querySelectorAll('section').length === 1) {
-    //     this.dom.parentNode.parentNode.removeChild(this.dom.parentNode);
-    //     this.editor.reload({ toOverview: true });
-    //     window.Reveal.navigateTo(h - 1, 0);
-    //   }
-    // }
+    this.arrangment.addButtons.forEach((dom) => {
+      dom.style.display = 'bock';
+    });
   }
 }
 

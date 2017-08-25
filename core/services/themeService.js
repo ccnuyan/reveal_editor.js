@@ -6,7 +6,8 @@ class themeService {
   }
 
   themes = {
-    white: {
+    light: {
+      key: 'light',
       css: '/reveal/css/theme/white.css',
       sectionAdd: 'black',
       rotateAnchor: 'black',
@@ -17,7 +18,8 @@ class themeService {
         fill: 'rgba(0, 0, 0, 1)',
       },
     },
-    black: {
+    dark: {
+      key: 'dark',
       css: '/reveal/css/theme/black.css',
       rotateAnchor: 'white',
       sectionAdd: 'white',
@@ -38,7 +40,12 @@ class themeService {
     if (this.themes[theme]) {
       this.themekey = theme;
       document.getElementById('theme').setAttribute('href', this.themes[theme].css);
+      this.editor.slidesDom.dataset.theme = theme;
+      return theme;
     }
+    document.getElementById('theme').setAttribute('href', this.themes.light.css);
+    this.editor.slidesDom.dataset.theme = 'light';
+    return 'light';
   }
 }
 
