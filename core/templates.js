@@ -1,39 +1,75 @@
 /* eslint-disable max-len */
 
 const slidesTemplates = {
-  default: `<div class="slides">
-                <section>
-                    <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
-                        <div class="sl-block-content">
-                            <h1>Title Text</h1>
-                        </div>
+  default: `
+    <div class="slides">
+        <section>
+            <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+                <div class="sl-block-content">
+                    <h1>Title</h1>
+                </div>
+            </div>
+        </section>
+        <section>
+            <section>
+                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+                    <div class="sl-block-content" contenteditable="false">
+                        <h2>Sub Title 1</h2>
                     </div>
-                </section>
-                <section>
-                    <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
-                        <div class="sl-block-content">
-                            <h2>Section Title</h2>
-                        </div>
+                </div>
+                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                    <div class="sl-block-content" contenteditable="false">
+                        <p>Content</p>
                     </div>
-                    <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
-                        <div class="sl-block-content">
-                            <p>Content</p>
-                        </div>
+                </div>
+            </section>
+            <section>
+                <div class="sl-block" data-block-type="text" style="width: 720px; left: 80px; top: 70px; height: auto;">
+                    <div class="sl-block-content" contenteditable="false">
+                        <h2>1.1</h2>
                     </div>
-                </section>
-                <section>
-                    <div class="sl-block" data-block-type="text" style="width: 720px; left: 80px; top: 70px; height: auto;">
-                        <div class="sl-block-content">
-                            <h2>Section Title</h2>
-                        </div>
+                </div>
+                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                    <div class="sl-block-content" contenteditable="false">
+                        <p>Content</p>
                     </div>
-                    <div class="sl-block" data-block-type="text" style="width: 720px; left: 160px; top: 210px; height: auto; text-align:left">
-                        <div class="sl-block-content">
-                            <p>Content</p>
-                        </div>
+                </div>
+            </section>
+        </section>
+        <section>
+            <section>
+                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+                    <div class="sl-block-content" contenteditable="false">
+                        <h2>Sub Title 2</h2>
                     </div>
-                </section>
-            </div>`,
+                </div>
+                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                    <div class="sl-block-content" contenteditable="false">
+                        <p>Content</p>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="sl-block" data-block-type="text" style="width: 720px; left: 80px; top: 70px; height: auto;">
+                    <div class="sl-block-content" contenteditable="false">
+                        <h2>2.1</h2>
+                    </div>
+                </div>
+                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                    <div class="sl-block-content" contenteditable="false">
+                        <p>Content</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <section>
+            <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+                <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" contenteditable="false">
+                    <h1>End</h1>
+                </div>
+            </div>
+        </section>
+    </div>`,
 };
 
 const sectionTemplates = {

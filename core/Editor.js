@@ -14,23 +14,18 @@ import Emitter from './Emitter';
 class Editor {
   constructor({ reveal, initialHTML }) {
     this.dom = reveal;
+    this.reveal = this.dom;
     this.services = services(this);
     this.linkDomEvents();
 
     this.state = { mode: 'editing' };
-
     this.emitter = new Emitter();
-
-    _u.setHTML(document.querySelector('.reveal'), initialHTML);
+    document.querySelector('.reveal').innerHTML = initialHTML;
     window.Reveal.initialize(revealConf.editingConf);
 
     Reveal.addEventListener('ready', () => {
       // paint the axis
-      this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
-
-      // select rect
-      this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
-      this.dom.appendChild(this.selectRect);
+      this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
 
       this.initializeSections();
 
@@ -56,48 +51,60 @@ class Editor {
 
   linkDomEvents = () => {
     // link drag events
-    this.dom.setAttribute('draggable', true);
-    _u.on(this.dom, 'dragstart', this.dragstart);
-    _u.on(this.dom, 'dragover', this.do);
-    _u.on(this.dom, 'dragend', this.dragend);
+    this.reveal.setAttribute('draggable', true);
+    _u.on(this.reveal, 'dragstart', this.dragstart);
+    _u.on(this.reveal, 'dragover', this.do);
+    _u.on(this.reveal, 'dragend', this.dragend);
 
     // on blank clicked
-    _u.on(this.dom, 'click', (event) => {
+    _u.on(this.reveal, 'click', (event) => {
       event.stopPropagation();
-      if (event.currentTarget === this.dom) {
+      if (event.currentTarget === this.reveal) {
         this.currentSection.blocks.forEach((block) => {
           block.toPreview();
         });
       }
       if (this.state.mode === 'editing') {
-        this.dom.setAttribute('draggable', true);
+        this.reveal.setAttribute('draggable', true);
       }
     });
   }
 
-  reload({ html, toOverview }) {
+  reload({ html, toOverview, h, v }) {
     // save the old configuration and position
     const oldConf = window.Reveal.getConfig();
-    const h = Reveal.getIndices().h;
-    const v = Reveal.getIndices().v;
 
-    const virReveal = document.createElement('div');
+    if (h === undefined) h = Reveal.getIndices().h;
+    if (v === undefined) v = Reveal.getIndices().v;
+
     if (html) {
-      _u.setHTML(virReveal, html);
-      _u.setHTML(this.slidesDom, virReveal.querySelector('.slides').innerHTML);
+      this.slidesDom.innerHTML = html;
     } else {
-      _u.setHTML(this.slidesDom, this.slidesDom.innerHTML);
+      this.slidesDom.innerHTML = this.services.snapshot(this);
     }
+
+    this.reveal.classList = ['reveal'];
+    this.reveal.removeAttribute('role');
+
+    Array.prototype.forEach.call(this.reveal.children, (el) => {
+      if (el !== this.slidesDom) {
+        el.parentNode.removeChild(el);
+      }
+    });
 
     // reinitialize reveal
     window.Reveal.initialize(oldConf);
     window.Reveal.navigateTo(h, v);
 
-    if (toOverview) {
-      window.Reveal.toOverview();
+    if (toOverview && !window.Reveal.isOverview()) {
+      window.Reveal.toggleOverview();
     }
 
-    this.slidesDom = _u.findChildren(this.dom, '.slides')[0];
+    this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
+
+     // select rect
+    this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
+    this.reveal.appendChild(this.selectRect);
 
     // reinitialize the sections
     this.initializeSections();
@@ -127,8 +134,9 @@ class Editor {
     this.state.struct = {};
 
     let h = 0;
-    _u.findChildren(this.dom, '.slides>section').forEach((section) => {
+    _u.findChildren(this.reveal, '.slides>section').forEach((section) => {
       this.state.struct[h] = true;
+      this.state.struct.count = 0;
       const subSections = section.querySelectorAll('section');
       let v = 0;
       if (subSections.length > 0) {
@@ -137,12 +145,16 @@ class Editor {
           this.bornNewSection(subsection, h, v, true);
           this.state.struct[h][v] = true;
           v += 1;
+          this.state.struct[h].count = v;
         });
       } else {
         this.bornNewSection(section, h, v, false);
       }
       h += 1;
+      this.state.struct.count = h;
     });
+
+    this.sections.forEach(section => section.afterInitialize());
     window.Reveal.addEventListener('slidechanged', (event) => {
       // set current section
       [...this.sections].some((section) => {
@@ -192,7 +204,7 @@ class Editor {
     const offsetX = event.clientX - this.dragfrom.x;
     const offsetY = event.clientY - this.dragfrom.y;
 
-    const offset = _u.offset(this.dom);
+    const offset = _u.offset(this.reveal);
 
     this.selectRect.style.left = `${(offsetX >= 0 ? this.dragfrom.x : event.clientX) - offset.left}px`;
     this.selectRect.style.top = `${(offsetY >= 0 ? this.dragfrom.y : event.clientY) - offset.top}px`;
@@ -224,15 +236,19 @@ class Editor {
   };
 
   toPreview() {
-    this.dom.setAttribute('draggable', false);
+    this.reveal.setAttribute('draggable', false);
     this.sections.forEach((section) => {
       section.toPreview();
     });
     this.state.mode = 'previewing';
   }
 
+  isOverview = () => {
+    return window.Reveal.isOverview();
+  }
+
   toEdit() {
-    this.dom.setAttribute('draggable', true);
+    this.reveal.setAttribute('draggable', true);
     this.state.mode = 'editing';
     this.sections.forEach((section) => {
       section.toEdit();

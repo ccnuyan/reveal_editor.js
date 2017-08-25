@@ -10,6 +10,8 @@ import KatexBlock from './KatexBlock';
 import SectionArrangement from './SectionArrangement';
 import Axis from './Axis';
 
+/* eslint-disable no-param-reassign, radix */
+
 class Section extends Elements {
   // block type to Element Type
   static map = {
@@ -27,7 +29,6 @@ class Section extends Elements {
 
     // re-paint the axis
     this.axis = new Axis({ section: this });
-    this.arrangment = new SectionArrangement({ parent: this });
 
     _u.findChildren(this.dom, '.sl-block').forEach((block) => {
       this.blocks.add(new (Section.map[block.dataset.blockType])(
@@ -36,6 +37,42 @@ class Section extends Elements {
           el: block,
         },
       ));
+    });
+  }
+
+  afterInitialize = () => {
+    this.arrangment = new SectionArrangement({ parent: this });
+
+    if (window.Reveal.isOverview()) {
+      this.dom.style.border = '10px solid gray';
+      const bk = this.editor.slidesDom.querySelector('.backgrounds');
+      bk && (bk.style.display = 'none');
+    } else {
+      this.dom.style.borderStyle = 'none';
+      const bk = this.editor.slidesDom.querySelector('.backgrounds');
+      bk && (bk.style.display = 'block');
+    }
+
+    window.Reveal.addEventListener('overviewshown', () => {
+      this.dom.style.border = '10px solid gray';
+      const bk = this.editor.slidesDom.querySelector('.backgrounds');
+      bk && (bk.style.display = 'none');
+    });
+    window.Reveal.addEventListener('overviewhidden', () => {
+      this.dom.style.borderStyle = 'none';
+      const bk = this.editor.slidesDom.querySelector('.backgrounds');
+      bk && (bk.style.display = 'block');
+    });
+
+    this.dom.addEventListener('mouseenter', () => {
+      this.arrangment.arrangingButtons.forEach((bt) => {
+        bt.style.opacity = 1;
+      });
+    });
+    this.dom.addEventListener('mouseleave', () => {
+      this.arrangment.arrangingButtons.forEach((bt) => {
+        bt.style.opacity = 0.1;
+      });
     });
   }
 
@@ -190,8 +227,8 @@ class Section extends Elements {
   }
 
   remove = () => {
-    // const h = this.section.state.h;
-    // const v = this.section.state.v;
+    // const h = this.state.h;
+    // const v = this.state.v;
     // if (this.state.isSub) {
     //   if (this.dom.parentNode.querySelectorAll('section').length > 1) {
     //     this.dom.parentNode.removeChild(this.dom);

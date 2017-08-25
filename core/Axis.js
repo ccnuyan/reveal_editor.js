@@ -21,6 +21,7 @@ class Axis extends Elements {
     super({ parent: section, el: axis });
 
     this.section = section;
+    this.editor = section.editor;
 
     this.dom.setAttribute('width', '960');
     this.dom.setAttribute('height', '700');
@@ -43,12 +44,9 @@ class Axis extends Elements {
     initGrid(this.dom);
     this.section.dom.appendChild(this.dom);
 
-    window.Reveal.addEventListener('overviewshown', () => {
-      this.hide();
-    });
-    window.Reveal.addEventListener('overviewhidden', () => {
-      this.show();
-    });
+    this.dom.style.display = this.editor.isOverview() ? 'none' : 'block';
+    window.Reveal.addEventListener('overviewshown', () => this.hide());
+    window.Reveal.addEventListener('overviewhidden', () => this.show());
 
   // this.editor.addEventListener('onEnterEditMode', () => {
   //   if (Reveal.isOverview()) {
