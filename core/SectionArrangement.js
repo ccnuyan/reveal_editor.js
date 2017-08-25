@@ -7,6 +7,8 @@ import arrowUp from './svgResource/arrow-up2.svg';
 import arrowDown from './svgResource/arrow-down2.svg';
 import embedLeft from './svgResource/arrow-down-left2.svg';
 import embedRight from './svgResource/arrow-down-right2.svg';
+import batchLeft from './svgResource/arrow-left.svg';
+import batchRight from './svgResource/arrow-right.svg';
 import bin from './svgResource/bin.svg';
 import templates from './templates';
 
@@ -72,7 +74,6 @@ class SectionArrangement {
     this.down.dataset.direction = 'down';
     this.down.classList.add('arranging-ui');
 
-
     this.embedleft = document.createElement('div');
     this.embedleft.innerHTML = embedLeft;
     this.embedleft.dataset.direction = 'embedleft';
@@ -82,6 +83,14 @@ class SectionArrangement {
     this.embedright.dataset.direction = 'embedright';
     this.embedright.classList.add('arranging-ui');
 
+    this.batchleft = document.createElement('div');
+    this.batchleft.innerHTML = batchLeft;
+    this.batchleft.dataset.direction = 'batchleft';
+    this.batchleft.classList.add('arranging-ui');
+    this.batchright = document.createElement('div');
+    this.batchright.innerHTML = batchRight;
+    this.batchright.dataset.direction = 'batchright';
+    this.batchright.classList.add('arranging-ui');
 
     this.remove = document.createElement('div');
     this.remove.innerHTML = bin;
@@ -154,6 +163,16 @@ class SectionArrangement {
       arrangingButtons.push(this.down);
     }
 
+    if (struct[h - 1]) {
+      if (!isSub || v === 0) {
+        arrangingButtons.push(this.batchleft);
+      }
+    }
+    if (struct[h + 1]) {
+      if (!isSub || v === 0) {
+        arrangingButtons.push(this.batchright);
+      }
+    }
 
     return arrangingButtons;
   }
@@ -320,8 +339,67 @@ class SectionArrangement {
         });
         break;
       }
-      default: {
+      case 'up': {
+        const previousSection = this.section.dom.previousElementSibling;
+        const sectionHtml = this.section.dom.outerHTML;
+        this.section.dom.parentNode.removeChild(this.section.dom);
+        previousSection.insertAdjacentHTML('beforeBegin', sectionHtml);
+        this.editor.reload({ toOverview: true, h, v: v - 1 });
+        break;
+      }
+      case 'down': {
+        const nextSection = this.section.dom.nextElementSibling;
+        const sectionHtml = this.section.dom.outerHTML;
+        this.section.dom.parentNode.removeChild(this.section.dom);
+        nextSection.insertAdjacentHTML('afterEnd', sectionHtml);
+        this.editor.reload({ toOverview: true, h, v: v + 1 });
+        break;
+      }
+      case 'batchleft': {
+        let tobemoved = this.section.dom;
+        if (isSub) {
+          tobemoved = this.section.dom.parentNode;
+        }
+        const dombefore = tobemoved.previousElementSibling;
+        const sectionHtml = tobemoved.outerHTML;
+        tobemoved.parentNode.removeChild(tobemoved);
+        dombefore.insertAdjacentHTML('beforeBegin', sectionHtml);
 
+        this.editor.reload({ toOverview: true, h: h - 1, v: 0 });
+        break;
+      }
+      case 'batchright': {
+        let tobemoved = this.section.dom;
+        if (isSub) {
+          tobemoved = this.section.dom.parentNode;
+        }
+        const domafter = tobemoved.nextElementSibling;
+        const sectionHtml = tobemoved.outerHTML;
+        tobemoved.parentNode.removeChild(tobemoved);
+        domafter.insertAdjacentHTML('afterend', sectionHtml);
+
+        this.editor.reload({ toOverview: true, h: h + 1, v: 0 });
+        break;
+      }
+
+      case 'remove' : {
+        const parentNode = this.section.dom.parentNode;
+        this.section.dom.parentNode.removeChild(this.section.dom);
+
+        if (isSub) {
+          if (parentNode.querySelectorAll('section').length === 1) {
+            const insideSection = parentNode.querySelector('section');
+            parentNode.innerHTML = insideSection.innerHTML;
+          }
+          this.editor.reload({ toOverview: true, h, v: Math.max(v - 1, 0) });
+        } else {
+          this.editor.reload({ toOverview: true, h: h - 1, v: 0 });
+        }
+
+        break;
+      }
+      default: {
+        break;
       }
     }
   }

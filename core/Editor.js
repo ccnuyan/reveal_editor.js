@@ -20,20 +20,16 @@ class Editor {
 
     this.state = { mode: 'editing' };
     this.emitter = new Emitter();
-    document.querySelector('.reveal').innerHTML = initialHTML;
-    window.Reveal.initialize(revealConf.editingConf);
+    this.reveal.innerHTML = initialHTML;
 
     Reveal.addEventListener('ready', () => {
-      // paint the axis
-      this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
-
-      this.initializeSections();
-
       this.emitter.emit('editorInitialized', {
         editor: this,
         currentSection: this.currentSection,
       });
     });
+
+    this.reload({});
   }
 
   debouncedEventEmit = _.debounce(() => {
@@ -71,11 +67,12 @@ class Editor {
   }
 
   reload({ html, toOverview, h, v }) {
-    // save the old configuration and position
-    const oldConf = window.Reveal.getConfig();
-
     if (h === undefined) h = Reveal.getIndices().h;
     if (v === undefined) v = Reveal.getIndices().v;
+
+    if (!this.slidesDom) {
+      this.slidesDom = this.reveal.querySelector('div.slides');
+    }
 
     if (html) {
       this.slidesDom.innerHTML = html;
@@ -93,7 +90,7 @@ class Editor {
     });
 
     // reinitialize reveal
-    window.Reveal.initialize(oldConf);
+    window.Reveal.initialize(revealConf.editingConf);
     window.Reveal.navigateTo(h, v);
 
     if (toOverview && !window.Reveal.isOverview()) {
