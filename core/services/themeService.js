@@ -32,6 +32,8 @@ class themeService {
     },
   };
 
+  reveal_override = '/reveal_override/reveal.css';
+
   getTheme = () => {
     return this.themes[this.themekey];
   };
@@ -40,11 +42,13 @@ class themeService {
     if (this.themes[theme]) {
       this.themekey = theme;
       document.getElementById('theme').setAttribute('href', this.themes[theme].css);
+      document.getElementById('theme_override').setAttribute('href', this.reveal_override);
       this.editor.slidesDom.dataset.theme = theme;
       return theme;
     }
     this.themekey = 'light';
     document.getElementById('theme').setAttribute('href', this.themes.light.css);
+    document.getElementById('theme_override').setAttribute('href', this.reveal_override);
     this.editor.slidesDom.dataset.theme = 'light';
     return 'light';
   }
