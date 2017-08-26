@@ -4,9 +4,9 @@ import config from './config';
 import Elements from './Elements';
 import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
+import LatexBlock from './LatexBlock';
 import SVGShapeBlock from './SVGShapeBlock';
 import SVGIconBlock from './SVGIconBlock';
-import KatexBlock from './KatexBlock';
 import SectionArrangement from './SectionArrangement';
 import Axis from './Axis';
 
@@ -17,31 +17,32 @@ class Section extends Elements {
   static map = {
     text: TextBlock,
     image: ImageBlock,
+    latex: LatexBlock,
     shape: SVGShapeBlock,
     icon: SVGIconBlock,
   }
 
   constructor({ parent, el }) {
     super({ parent, el });
-
     this.editor = parent;
     this.blocks = new Set([]);
 
-    // re-paint the axis
-    this.axis = new Axis({ section: this });
-
     _u.findChildren(this.dom, '.sl-block').forEach((block) => {
-      this.blocks.add(new (Section.map[block.dataset.blockType])(
-        {
-          parent: this,
-          el: block,
-        },
-      ));
+      const BlockType = Section.map[block.dataset.blockType];
+      this.blocks.add(new BlockType({
+        parent: this,
+        el: block,
+      }));
     });
   }
 
-  afterInitialize = () => {
+  afterInstanciated = () => {
+    this.axis = new Axis({ section: this });
     this.arrangment = new SectionArrangement({ parent: this });
+
+    this.blocks.forEach((block) => {
+      block.afterInstanciated();
+    });
   }
 
   getNewBlock = (type, content) => {
@@ -80,49 +81,51 @@ class Section extends Elements {
     window.Reveal.sync();
   }
 
-  beforeAdd = () => {
-    this.parent.services.undoredo.enqueue();
-    this.blocks.forEach((block) => {
-      block.toPreview();
-    });
-  }
-
-  afterAdd = (block) => {
-    this.blocks.add(block);
-    this.parent.currentBlock = block;
-    block.toManipulate();
+  undo_point = () => {
+    // this.parent.services.undoredo.enqueue();
   }
 
   addText = () => {
-    this.beforeAdd();
+    this.undo_point();
 
-    const content = _u.create('div', config.classnames.content);
     const paragraph = _u.create('p');
     paragraph.textContent = '输入文本内容';
-    content.appendChild(paragraph);
-    this.dom.appendChild(content);
-    const textBlock = this.getNewBlock('text', content);
 
-    this.afterAdd(textBlock);
+    const content = _u.create('div', config.classnames.content);
+    content.appendChild(paragraph);
+
+    const blockDiv = _u.create('div', 'sl-block', config.styles.textBlock);
+    blockDiv.setAttribute('data-block-type', 'text');
+    blockDiv.appendChild(content);
+
+    this.dom.appendChild(blockDiv);
+
+    this.editor.reload({});
   }
 
   addImage({ imageUrl }) {
-    this.beforeAdd();
-    const content = _u.create('div', config.classnames.content, config.styles.imageContent);
-    const image = _u.create('img', [], {});
-    content.appendChild(image);
+    this.undo_point();
 
+    const image = _u.create('img', [], {});
     if (imageUrl) {
       image.setAttribute('src', imageUrl);
       image.setAttribute('alt', '');
     }
-    const imageblock = this.getNewBlock('image', content);
 
-    this.afterAdd(imageblock);
+    const content = _u.create('div', config.classnames.content, config.styles.imageContent);
+    content.appendChild(image);
+
+    const blockDiv = _u.create('div', 'sl-block', config.styles.imageBlock);
+    blockDiv.setAttribute('data-block-type', 'image');
+    blockDiv.appendChild(content);
+
+    this.dom.appendChild(blockDiv);
+
+    this.editor.reload({});
   }
 
   addSVGShape = ({ shape }) => {
-    this.beforeAdd();
+    this.undo_point();
 
     const content = _u.create('div', config.classnames.content);
     this.dom.appendChild(content);
@@ -139,37 +142,16 @@ class Section extends Elements {
 
     svgBlock.load({ shape });
 
-    this.afterAdd(svgBlock);
-  }
-
-  addLatex = ({ latex }) => {
-    this.beforeAdd();
-
-    const content = _u.create('div', config.classnames.content);
-    this.dom.appendChild(content);
-    const blockDiv = _u.create('div', 'sl-block', config.styles.latexBlock);
-    blockDiv.setAttribute('data-block-type', 'katex');
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
-    const ktBLock = new KatexBlock({
-      parent: this,
-      el: blockDiv,
-    });
-
-    ktBLock.load({ latex });
-
-    this.afterAdd(ktBLock);
+    this.editor.reload({});
   }
 
   addSVGIcon = ({ icon }) => {
-    this.beforeAdd();
+    this.undo_point();
 
     const content = _u.create('div', config.classnames.content);
     this.dom.appendChild(content);
     const blockDiv = _u.create('div', 'sl-block', config.styles.shapeBlock);
-    blockDiv.setAttribute('data-block-type', 'shape');
+    blockDiv.setAttribute('data-block-type', 'icon');
     blockDiv.appendChild(content);
 
     this.dom.appendChild(blockDiv);
@@ -181,7 +163,28 @@ class Section extends Elements {
 
     svgBlock.load({ icon });
 
-    this.afterAdd(svgBlock);
+    this.editor.reload({});
+  }
+
+  addLatex = ({ latex }) => {
+    this.undo_point();
+
+    const content = _u.create('div', config.classnames.content);
+    this.dom.appendChild(content);
+    const blockDiv = _u.create('div', 'sl-block', config.styles.latexBlock);
+    blockDiv.setAttribute('data-block-type', 'latex');
+    blockDiv.appendChild(content);
+
+    this.dom.appendChild(blockDiv);
+
+    const ktBLock = new LatexBlock({
+      parent: this,
+      el: blockDiv,
+    });
+
+    ktBLock.load({ latex });
+
+    this.editor.reload({});
   }
 
   removeSelectedBlocks() {

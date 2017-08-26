@@ -47,27 +47,12 @@ class Transformer extends Elements {
     if (!this.block.dom.dataset.blockType) {
       return;
     }
-
-    switch (this.block.dom.dataset.blockType) {
-      case 'text': {
-        ['e', 'w'].forEach((dr) => {
-          this.anchors.push(new TransformerResizeAnchor({
-            parent: this,
-            dr,
-          }));
-        });
-        break; }
-      case 'shape':
-      case 'image': {
-        ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'].forEach((dr) => {
-          this.anchors.push(new TransformerResizeAnchor({
-            parent: this,
-            dr,
-          }));
-        });
-        break; }
-      default:
-    }
+    this.block.anchorTypes.forEach((at) => {
+      this.anchors.push(new TransformerResizeAnchor({
+        parent: this,
+        dr: at,
+      }));
+    });
   }
 
   // do = dargover, capture the event emmited by this dom elements

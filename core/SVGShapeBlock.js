@@ -4,10 +4,9 @@ import Block from './Block';
 /* eslint-disable no-param-reassign, radix */
 
 class SVGShapeBlock extends Block {
+  anchorTypes = ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'];
   constructor({ parent, el }) {
     super({ parent, el });
-
-    this.state.blockType = 'shape';
 
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';

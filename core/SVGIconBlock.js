@@ -5,12 +5,11 @@ import svgMap from './svglib/svgMap';
 
 
 class SVGIconBlock extends Block {
+
+  anchorTypes = ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'];
+
   constructor({ parent, el }) {
     super({ parent, el });
-
-    this.state.blockType = 'icon';
-
-    this.editor = this.parent.editor;
 
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';

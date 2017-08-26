@@ -89,6 +89,41 @@ const b2oMap = {
       },
     },
   ],
+  latex: [
+    {
+      component: FontSizeOptions,
+      props: {
+        key: '1',
+        label: 'Font Size',
+        blockProp: 'fontSize',
+        isMain: true,
+      },
+    },
+    {
+      component: ColorOptions,
+      props: {
+        key: '2',
+        label: 'Font Color',
+        blockProp: 'color',
+        isMain: true,
+      },
+    },
+    {
+      component: BorderOptions,
+      props: {
+        key: '3',
+      },
+    },
+    {
+      component: ColorOptions,
+      props: {
+        key: '4',
+        label: 'Background Color',
+        blockProp: 'backgroundColor',
+        isMain: true,
+      },
+    },
+  ],
 };
 
 export default b2oMap;

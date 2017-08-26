@@ -1,8 +1,8 @@
 
 /* eslint-disable max-len */
-class KatexEditor {
+class LatexEditor {
   constructor() {
-    if (document.body.querySelector('#katex_editor')) {
+    if (document.body.querySelector('#latex_editor')) {
       throw new Error('that shouldnot happen');
     } else {
       this.createFrame();
@@ -12,7 +12,7 @@ class KatexEditor {
 
   createFrame() {
     this.frame = document.createElement('div');
-    this.frame.setAttribute('id', 'katex_editor');
+    this.frame.setAttribute('id', 'latex_editor');
     this.frame.style.left = '0';
     this.frame.style.top = '0';
     this.frame.style.position = 'fixed';
@@ -90,7 +90,7 @@ class KatexEditor {
 
   createInputOutput() {
     this.main = document.createElement('div');
-    this.main.setAttribute('id', 'katex_editor_main');
+    this.main.setAttribute('id', 'latex_editor_main');
 
     this.main.style.left = '50%';
     this.main.style.marginLeft = '-480px';
@@ -102,9 +102,9 @@ class KatexEditor {
     this.frame.appendChild(this.main);
 
     this.output = document.createElement('div');
-    this.output.setAttribute('id', 'katex_editor_output');
+    this.output.setAttribute('id', 'latex_editor_output');
     this.input = document.createElement('textarea');
-    this.input.setAttribute('id', 'katex_editor_input');
+    this.input.setAttribute('id', 'latex_editor_input');
 
     this.output.style.marginLeft = '40px';
     this.output.style.marginRight = '40px';
@@ -170,4 +170,4 @@ class KatexEditor {
   }
 }
 
-export default KatexEditor;
+export default LatexEditor;

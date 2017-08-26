@@ -8,57 +8,167 @@ import Elements from './Elements';
 /* eslint-disable no-param-reassign, radix */
 
 class Block extends Elements {
+  anchorTypes = [];
+  D2R = Math.PI / 180;
+  state = { mode: 'previewing', transform: 0 };
+  minsize = {
+    width: 24,
+    height: 24,
+  };
+
   constructor({ parent, el }) {
     super({ parent, el });
-    this.blockType = el.dataset.blockType;
 
     this.editor = parent.editor;
     this.section = this.parent;
 
-    this.state.mode = 'previewing';
+    this.state.blockType = this.dom.dataset.blockType;
 
-    this.minsize = {
-      width: 24,
-      height: 24,
-    };
+    const contentDom = this.dom.querySelector('div.sl-block>div.sl-block-content');
 
-    _u.findChildren(this.dom, config.selectors.content).forEach((dom) => {
-      if (!this.blockContent) {
-        this.blockContent = new BlockContent({
-          parent: this,
-          el: dom,
-        });
-      } else {
-        _u.remove(dom);
-      }
+    this.blockContent = new BlockContent({
+      parent: this,
+      el: contentDom,
     });
+  }
 
-    _u.findChildren(this.dom, config.selectors.transform).forEach((dom) => {
-      _u.remove(dom);
-    });
+  afterInstanciated() {
+    const transformerDom = _u.create('div', [config.classnames.transform, 'editing-ui'], config.styles.transform);
+    this.dom.append(transformerDom);
 
-    this.dom.append(_u.create('div', [config.classnames.transform, 'editing-ui'], config.styles.transform));
-
-    const transformer = _u.findChildren(this.dom, config.selectors.transform)[0];
     this.blockTransformer = new Transformer({
       parent: this,
-      el: transformer,
+      el: transformerDom,
     });
 
     this.blockTransformer.hide();
-
-    this.D2R = Math.PI / 180;
     this.updateTransformMatrix();
   }
 
+  getTs() {
+    const blockStyle = getComputedStyle(this.dom);
+    return {
+      left: parseInt(blockStyle.left),
+      top: parseInt(blockStyle.top),
+      width: parseInt(blockStyle.width),
+      height: parseInt(blockStyle.height),
+    };
+  }
+
+  relocate_w({ os }) {
+    const ts = this.getTs();
+    const originx = os.width / 2;
+    const originy = 0;
+
+    const targetx = ts.width / 2;
+    const targety = 0;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_e({ os }) {
+    const ts = this.getTs();
+    const originx = -os.width / 2;
+    const originy = 0;
+
+    const targetx = -ts.width / 2;
+    const targety = 0;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_n({ os }) {
+    const ts = this.getTs();
+    const originx = 0;
+    const originy = -os.height / 2;
+
+    const targetx = 0;
+    const targety = -ts.height / 2;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_s({ os }) {
+    const ts = this.getTs();
+    const originx = 0;
+    const originy = os.height / 2;
+
+    const targetx = 0;
+    const targety = ts.height / 2;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_ne({ os }) {
+    const ts = this.getTs();
+    const originx = -os.width / 2;
+    const originy = -os.height / 2;
+
+    const targetx = -ts.width / 2;
+    const targety = -ts.height / 2;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_nw({ os }) {
+    const ts = this.getTs();
+    const originx = os.width / 2;
+    const originy = -os.height / 2;
+
+    const targetx = ts.width / 2;
+    const targety = -ts.height / 2;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_se({ os }) {
+    const ts = this.getTs();
+    const originx = -os.width / 2;
+    const originy = os.height / 2;
+
+    const targetx = -ts.width / 2;
+    const targety = ts.height / 2;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate_sw({ os }) {
+    const ts = this.getTs();
+    const originx = os.width / 2;
+    const originy = os.height / 2;
+
+    const targetx = ts.width / 2;
+    const targety = ts.height / 2;
+
+    this.relocate({ originx, originy, targetx, targety, os, ts });
+  }
+
+  relocate({ originx, originy, targetx, targety, os, ts }) {
+    const m = this.state.transformMatrix;
+    const intvx = -(ts.width - os.width) / 2;
+    const intvy = (ts.height - os.height) / 2;
+
+    const originxt = (m.m11 * originx) + (m.m12 * originy);
+    const originyt = (m.m21 * originx) + (m.m22 * originy);
+
+    const targetxt = (m.m11 * targetx) + (m.m12 * targety);
+    const targetyt = (m.m21 * targetx) + (m.m22 * targety);
+
+    const dx = originxt + intvx - targetxt;
+    const dy = originyt + intvy - targetyt;
+
+    this.dom.style.left = `${os.left + dx}px`;
+    this.dom.style.top = `${os.top - dy}px`;
+  }
+
   updateTransformMatrix() {
-    this.transform = this.getTransform();
-    const rd = this.transform * this.D2R;
-    this.transformMatrix = {
-      m11: Math.cos(rd * this.D2R),
-      m12: Math.sin(rd * this.D2R),
-      m21: -Math.sin(rd * this.D2R),
-      m22: Math.cos(rd * this.D2R),
+    this.state.transform = this.getTransform();
+    const rd = this.state.transform * this.D2R;
+    this.state.transformMatrix = {
+      m11: Math.cos(rd),
+      m12: Math.sin(rd),
+      m21: -Math.sin(rd),
+      m22: Math.cos(rd),
     };
   }
 
@@ -113,6 +223,22 @@ class Block extends Elements {
   remove = () => {
     _.remove(this.section.blocks, { dom: this.dom });
     _u.remove(this.dom);
+  }
+
+  resize_w({ ox, oy, os }) {
+    this.dom.style.width = `${(os.width - ox) + 1}px`;
+  }
+
+  resize_e({ ox, oy, os }) {
+    this.dom.style.width = `${os.width + ox}px`;
+  }
+
+  resize_n({ ox, oy, os }) {
+    this.dom.style.height = `${os.height - oy}px`;
+  }
+
+  resize_s({ ox, oy, os }) {
+    this.dom.style.height = `${os.height + oy}px`;
   }
 }
 

@@ -63,6 +63,16 @@ const getSnapshot = (editor) => {
   const sections = slides.querySelectorAll('section');
   const blocks = slides.querySelectorAll('div.sl-block');
 
+  Array.prototype.forEach.call(sections, (section) => {
+    section.querySelectorAll('section>div:not(.sl-block)').forEach((el) => {
+      section.removeChild(el);
+    });
+    const cavs = section.querySelector('canvas');
+    if (cavs) {
+      section.removeChild(cavs);
+    }
+  });
+
   removeClassNotExistedInArray(slides, rules.slides.classesAllowed);
   Array.prototype.forEach.call(sections, (el) => {
     removeClassNotExistedInArray(el, rules.section.classesAllowed);

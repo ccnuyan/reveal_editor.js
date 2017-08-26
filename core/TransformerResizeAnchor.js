@@ -61,12 +61,6 @@ class TransformerResizeAnchor extends Elements {
       x: event.clientX,
       y: event.clientY,
     };
-
-    this.original = {
-
-    };
-
-    this.transform = this.block.getTransform();
   }
 
   dragover = (event) => {
@@ -74,62 +68,10 @@ class TransformerResizeAnchor extends Elements {
 
     event.dataTransfer.dropEffect = 'move';
 
-    const offsetX = event.clientX - this.dragfrom.x;
-    const offsetY = event.clientY - this.dragfrom.y;
+    const ox = event.clientX - this.dragfrom.x;
+    const oy = event.clientY - this.dragfrom.y;
 
-    const bstyle = this.block.dom.style;
-    switch (this.dr) {
-      case 'w': {
-        bstyle.left = `${this.originalStyle.left + offsetX}px`;
-        bstyle.width = `${this.originalStyle.width - offsetX}px`;
-        break;
-      }
-      case 'e': {
-        bstyle.width = `${this.originalStyle.width + offsetX}px`;
-        break;
-      }
-      case 'n': {
-        bstyle.top = `${this.originalStyle.top + offsetY}px`;
-        bstyle.height = `${this.originalStyle.height - offsetY}px`;
-        break;
-      }
-      case 's': {
-        bstyle.height = `${this.originalStyle.height + offsetY}px`;
-        break;
-      }
-      case 'nw': {
-        bstyle.top = `${this.originalStyle.top + offsetY}px`;
-        bstyle.height = `${this.originalStyle.height - offsetY}px`;
-        bstyle.left = `${this.originalStyle.left + offsetX}px`;
-        bstyle.width = `${this.originalStyle.width - offsetX}px`;
-        break;
-      }
-      case 'ne': {
-        bstyle.top = `${this.originalStyle.top + offsetY}px`;
-        bstyle.height = `${this.originalStyle.height - offsetY}px`;
-        bstyle.width = `${this.originalStyle.width + offsetX}px`;
-        break;
-      }
-      case 'sw': {
-        bstyle.height = `${this.originalStyle.height + offsetY}px`;
-        bstyle.left = `${this.originalStyle.left + offsetX}px`;
-        bstyle.width = `${this.originalStyle.width - offsetX}px`;
-        break;
-      }
-      case 'se': {
-        bstyle.height = `${this.originalStyle.height + offsetY}px`;
-        bstyle.width = `${this.originalStyle.width + offsetX}px`;
-        break;
-      }
-      default:
-    }
-
-    bstyle.width = `${Math.max(parseInt(bstyle.width), this.block.minsize.width)}px`;
-    bstyle.height = `${Math.max(parseInt(bstyle.height), this.block.minsize.height)}px`;
-
-    if (this.block.rearrange) {
-      this.block.rearrange();
-    }
+    this.block[`resize_${this.dr}`]({ ox, oy, os: this.originalStyle });
   }
 }
 

@@ -7,4 +7,6 @@ import './css/editor.scss';
     reveal: document.querySelector('.reveal'),
     initialHTML: templates.slidesTemplates.default,
   });
+
+  window.RevealEditor.afterInstanciated();
 })();

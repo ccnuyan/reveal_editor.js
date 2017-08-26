@@ -63,7 +63,7 @@ class Elements extends Component {
           <span className={ 'elements-add-block-option-icon' }>
             <i className="superscript big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>Latex公式</span>
+          <span className={ 'elements-add-block-option-label' }>latex公式</span>
         </button>
       </div>
     );

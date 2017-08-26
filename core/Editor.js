@@ -21,6 +21,10 @@ class Editor {
     this.emitter = new Emitter();
     this.reveal.innerHTML = initialHTML;
 
+    this.initializeSections();
+  }
+
+  afterInstanciated() {
     Reveal.addEventListener('ready', () => {
       this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
       this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
@@ -31,26 +35,91 @@ class Editor {
       this.state.initialized = true;
       this.state.theme = this.services.theme.loadTheme(this.slidesDom.dataset.theme);
 
+      this.sections.forEach((section) => {
+        const currentSectionDom = window.Reveal.getCurrentSlide();
+        if (section.dom === currentSectionDom) {
+          this.currentSection = section;
+        }
+      });
+
       this.emitter.emit('editorInitialized', {
         editor: this.getState(),
       });
     });
 
     window.Reveal.initialize(revealConf.editingConf);
+    this.sections.forEach(section => section.afterInstanciated());
 
-    // reinitialize the sections
+    window.Reveal.addEventListener('slidechanged', (event) => {
+      [...this.sections].some((section) => {
+        if (event.currentSlide === section.dom) {
+          this.currentSection = section;
+          return true;
+        }
+        return false;
+      });
+
+      this.emitter.emit('editorCurrentSlideChanged', {
+        currentSection: {
+          ...this.currentSection.getState(),
+          selectedBlocks: this.currentSection.getSelectedBlocks(),
+        },
+      });
+    });
+  }
+
+  reload({ html, toOverview, h, v }) {
+    if (h === undefined) h = Reveal.getIndices().h;
+    if (v === undefined) v = Reveal.getIndices().v;
+    if (html) {
+      this.slidesDom.innerHTML = html;
+    } else {
+      this.slidesDom.innerHTML = this.services.snapshot(this);
+    }
     this.initializeSections();
+    this.sections.forEach(section => section.afterInstanciated());
+
+    window.Reveal.sync();
+
+    window.Reveal.navigateTo(h, v);
+    if (toOverview && !window.Reveal.isOverview()) {
+      window.Reveal.toggleOverview();
+    }
+
+    // it must reset the currentSection when sync done!
+    this.sections.forEach((section) => {
+      const currentSectionDom = window.Reveal.getCurrentSlide();
+      if (section.dom === currentSectionDom) {
+        this.currentSection = section;
+      }
+    });
   }
 
-  getState = () => {
-    return {
-      ...this.state,
-      currentSection: this.currentSection.getState(),
-    };
-  }
+      // this method make sure the currentSection is always exist
+  initializeSections = () => {
+    this.sections = new Set([]);
+    this.state.struct = {};
+    let h = 0;
 
-  setState = ({ theme }) => {
-    this.state.theme = this.services.theme.loadTheme(theme);
+    _u.findChildren(this.reveal, '.slides>section').forEach((section) => {
+      this.state.struct[h] = true;
+      this.state.struct.count = 0;
+      const subSections = section.querySelectorAll('section');
+      let v = 0;
+      if (subSections.length > 0) {
+        this.state.struct[h] = {};
+        subSections.forEach((subsection) => {
+          this.bornNewSection(subsection, h, v, true);
+          this.state.struct[h][v] = true;
+          v += 1;
+          this.state.struct[h].count = v;
+        });
+      } else {
+        this.bornNewSection(section, h, v, false);
+      }
+      h += 1;
+      this.state.struct.count = h;
+    });
   }
 
   debouncedEventEmit = _.debounce(() => {
@@ -64,6 +133,17 @@ class Editor {
       selectedBlocks,
     });
   }, 100);
+
+  getState = () => {
+    return {
+      ...this.state,
+      currentSection: this.currentSection.getState(),
+    };
+  }
+
+  setState = ({ theme }) => {
+    this.state.theme = this.services.theme.loadTheme(theme);
+  }
 
   linkDomEvents = () => {
     // link drag events
@@ -86,25 +166,7 @@ class Editor {
     });
   }
 
-  reload({ html, toOverview, h, v }) {
-    if (h === undefined) h = Reveal.getIndices().h;
-    if (v === undefined) v = Reveal.getIndices().v;
-    if (html) {
-      this.slidesDom.innerHTML = html;
-    } else {
-      this.slidesDom.innerHTML = this.services.snapshot(this);
-    }
-
-    window.Reveal.sync();
-    window.Reveal.navigateTo(h, v);
-    if (toOverview && !window.Reveal.isOverview()) {
-      window.Reveal.toggleOverview();
-    }
-    this.initializeSections();
-  }
-
   bornNewSection(sectionDom, h, v, isSub) {
-    const currentSectionDom = window.Reveal.getCurrentSlide();
     const section = new Section({
       parent: this,
       el: sectionDom,
@@ -115,56 +177,6 @@ class Editor {
     section.state.isSub = isSub;
 
     this.sections.add(section);
-    if (sectionDom === currentSectionDom) {
-      this.currentSection = section;
-    }
-  }
-
-  // this method make sure the currentSection is always exist
-  initializeSections = () => {
-    this.sections = new Set([]);
-
-    this.state.struct = {};
-
-    let h = 0;
-    _u.findChildren(this.reveal, '.slides>section').forEach((section) => {
-      this.state.struct[h] = true;
-      this.state.struct.count = 0;
-      const subSections = section.querySelectorAll('section');
-      let v = 0;
-      if (subSections.length > 0) {
-        this.state.struct[h] = {};
-        subSections.forEach((subsection) => {
-          this.bornNewSection(subsection, h, v, true);
-          this.state.struct[h][v] = true;
-          v += 1;
-          this.state.struct[h].count = v;
-        });
-      } else {
-        this.bornNewSection(section, h, v, false);
-      }
-      h += 1;
-      this.state.struct.count = h;
-    });
-
-    this.sections.forEach(section => section.afterInitialize());
-    window.Reveal.addEventListener('slidechanged', (event) => {
-      // set current section
-      [...this.sections].some((section) => {
-        if (event.currentSlide === section.dom) {
-          this.currentSection = section;
-          return true;
-        }
-        return false;
-      });
-
-      this.emitter.emit('editorCurrentSlideChanged', {
-        currentSection: {
-          ...this.currentSection.getState(),
-          selectedBlocks: this.currentSection.getSelectedBlocks(),
-        },
-      });
-    });
   }
 
   // do = dargover, capture the event emmited by this dom elements

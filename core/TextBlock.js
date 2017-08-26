@@ -6,12 +6,12 @@ class TextBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
 
-    this.state.blockType = 'text';
+    this.minsize.width = 160;
+    this.anchorTypes = ['e', 'w'];
+  }
 
-    this.minsize = {
-      width: 160,
-      height: 24,
-    };
+  afterInstanciated() {
+    super.afterInstanciated();
   }
 
   getState = () => {

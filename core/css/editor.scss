@@ -1,29 +1,45 @@
 .reveal .anchor {
     pointer-events: auto;
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgb(27, 173, 225);
+    display: block;
+    background-color: white;
+    position: absolute;
+    cursor: default;
 }
 .reveal .anchor[data-direction='e'] {
     left: 100%;
     top: 50%;
+    margin-top:-6px;
 }
 .reveal .anchor[data-direction='w'] {
     left: 0%;
     top: 50%;
+    margin-top:-6px;
+    margin-left:-12px;
 }
 .reveal .anchor[data-direction='n'] {
     left: 50%;
     top: 0;
+    margin-left:-6px;
+    margin-top:-12px;
 }
 .reveal .anchor[data-direction='s'] {
     left: 50%;
     top: 100%;
+    margin-left:-6px;
 }
 .reveal .anchor[data-direction='ne'] {
     left: 100%;
     top: 0;
+    margin-top:-12px;
 }
 .reveal .anchor[data-direction='nw'] {
     left: 0%;
     top: 0;
+    margin-top:-12px;
+    margin-left:-12px;
 }
 .reveal .anchor[data-direction='se'] {
     left: 100%;
@@ -32,6 +48,7 @@
 .reveal .anchor[data-direction='sw'] {
     left: 0%;
     top: 100%;
+    margin-left:-12px;
 }
 
 .reveal .section-add{

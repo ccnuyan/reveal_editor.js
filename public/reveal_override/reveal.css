@@ -52,6 +52,13 @@
     width:100%;
 }
 
+/* or else there will be bugs when zoom out the elements */
+.sl-block[data-block-type='shape'], 
+.sl-block[data-block-type='icon'], 
+.sl-block[data-block-type='image']{
+    line-height:0.1;
+}
+
 .reveal .katex { 
     font-style: normal;
     font-variant-ligatures: normal;
