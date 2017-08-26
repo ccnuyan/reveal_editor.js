@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Manipulations from './Manipulations';
-import Elements from './Elements';
-import Options from './Options';
+import Manipulations from './Manipulations/Manipulations';
+import Elements from './Elements/Elements';
+import Options from './Options/Options';
 
 
 class Editor extends Component {

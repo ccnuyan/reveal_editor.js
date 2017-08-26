@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Editor from './Editor';
-import Previewer from './Previewer';
+import Editor from './Editor/Editor';
+import Previewer from './Previewer/Previewer';
 
 import actions from '../store/actions';
 

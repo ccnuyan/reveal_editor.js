@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import actions from '../../../store/actions';
-import './index.scss';
+import './Elements.scss';
 
 import BackgroundColorPicker from './BackgroundColorPicker';
 

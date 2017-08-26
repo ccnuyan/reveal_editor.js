@@ -92,12 +92,10 @@ class ColorOptions extends Component {
           <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Color'}</div> :
           <div>{this.props.label ? this.props.label : 'Color'}</div>}
         <div>
-          <div style={ this.styles.swatch } onTouchTap={ this.handleClick } data-picker="SwatchesPicker">
-            sketch:
+          {/* <div style={ this.styles.swatch } onTouchTap={ this.handleClick } data-picker="SwatchesPicker">
             <div style={ { ...this.styles.color, background: selectedBlock[this.props.blockProp] } } />
-          </div>
+          </div> */}
           <div style={ this.styles.swatch } onTouchTap={ this.handleClick } data-picker="SketchPicker">
-            safe:
             <div style={ { ...this.styles.color, background: selectedBlock[this.props.blockProp] } } />
           </div>
           { this.state.displayColorPicker ?

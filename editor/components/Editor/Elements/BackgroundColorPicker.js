@@ -21,7 +21,7 @@ class BackgroundColorPicker extends Component {
     displayColorPicker: false,
   }
 
-  handleClick = () => {
+  hanleOpen = () => {
     this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
@@ -29,7 +29,7 @@ class BackgroundColorPicker extends Component {
     this.setState({ displayColorPicker: false });
   };
 
-  handleChange = (color) => {
+  handleChangeBackground = (color) => {
     const currentSection = this.props.currentSection;
     const hex = color.hex;
     currentSection.backgroundColor = hex;
@@ -37,24 +37,16 @@ class BackgroundColorPicker extends Component {
     this.props.set_current_section(currentSection);
   };
 
+  handleChangeBackgroundToAll = () => {
+    window.RevealEditor.sections.forEach((sec) => {
+      sec.setState({ backgroundColor: this.props.editor.currentSection.backgroundColor });
+    });
+  };
+
   styles = reactCSS({
     default: {
       color: {
-        width: 'auto',
-        height: '18px',
-        borderRadius: '2px',
-      },
-      swatch: {
-        display: 'inline-block',
-        position: 'relative',
-        width: '40%',
-        margin: '5%',
-        padding: '5px',
-        background: '#fff',
-        borderRadius: '1px',
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        cursor: 'pointer',
-        zIndex: 255,
+        borderWidth: '2px',
       },
       popover: {
         position: 'absolute',
@@ -128,13 +120,19 @@ class BackgroundColorPicker extends Component {
       <div className="block-option">
         <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Background'}</div>
         <div>
-          <div style={ this.styles.swatch } onTouchTap={ this.handleClick } >
-            <div style={ { ...this.styles.color, background: this.props.editor.background } } />
+          <div className="two ui buttons">
+            <button className="ui inverted button"
+            style={ { ...this.styles.color, backgroundColor: this.props.currentSection.backgroundColor } }
+            onTouchTap={ this.hanleOpen }
+            ></button>
+            <button className="ui button"
+            onTouchTap={ this.handleChangeBackgroundToAll }
+            >To all</button>
           </div>
           { this.state.displayColorPicker ?
             <div style={ this.styles.popover }>
               <div style={ this.styles.cover } onTouchTap={ this.handleClose }/>
-              <BlockPicker colors={ colors } width={ 205 } height={ 500 } color={ this.props.editor.background } onChange={ this.handleChange }/>
+              <BlockPicker colors={ colors } width={ 205 } height={ 500 } color={ this.props.editor.background } onChange={ this.handleChangeBackground }/>
             </div> : null }
         </div>
       </div>

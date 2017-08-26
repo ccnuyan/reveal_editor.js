@@ -43,6 +43,7 @@ class themeService {
       this.editor.slidesDom.dataset.theme = theme;
       return theme;
     }
+    this.themekey = 'light';
     document.getElementById('theme').setAttribute('href', this.themes.light.css);
     this.editor.slidesDom.dataset.theme = 'light';
     return 'light';
