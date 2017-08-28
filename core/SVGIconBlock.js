@@ -1,9 +1,5 @@
 import Block from './Block';
-import _u from './util';
-import svgMap from './svglib/svgMap';
 /* eslint-disable no-param-reassign, radix, import/no-unresolved */
-
-
 class SVGIconBlock extends Block {
 
   anchorTypes = ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'];
@@ -14,36 +10,62 @@ class SVGIconBlock extends Block {
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
 
-    const theme = this.editor.services.theme.getTheme();
-    this.state.fill = theme.icon.fill;
+    this.draw = this.blockContent.dom.querySelector('svg');
+    this.draw.setAttribute('width', '100%');
+    this.draw.setAttribute('height', '100%');
+
+
+    this.state.fill = this.draw.getAttribute('fill');
   }
-
-  load({ icon }) {
-    this.state.icon = icon;
-
-    _u.setHTML(this.blockContent.dom, svgMap[icon]);
-    this.svgIcon = this.blockContent.dom.querySelector('svg');
-    _u.setAttr(this.svgIcon, 'width', '100%');
-    _u.setAttr(this.svgIcon, 'height', '100%');
-    _u.setAttr(this.svgIcon, 'fill', this.state.fill);
-  }
-
-  setFill = ({ fill }) => {
-    this.state.fill = fill;
-    _u.setAttr(this.svgIcon, 'fill', this.state.fill);
-  }
-
   getState = () => {
     return this.state;
   }
 
   setState = (params) => {
-    if (params.icon) {
-      this.load({ icon: params.icon });
-    }
     if (params.fill) {
-      this.setFill({ fill: params.fill });
+      this.state.fill = params.fill;
+      this.draw.setAttribute('fill', this.state.fill);
     }
+  }
+
+  resize_e({ os, ox, oy }) {
+    super.resize_e({ os, ox, oy });
+    this.relocate_e({ os });
+  }
+
+  resize_w({ os, ox, oy }) {
+    super.resize_w({ os, ox, oy });
+    this.relocate_w({ os });
+  }
+
+  resize_n({ os, ox, oy }) {
+    super.resize_n({ os, ox, oy });
+    this.relocate_n({ os });
+  }
+
+  resize_s({ os, ox, oy }) {
+    super.resize_s({ os, ox, oy });
+    this.relocate_s({ os });
+  }
+
+  resize_ne({ os, ox, oy }) {
+    this.resize_n({ os, ox, oy });
+    this.relocate_ne({ os });
+  }
+
+  resize_nw({ os, ox, oy }) {
+    this.resize_n({ os, ox, oy });
+    this.relocate_nw({ os });
+  }
+
+  resize_se({ os, ox, oy }) {
+    this.resize_s({ os, ox, oy });
+    this.relocate_se({ os });
+  }
+
+  resize_sw({ os, ox, oy }) {
+    this.resize_s({ os, ox, oy });
+    this.relocate_sw({ os });
   }
 }
 

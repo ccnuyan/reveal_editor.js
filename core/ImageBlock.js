@@ -95,33 +95,12 @@ class ImageBlock extends Block {
   }
 
   beforeToEdit = () => {
+    super.toEdit();
     this.editor.emitter.emit('editorRequestEditImage', {
       currentSection: this.editor.currentSection,
       block: this,
       state: this.getState(),
     });
-  }
-
-  rearrange = () => {
-    debugger;
-    const bstyle = getComputedStyle(this.dom);
-    const istyle = getComputedStyle(this.image);
-
-    if (this.state.desiredWidth * parseInt(bstyle.height) < this.state.desiredHeight * parseInt(bstyle.width)) {
-      _u.applyStyle(this.image, config.styles.imageContentImageTall);
-      this.image.style.marginTop = '0px';
-    } else {
-      _u.applyStyle(this.image, config.styles.imageContentImageWide);
-
-      // here is a scale transform, and don't ask me why.
-      const bw = parseInt(bstyle.width);
-      const bh = parseInt(bstyle.height);
-      const ibw = parseInt(istyle.borderWidth);
-      const dw = this.state.desiredWidth;
-      const dh = this.state.desiredHeight;
-
-      this.image.style.marginTop = `${(bh / 2) - (((dh * bw) / dw) / 2) - (ibw / 2)}px`;
-    }
   }
 }
 

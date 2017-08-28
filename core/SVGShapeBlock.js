@@ -1,4 +1,3 @@
-import SVG from 'svg.js';
 import Block from './Block';
 
 /* eslint-disable no-param-reassign, radix */
@@ -11,88 +10,120 @@ class SVGShapeBlock extends Block {
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
 
-    this.state.strokeWidth = 3;
-    const theme = this.editor.services.theme.getTheme();
-    this.state.stroke = theme.stroke;
-    this.state.fill = 'rgba(0,0,0,0)';
+    this.state.shape = this.dom.dataset.svgShape;
 
-    this.draw = SVG(this.blockContent.dom).size('100%', '100%');
-  }
+    this.draw = this.blockContent.dom.querySelector('svg');
+    this.svgShape = this.draw.querySelector(this.state.shape);
 
-  load({ shape }) {
-    this.state.shape = shape;
-
-    this.svgShape = this.getShape().attr({
-      ...this.state,
-      'stroke-width': `${this.state.strokeWidth}px`,
-    });
+    this.state.stroke = this.svgShape.getAttribute('stroke');
+    this.state.fill = this.svgShape.getAttribute('fill');
+    this.state.strokeWidth = parseInt(this.svgShape.getAttribute('stroke-width'));
   }
 
   setStoke({ stroke }) {
     this.state.stroke = stroke;
-    this.svgShape.attr({ stroke });
+    this.svgShape.setAttribute('stroke', stroke);
   }
 
   setStrokeWidth({ strokeWidth }) {
     this.state.strokeWidth = strokeWidth;
-    this.svgShape.attr({ 'stroke-width': strokeWidth });
+    this.svgShape.setAttribute('stroke-width', strokeWidth);
     this.rearrange();
   }
 
   setFill({ fill }) {
     this.state.fill = fill;
-    this.svgShape.attr({ fill });
+    this.svgShape.setAttribute('fill', fill);
   }
 
-  getShape() {
-    const sw = this.state.strokeWidth;
+  resize_e({ os, ox, oy }) {
+    super.resize_e({ os, ox, oy });
+    this.relocate_e({ os });
+    this.rearrange();
+  }
 
-    switch (this.state.shape) {
-      case 'Rect': {
-        return this.draw.rect(200 - sw, 200 - sw).center(100, 100);
-      }
-      case 'Circle': {
-        return this.draw.circle(200 - sw).center(100, 100);
-      }
-      case 'Ellipse': {
-        return this.draw.ellipse(200 - sw, 200 - sw).center(100, 100);
-      }
-      default:
-        return null;
-    }
+  resize_w({ os, ox, oy }) {
+    super.resize_w({ os, ox, oy });
+    this.relocate_w({ os });
+    this.rearrange();
+  }
+
+  resize_n({ os, ox, oy }) {
+    super.resize_n({ os, ox, oy });
+    this.relocate_n({ os });
+    this.rearrange();
+  }
+
+  resize_s({ os, ox, oy }) {
+    super.resize_s({ os, ox, oy });
+    this.relocate_s({ os });
+    this.rearrange();
+  }
+
+  resize_ne({ os, ox, oy }) {
+    this.resize_n({ os, ox, oy });
+    this.relocate_ne({ os });
+    this.rearrange();
+  }
+
+  resize_nw({ os, ox, oy }) {
+    this.resize_n({ os, ox, oy });
+    this.relocate_nw({ os });
+    this.rearrange();
+  }
+
+  resize_se({ os, ox, oy }) {
+    this.resize_s({ os, ox, oy });
+    this.relocate_se({ os });
+    this.rearrange();
+  }
+
+  resize_sw({ os, ox, oy }) {
+    this.resize_s({ os, ox, oy });
+    this.relocate_sw({ os });
+    this.rearrange();
   }
 
   rearrange() {
     const style = getComputedStyle(this.dom);
+
+    const styleWH = {
+      width: parseInt(style.width),
+      height: parseInt(style.height),
+    };
+
     const sw = this.state.strokeWidth;
+
     switch (this.state.shape) {
-      case 'Rect': {
-        this.svgShape.size(parseInt(style.width) - sw, parseInt(style.height) - sw);
-        this.svgShape.center(parseInt(style.width) / 2, parseInt(style.height) / 2);
+      case 'rect': {
+        this.svgShape.setAttribute('width', styleWH.width - sw);
+        this.svgShape.setAttribute('height', styleWH.height - sw);
+        this.svgShape.setAttribute('cx', styleWH.width / 2);
+        this.svgShape.setAttribute('cy', styleWH.height / 2);
         break;
       }
-      case 'Circle': {
-        this.svgShape.size(Math.min(parseInt(style.width) - sw, parseInt(style.height) - sw));
-        this.svgShape.center(parseInt(style.width) / 2, parseInt(style.height) / 2);
+      case 'circle': {
+        this.svgShape.setAttribute('r', (Math.min(styleWH.height, styleWH.width) - sw) / 2);
+        this.svgShape.setAttribute('cx', styleWH.width / 2);
+        this.svgShape.setAttribute('cy', styleWH.height / 2);
         break;
       }
-      case 'Ellipse': {
-        this.svgShape.size(parseInt(style.width) - sw, parseInt(style.height) - sw);
-        this.svgShape.center(parseInt(style.width) / 2, parseInt(style.height) / 2);
+      case 'ellipse': {
+        this.svgShape.setAttribute('rx', (styleWH.width - sw) / 2);
+        this.svgShape.setAttribute('ry', (styleWH.height - sw) / 2);
+        this.svgShape.setAttribute('cx', styleWH.width / 2);
+        this.svgShape.setAttribute('cy', styleWH.height / 2);
         break;
       }
       default:
     }
   }
 
-  getState = () => {
+  getState() {
     return this.state;
   }
 
-  setState = (params) => {
-    if (params.shape) {
-      this.load({ shape: params.shape });
-    }
+  setState(params) {
     if (params.stroke) {
       this.setStoke(params);
     }

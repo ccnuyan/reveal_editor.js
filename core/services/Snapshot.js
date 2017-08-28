@@ -9,7 +9,12 @@ const rules = {
   },
   block: {
     classesAllowed: ['sl-block'],
-    attributesAllowed: ['data-id', 'data-block-type', 'style', 'data-vote-selectable', 'data-transform'],
+    attributesAllowed: ['data-id',
+      'data-svg-shape',
+      'data-block-type',
+      'style',
+      'data-vote-selectable',
+      'data-transform'],
   },
 };
 

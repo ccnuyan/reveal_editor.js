@@ -16,6 +16,7 @@ class Axis extends Elements {
       height: '700px',
       userSelect: 'none',
       border: '2px solid rgba(128,128,128,0.3)',
+      zIndex: '-1',
     });
 
     super({ parent: section, el: axis });
@@ -53,25 +54,6 @@ class Axis extends Elements {
         this.hide();
       }
     });
-
-  // this.editor.addEventListener('onEnterEditMode', () => {
-  //   if (Reveal.isOverview()) {
-  //     Reveal.toggleOverview();
-  //   }
-  //   this.dom.style.display = 'block';
-  // });
-
-  // this.editor.addEventListener('onEnterPreviewMode', () => {
-  //   this.dom.style.display = 'none';
-  // });
-
-  // Reveal.addEventListener('overviewhidden', () => {
-  //   this.dom.style.display = 'block';
-  // });
-
-  // Reveal.addEventListener('overviewshown', () => {
-  //   this.dom.style.display = 'none';
-  // });
   }
 }
 

@@ -190,18 +190,12 @@ class Block extends Elements {
     this.updateTransformMatrix();
   }
 
-  toEdit = () => {
-    if (this.beforeToEdit) {
-      this.beforeToEdit();
-    }
+  toEdit() {
     this.section.blocks.forEach((block) => {
       if (block.dom !== this.dom) {
         block.toPreview();
       }
     });
-    this.state.mode = 'editing';
-    this.blockTransformer.hide();
-    this.editor.debouncedEventEmit();
   }
 
   // when selected;
@@ -225,19 +219,19 @@ class Block extends Elements {
     _u.remove(this.dom);
   }
 
-  resize_w({ ox, oy, os }) {
-    this.dom.style.width = `${(os.width - ox) + 1}px`;
+  resize_w({ ox, os }) {
+    this.dom.style.width = `${os.width - ox}px`;
   }
 
-  resize_e({ ox, oy, os }) {
+  resize_e({ ox, os }) {
     this.dom.style.width = `${os.width + ox}px`;
   }
 
-  resize_n({ ox, oy, os }) {
+  resize_n({ oy, os }) {
     this.dom.style.height = `${os.height - oy}px`;
   }
 
-  resize_s({ ox, oy, os }) {
+  resize_s({ oy, os }) {
     this.dom.style.height = `${os.height + oy}px`;
   }
 }

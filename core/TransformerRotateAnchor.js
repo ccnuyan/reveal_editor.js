@@ -8,6 +8,7 @@ import rotateLeft from './svgResource/rotate-left.svg';
 /* eslint-disable no-param-reassign, radix */
 
 class TransformerAnchor extends Elements {
+  R2D = 180 / Math.PI
   constructor({ parent }) {
     const anchor = _u.create('div', 'rotate_anchor', _config.styles.rotateAnchor);
     super({ parent, el: anchor });
@@ -16,13 +17,6 @@ class TransformerAnchor extends Elements {
     this.block = this.parent.parent;
 
     this.parent.dom.appendChild(anchor);
-
-    this.dom.setAttribute('draggable', true);
-    _u.on(this.dom, 'dragstart', this.dragstart);
-    _u.on(this.dom, 'dragover', this.do);
-    _u.on(this.dom, 'dragend', this.dragend);
-
-    _u.on(this.dom, 'click', this.onClick);
 
     _u.setHTML(this.dom, rotateLeft);
 
@@ -47,7 +41,11 @@ class TransformerAnchor extends Elements {
       _u.setAttr(this.svg, 'fill', 'lightgrey');
     });
 
-    this.R2D = 180 / Math.PI;
+    this.dom.setAttribute('draggable', true);
+    _u.on(this.dom, 'dragstart', this.dragstart);
+    _u.on(this.dom, 'dragover', this.do);
+    _u.on(this.dom, 'dragend', this.dragend);
+    _u.on(this.dom, 'click', this.onClick);
   }
 
   onClick = (event) => {
@@ -110,6 +108,7 @@ class TransformerAnchor extends Elements {
   dragend = () => {
     event.stopPropagation();
     this.parent.parent.saveTransform(this.toRotate);
+    console.log(this.block.state.transform);
   }
 }
 

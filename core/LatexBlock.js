@@ -7,6 +7,11 @@ class LatexBlock extends Block {
 
   constructor({ parent, el }) {
     super({ parent, el });
+
+    this.katexRawDom = this.blockContent.dom.querySelector('div.sl-katex-raw');
+    this.katexDsplayDom = this.blockContent.dom.querySelector('div.sl-katex-display');
+
+    this.load({});
   }
 
   getState = () => {
@@ -29,7 +34,9 @@ class LatexBlock extends Block {
     });
   }
 
-  beforeToEdit() {
+  toEdit() {
+    super.toEdit();
+
     _u.clearUserSelection();
     this.editor.dom.setAttribute('draggable', false);
     const originalTex = this.blockContent.dom.querySelector('span.katex>span.katex-mathml>math>semantics>annotation').innerHTML;
@@ -50,7 +57,10 @@ class LatexBlock extends Block {
   }
 
   load = ({ latex }) => {
-    katex.render(latex, this.blockContent.dom);
+    if (latex) {
+      this.katexRawDom.innerHTML = latex;
+    }
+    katex.render(this.katexRawDom.innerHTML, this.katexDsplayDom);
   }
 }
 

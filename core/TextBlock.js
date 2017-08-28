@@ -2,16 +2,14 @@ import CKEditorConfig from './configs/CKEditorConfig';
 import _u from './util';
 import Block from './Block';
 
+/* eslint-disable no-param-reassign, radix */
+
 class TextBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
 
     this.minsize.width = 160;
     this.anchorTypes = ['e', 'w'];
-  }
-
-  afterInstanciated() {
-    super.afterInstanciated();
   }
 
   getState = () => {
@@ -34,6 +32,16 @@ class TextBlock extends Block {
     });
   }
 
+  resize_e({ os, ox, oy }) {
+    super.resize_e({ os, ox, oy });
+    this.relocate_e({ os });
+  }
+
+  resize_w({ os, ox, oy }) {
+    super.resize_w({ os, ox, oy });
+    this.relocate_w({ os });
+  }
+
   beforeToPreview = () => {
     if (this.CKEDITORInstance) {
       this.CKEDITORInstance.destroy();
@@ -42,12 +50,11 @@ class TextBlock extends Block {
     this.blockTransformer.hide();
   }
 
-  beforeToEdit() {
+  toEdit() {
+    super.toEdit();
+
     this.editor.dom.setAttribute('draggable', false);
-
     this.state.mode = 'editing';
-    this.editor.debouncedEventEmit();
-
     this.blockContent.dom.setAttribute('contenteditable', 'true');
 
     let initiatedFlag = false;
@@ -66,6 +73,8 @@ class TextBlock extends Block {
     }
     this.blockTransformer.hide();
     _u.clearUserSelection();
+
+    this.editor.debouncedEventEmit();
   }
 }
 

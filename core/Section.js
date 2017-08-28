@@ -9,6 +9,8 @@ import SVGShapeBlock from './SVGShapeBlock';
 import SVGIconBlock from './SVGIconBlock';
 import SectionArrangement from './SectionArrangement';
 import Axis from './Axis';
+import blocks from './blocks';
+import svgMap from './svgLib/svgMap';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -82,108 +84,56 @@ class Section extends Elements {
   }
 
   undo_point = () => {
-    // this.parent.services.undoredo.enqueue();
+    this.parent.services.undoredo.enqueue();
   }
 
   addText = () => {
     this.undo_point();
-
-    const paragraph = _u.create('p');
-    paragraph.textContent = '输入文本内容';
-
-    const content = _u.create('div', config.classnames.content);
-    content.appendChild(paragraph);
-
-    const blockDiv = _u.create('div', 'sl-block', config.styles.textBlock);
-    blockDiv.setAttribute('data-block-type', 'text');
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
+    const blockDiv = document.createElement('div');
+    blockDiv.innerHTML = blocks.text;
+    this.dom.appendChild(blockDiv.childNodes[0]);
     this.editor.reload({});
   }
 
   addImage({ imageUrl }) {
     this.undo_point();
 
-    const image = _u.create('img', [], {});
+    const blockDiv = document.createElement('div');
+    blockDiv.innerHTML = blocks.image;
     if (imageUrl) {
-      image.setAttribute('src', imageUrl);
-      image.setAttribute('alt', '');
+      blockDiv.querySelector('img').setAttribute('src', imageUrl);
     }
-
-    const content = _u.create('div', config.classnames.content, config.styles.imageContent);
-    content.appendChild(image);
-
-    const blockDiv = _u.create('div', 'sl-block', config.styles.imageBlock);
-    blockDiv.setAttribute('data-block-type', 'image');
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
+    this.dom.appendChild(blockDiv.childNodes[0]);
     this.editor.reload({});
   }
 
   addSVGShape = ({ shape }) => {
     this.undo_point();
-
-    const content = _u.create('div', config.classnames.content);
-    this.dom.appendChild(content);
-    const blockDiv = _u.create('div', 'sl-block', config.styles.shapeBlock);
-    blockDiv.setAttribute('data-block-type', 'shape');
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
-    const svgBlock = new SVGShapeBlock({
-      parent: this,
-      el: blockDiv,
-    });
-
-    svgBlock.load({ shape });
-
+    const blockDiv = document.createElement('div');
+    blockDiv.innerHTML = blocks.shape[shape];
+    this.dom.appendChild(blockDiv.childNodes[0]);
     this.editor.reload({});
   }
 
   addSVGIcon = ({ icon }) => {
     this.undo_point();
-
-    const content = _u.create('div', config.classnames.content);
-    this.dom.appendChild(content);
-    const blockDiv = _u.create('div', 'sl-block', config.styles.shapeBlock);
-    blockDiv.setAttribute('data-block-type', 'icon');
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
-    const svgBlock = new SVGIconBlock({
-      parent: this,
-      el: blockDiv,
-    });
-
-    svgBlock.load({ icon });
-
+    const blockDiv = document.createElement('div');
+    blockDiv.innerHTML = blocks.icon;
+    blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = svgMap[icon];
+    blockDiv.querySelector(`div.${config.classnames.content}>svg`).setAttribute('fill', 'rgba(192,192,192,1)');
+    this.dom.appendChild(blockDiv.childNodes[0]);
     this.editor.reload({});
   }
 
   addLatex = ({ latex }) => {
     this.undo_point();
 
-    const content = _u.create('div', config.classnames.content);
-    this.dom.appendChild(content);
-    const blockDiv = _u.create('div', 'sl-block', config.styles.latexBlock);
-    blockDiv.setAttribute('data-block-type', 'latex');
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
-    const ktBLock = new LatexBlock({
-      parent: this,
-      el: blockDiv,
-    });
-
-    ktBLock.load({ latex });
-
+    const blockDiv = document.createElement('div');
+    blockDiv.innerHTML = blocks.katex;
+    blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = `
+    <div class="sl-katex-display">${latex}</div>
+    <div style="display:none" class="sl-katex-raw">${latex}</div>`;
+    this.dom.appendChild(blockDiv.childNodes[0]);
     this.editor.reload({});
   }
 
