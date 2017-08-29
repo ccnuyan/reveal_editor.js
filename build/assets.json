@@ -1,8 +1,10 @@
 {
-  "app": {
-    "js": "//localhost:8080/assets/app.js"
+  "editor": {
+    "js": "/assets/editor-f5f63f52376a54616680.js",
+    "css": "/assets/editor-f5f63f52376a54616680.css"
   },
-  "vendor": {
-    "js": "//localhost:8080/assets/vendor.js"
+  "core": {
+    "js": "/assets/core-f5f63f52376a54616680.js",
+    "css": "/assets/core-f5f63f52376a54616680.css"
   }
 }

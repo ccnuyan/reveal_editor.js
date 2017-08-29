@@ -1,11 +1,19 @@
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const AssetsPlugin = require('assets-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const rules = require('./webpack/commonRules.js');
+
 const config = {
   entry: {
-    app: ['babel-polyfill', './js/editor.js'],
-    vendor: ['whatwg-fetch', 'react', 'react-dom'], // whatwg-fetch is imported in './includes.js'
+    editor: ['babel-polyfill', './editor/editor.js'],
+    core: './core/core.js',
   },
   target: 'web',
   output: {
-    filename: '[name].[hash].js',
+    filename: '[name]-[hash].js',
     path: path.join(__dirname, './build/assets/'),
     publicPath: '/assets/',
   },
@@ -21,14 +29,14 @@ const config = {
       prettyPrint: true,
     }),
     new ExtractTextPlugin({
-      filename: 'style.[hash].css',
+      filename: '[name]-[hash].css',
     }),
     new UglifyJSPlugin({
       // beautify: true,
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor', // Specify the common bundle's name.
-    }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor', // Specify the common bundle's name.
+    // }),
   ],
   module: {
     rules,

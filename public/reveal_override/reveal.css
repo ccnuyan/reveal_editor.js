@@ -1,0 +1,79 @@
+/* reveal.css and theme overrides, should go after the theme changes */ 
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.reveal{
+    font-family: "Helvetica Neue", Helvetica,Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif; 
+}
+
+.reveal section{
+    height: 100%;
+}
+
+.reveal .slides > section, .reveal .slides > section > section {
+    line-height: 1;
+}
+
+.reveal>.slides{
+    width:960px;
+    height:700px;
+}
+
+.reveal section img{
+    max-width: 100%;
+    max-height: 100%;
+    border:0px;
+    padding:0;
+    margin:0
+}
+
+.sl-block{
+    position: absolute;
+}
+
+.sl-block[data-block-type='text'] *{
+    color: inherit;
+}
+
+.sl-block[data-block-type='text']>div.sl-block-content{
+    padding: 10px;
+}
+
+.sl-block[data-block-type='text']>div.sl-block-content>*{
+    padding: 0px;
+    margin: 0px;
+}
+
+.sl-block[data-block-type='text'] pre{
+    padding:5px;
+    width:100%;
+}
+
+/* or else there will be bugs when zoom out the elements */
+.sl-block[data-block-type='shape'], 
+.sl-block[data-block-type='icon'], 
+.sl-block[data-block-type='image']{
+    line-height:0.1;
+}
+
+.reveal .katex { 
+    font-style: normal;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    font-variant-numeric: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-size: 1em;
+    font-family: KaTeX_Main, "Times New Roman", serif;
+    line-height: 1;
+    white-space: nowrap;
+    text-indent: 0;
+    text-rendering: auto;
+}
+
+.reveal section img{
+    box-shadow: none;
+}
