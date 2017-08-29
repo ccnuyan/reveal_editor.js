@@ -9,7 +9,10 @@
   "scripts": {
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
     "wp-dev": "export NODE_ENV=development && webpack-dev-server --config=webpack.dev-config.js",
-    "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms"
+    "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
+    "wp-build": "export NODE_ENV=production && webpack --config=webpack.build-config.js",
+    "bb-build": "babel server --out-dir server_prod",
+    "start": "export NODE_ENV=production && node server_prod"
   },
   "#comment# - browserslist": "for postcss autoprefix, which is in ./webpack/postcss.config.js",
   "browserslist": [
@@ -23,9 +26,14 @@
   ],
   "author": "ccnuyan",
   "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.0",
+    "express": "^4.15.4"
+  },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "autoprefixer": "^7.1.2",
+    "es6-promise": "^4.1.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.2",
     "babel-loader": "^7.1.1",
@@ -33,7 +41,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "compression": "^1.7.0",
+    "chai": "^4.1.1",
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
@@ -43,13 +51,16 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^6.10.3",
     "eslint-plugin-standard": "^3.0.1",
-    "express": "^4.15.4",
     "express-delay": "^0.2.0",
     "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
     "html-loader": "^0.5.1",
+    "humps": "^2.0.1",
     "immutable": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "markdown-loader": "^2.0.1",
+    "material-colors": "^1.2.5",
     "node-sass": "^4.5.3",
     "pixrem": "^4.0.1",
     "pleeease-filters": "^4.0.0",
@@ -69,12 +80,16 @@
     "postcss-url": "^6.0.4",
     "pre-commit": "^1.2.2",
     "react": "^15.6.1",
+    "react-color": "^2.13.5",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
+    "svg-inline-loader": "^0.8.0",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "url-loader": "^0.5.9",
     "uuid": "^3.1.0",
     "webpack": "^3.4.1",
     "whatwg-fetch": "^2.0.3"
@@ -112,9 +127,12 @@
     },
     "globals": {
       "$": true,
+      "katex": true,
       "printError": true,
       "printMessage": true,
-      "STATE_FROM_SERVER": true
+      "CKEDITOR": true,
+      "Reveal": true,
+      "RevealEditor": true
     },
     "rules": {
       "camelcase": 0,

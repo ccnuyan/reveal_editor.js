@@ -1,0 +1,69 @@
+#wrapper{
+    width:100%;
+    height:100%;
+    position: fixed;
+}
+
+#wrapper>#reveal_editor{
+    position: fixed;
+    top:0;
+    left:0;
+    width:320px;
+    height:100%;
+}
+
+#wrapper>#reveal_container{
+    position: fixed;
+    left:320px;
+    right:0;
+    top:0;
+    height:100%;
+}
+
+#editor_panel{
+    height:100%;
+    margin: 0;
+    border-radius: 0;
+}
+
+#editor_manipulations{
+    width:70px;
+    left:0;
+    position: absolute;
+    padding: 8px 0;
+    background-color: #333;
+}
+
+#editor_elements{
+    width:250px;
+    left:70px;
+    position: absolute;
+    background-color: #404040;
+}
+
+#editor_options{
+    width:250px;
+    left:70px;
+    background-color: #505050;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#wrapper .button{
+    margin:0;
+}
+
+#editor_elements>.ui.list>*{
+    margin:20px 0;
+}
+
+#preview_panel{
+    margin:16px;
+}
+
+.block-option{
+    width: 100%;
+    text-align: center;
+    margin:0 0 20px 0;
+}
