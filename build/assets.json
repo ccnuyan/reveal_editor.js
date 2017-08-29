@@ -1,10 +1,10 @@
 {
   "editor": {
-    "js": "//localhost:8080/assets/editor.js",
-    "css": "//localhost:8080/assets/editor.css"
+    "js": "/assets/editor-e393946e81079037f364.js",
+    "css": "/assets/editor-e393946e81079037f364.css"
   },
   "core": {
-    "js": "//localhost:8080/assets/core.js",
-    "css": "//localhost:8080/assets/core.css"
+    "js": "/assets/core-e393946e81079037f364.js",
+    "css": "/assets/core-e393946e81079037f364.css"
   }
 }
