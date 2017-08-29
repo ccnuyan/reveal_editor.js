@@ -6,12 +6,9 @@ import compression from 'compression';
 
 import EditorPage from './middlewares/EditorPage';
 
-
 const app = express();
-
 /* eslint-disable no-console */
 
-// serve the app
 const PORT = process.env.PORT || 10000;
 
 try {
