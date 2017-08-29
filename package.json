@@ -27,6 +27,8 @@
   "author": "ccnuyan",
   "license": "MIT",
   "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "babel-polyfill": "^6.23.0",
     "compression": "^1.7.0",
     "express": "^4.15.4"
@@ -79,9 +81,7 @@
     "postcss-selector-not": "^2.0.0",
     "postcss-url": "^6.0.4",
     "pre-commit": "^1.2.2",
-    "react": "^15.6.1",
     "react-color": "^2.13.5",
-    "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2",
