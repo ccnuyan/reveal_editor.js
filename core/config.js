@@ -1,14 +1,5 @@
 const styles = {
   anchor: {
-    // position: 'absolute',
-    // width: '12px',
-    // height: '12px',
-    // // borderRadius: '5px',
-    // border: '2px solid rgb(27, 173, 225)',
-    // display: 'block',
-    // // margin: '-6px',
-    // background: '#fff',
-    // cursor: 'default',
   },
   rotateAnchor: {
     position: 'absolute',

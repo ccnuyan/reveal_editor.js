@@ -8,8 +8,8 @@ class LatexBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
 
-    this.katexRawDom = this.blockContent.dom.querySelector('div.sl-katex-raw');
     this.katexDsplayDom = this.blockContent.dom.querySelector('div.sl-katex-display');
+    this.katexRawDom = this.blockContent.dom.querySelector('div.sl-katex-raw');
 
     this.load({});
   }
@@ -44,8 +44,9 @@ class LatexBlock extends Block {
     if (!this.editor.latexEditor) {
       this.editor.latexEditor = new LatexEditor();
     }
-    this.editor.latexEditor.load({ latex: originalTex }, (innerhtml) => {
-      this.blockContent.dom.innerHTML = innerhtml;
+    this.editor.latexEditor.load({ latex: originalTex }, ({ input }) => {
+      console.log(input);
+      this.load({ latex: input });
     });
   }
 

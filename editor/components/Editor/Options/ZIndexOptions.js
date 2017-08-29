@@ -36,7 +36,7 @@ class ZIndexOptions extends Component {
       const params = {
         zIndex,
       };
-      block.fontSize = zIndex;
+      block.zIndex = zIndex;
       window.RevealEditor.currentSection.getSelectedBlocks()[index].setState(params);
       index += 1;
     });
@@ -50,11 +50,13 @@ class ZIndexOptions extends Component {
           <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Depth'}</div> :
           <div>{this.props.label ? this.props.label : 'Depth'}</div>}
         <div className="ui buttons">
-          <button className="ui icon button" onTouchTap={ this.changeZIndex } data-change-direction='-'>
-            <i className="down chevron icon"></i>
+          <button className="ui small right icon button" onTouchTap={ this.changeZIndex } data-change-direction='-'>
+           To Bottom
+          <i className="down chevron icon"></i>
           </button>
-          <button className="ui icon button" onTouchTap={ this.changeZIndex } data-change-direction='+'>
+          <button className="ui small icon button" onTouchTap={ this.changeZIndex } data-change-direction='+'>
             <i className="up chevron icon"></i>
+            Up
           </button>
         </div>
       </div>

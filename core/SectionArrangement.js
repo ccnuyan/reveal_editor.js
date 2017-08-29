@@ -270,6 +270,9 @@ class SectionArrangement {
 
         if (isSub) {
           if (parentSection.querySelectorAll('section').length === 1) {
+            Object.keys(parentSection.querySelector('section').dataset).forEach((key) => {
+              parentSection.dataset[key] = parentSection.querySelector('section').dataset[key];
+            });
             parentSection.innerHTML = parentSection.querySelector('section').innerHTML;
           }
         }
@@ -305,6 +308,9 @@ class SectionArrangement {
 
         if (isSub) {
           if (parentSection.querySelectorAll('section').length === 1) {
+            Object.keys(parentSection.querySelector('section').dataset).forEach((key) => {
+              parentSection.dataset[key] = parentSection.querySelector('section').dataset[key];
+            });
             parentSection.innerHTML = parentSection.querySelector('section').innerHTML;
           }
         }

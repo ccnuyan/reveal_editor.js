@@ -41,14 +41,14 @@ class themeService {
   loadTheme = (theme) => {
     if (this.themes[theme]) {
       this.themekey = theme;
-      document.getElementById('theme').setAttribute('href', this.themes[theme].css);
-      document.getElementById('theme_override').setAttribute('href', this.reveal_override);
+      document.getElementById('css_theme').setAttribute('href', this.themes[theme].css);
+      document.getElementById('css_theme_override').setAttribute('href', this.reveal_override);
       this.editor.slidesDom.dataset.theme = theme;
       return theme;
     }
     this.themekey = 'light';
-    document.getElementById('theme').setAttribute('href', this.themes.light.css);
-    document.getElementById('theme_override').setAttribute('href', this.reveal_override);
+    document.getElementById('css_theme').setAttribute('href', this.themes.light.css);
+    document.getElementById('css_theme_override').setAttribute('href', this.reveal_override);
     this.editor.slidesDom.dataset.theme = 'light';
     return 'light';
   }

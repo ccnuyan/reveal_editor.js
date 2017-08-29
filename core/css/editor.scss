@@ -9,46 +9,52 @@
     cursor: default;
 }
 .reveal .anchor[data-direction='e'] {
-    left: 100%;
+    right: 0;
     top: 50%;
     margin-top:-6px;
+    margin-right:-8px;
 }
 .reveal .anchor[data-direction='w'] {
-    left: 0%;
+    left: 0;
     top: 50%;
     margin-top:-6px;
-    margin-left:-12px;
+    margin-left:-8px;
 }
 .reveal .anchor[data-direction='n'] {
     left: 50%;
     top: 0;
     margin-left:-6px;
-    margin-top:-12px;
+    margin-top:-8px;
 }
 .reveal .anchor[data-direction='s'] {
     left: 50%;
-    top: 100%;
+    bottom: 0;
     margin-left:-6px;
+    margin-bottom:-8px;
 }
 .reveal .anchor[data-direction='ne'] {
-    left: 100%;
+    right: 0;
     top: 0;
-    margin-top:-12px;
+    margin-right:-8px;
+    margin-top:-8px;
 }
 .reveal .anchor[data-direction='nw'] {
-    left: 0%;
+    left: 0;
     top: 0;
-    margin-top:-12px;
-    margin-left:-12px;
+    margin-left:-8px;
+    margin-top:-8px;
 }
 .reveal .anchor[data-direction='se'] {
-    left: 100%;
-    top: 100%;
+    right: 0;
+    bottom: 0;
+    margin-right:-8px;
+    margin-bottom:-8px;
 }
 .reveal .anchor[data-direction='sw'] {
-    left: 0%;
-    top: 100%;
-    margin-left:-12px;
+    left: 0;
+    bottom: 0;
+    margin-left:-8px;
+    margin-bottom:-8px;
 }
 
 .reveal .section-add{

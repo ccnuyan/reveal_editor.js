@@ -58,14 +58,20 @@ class LatexEditor {
     this.close.addEventListener('click', () => {
       this.hide();
       if (this.cancelCallback) {
-        this.cancelCallback(this.output.innerHTML);
+        this.cancelCallback({
+          output: this.output.innerHTML,
+          input: this.input.value,
+        });
       }
     });
 
     this.check.addEventListener('click', () => {
       this.hide();
       if (this.okCallback) {
-        this.okCallback(this.output.innerHTML);
+        this.okCallback({
+          output: this.output.innerHTML,
+          input: this.input.value,
+        });
       }
     });
 

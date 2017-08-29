@@ -8,14 +8,12 @@ const rules = require('./webpack/commonRules.js');
 
 const config = {
   entry: {
-    editor: './editor/editor.js',
+    editor: ['babel-polyfill', './editor/editor.js'],
     core: './core/core.js',
-    // vendor: ['whatwg-fetch', 'react', 'react-dom'], // whatwg-fetch is imported in './includes.js'
   },
   target: 'web',
   output: {
     filename: '[name].js',
-
     publicPath: '//localhost:8080/assets/',
   },
   plugins: [

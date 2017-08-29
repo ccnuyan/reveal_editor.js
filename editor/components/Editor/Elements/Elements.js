@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import svgMap from '../../../../core/svgLib/_svgMap';
 
 import actions from '../../../store/actions';
 import './Elements.scss';
 
 import BackgroundColorPicker from './BackgroundColorPicker';
 
+/* eslint-disable max-len */
 class Elements extends Component {
 
   static propTypes = {
     editor: PropTypes.object.isRequired,
     set_editor: PropTypes.func.isRequired,
+  }
+
+  getIcons() {
+    if (!this.icons) {
+      this.icons =
+      Object.keys(svgMap)
+      .map((key) => {
+        return (<div dangerouslySetInnerHTML={ { __html: svgMap[key] } } className = "add-icon-button" key={ key } data-icon-key={ key } onTouchTap={ this.onSelectIcon }></div>);
+      });
+    }
+    return this.icons;
   }
 
   render = () => {
@@ -31,7 +44,7 @@ class Elements extends Component {
             DARK
           </button>
         </div>
-        <BackgroundColorPicker/>
+        <BackgroundColorPicker />
         <div className="ui horizontal inverted divider">
           Elements
         </div>
@@ -47,6 +60,7 @@ class Elements extends Component {
           </span>
           <span className={ 'elements-add-block-option-label' }>图片</span>
         </button>
+        <input onChange={ this.onSelectImage } accept="image/png, image/jpeg" ref={ c => this.imageFileInput = c } type="file" name="file" id="image_file_select" className="inputfile" style={ { display: 'none' } }/>
         <button onTouchTap={ this.onAddSVGShape } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="square big icon"></i>
@@ -65,8 +79,53 @@ class Elements extends Component {
           </span>
           <span className={ 'elements-add-block-option-label' }>latex公式</span>
         </button>
+        <div className="ui inverted fullscreen modal">
+          {this.getIcons()}
+        </div>
       </div>
     );
+  }
+
+  onSelectImage = () => {
+    const reader = new FileReader();
+    // const ent = e || window.event;
+    const files = this.imageFileInput.files;
+    reader.onload = () => {
+      const dataURL = reader.result;
+      window.RevealEditor.currentSection.addImage({ imageUrl: dataURL });
+    };
+
+    reader.readAsDataURL(files[0]);
+    // function getDataUri(url, callback) {
+    //   const image = new Image();
+
+    //   image.onload = () => {
+    //     const canvas = document.createElement('canvas');
+    //     canvas.width = image.naturalWidth; // or 'width' if you want a special/scaled size
+    //     canvas.height = image.naturalHeight; // or 'height' if you want a special/scaled size
+
+    //     canvas.getContext('2d').drawImage(image, 0, 0);
+
+    //     // Get raw image data
+    //     // callback(canvas.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, ''));
+
+    //       // ... or get as Data URI
+    //     callback(canvas.toDataURL('image/png'));
+    //   };
+
+    //   image.src = url;
+    // }
+
+    // // Usage
+    // getDataUri(event.currentTarget.value, (dataUri) => {
+    //   window.RevealEditor.currentSection.addImage({ imageUrl: dataUri });
+    // });
+  }
+
+  onSelectIcon = (event) => {
+    window.RevealEditor.currentSection
+      .addSVGIcon({ icon: event.currentTarget.dataset.iconKey });
+    $('.fullscreen.modal').modal('hide');
   }
 
   switchTheme = (event) => {
@@ -82,19 +141,19 @@ class Elements extends Component {
 
   onAddNewImage = () => {
     event.preventDefault();
-    window.RevealEditor.currentSection.addImage({ imageUrl: '/test.jpg' });
+    this.imageFileInput.click();
   }
 
   onAddSVGShape = () => {
     event.preventDefault();
-    window.RevealEditor.currentSection.addSVGShape({ shape: 'Rect' });
-    window.RevealEditor.currentSection.addSVGShape({ shape: 'Ellipse' });
-    window.RevealEditor.currentSection.addSVGShape({ shape: 'Circle' });
+    // window.RevealEditor.currentSection.addSVGShape({ shape: 'Rect' });
+    // window.RevealEditor.currentSection.addSVGShape({ shape: 'Ellipse' });
+    // window.RevealEditor.currentSection.addSVGShape({ shape: 'Circle' });
   }
 
   onAddSVGIcon = () => {
     event.preventDefault();
-    window.RevealEditor.currentSection.addSVGIcon({ icon: 'eye' });
+    $('.fullscreen.modal').modal({ allowMultiple: false }).modal('show');
   }
 
   onAddLatex = () => {

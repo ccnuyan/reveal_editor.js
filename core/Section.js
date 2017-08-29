@@ -10,7 +10,7 @@ import SVGIconBlock from './SVGIconBlock';
 import SectionArrangement from './SectionArrangement';
 import Axis from './Axis';
 import blocks from './blocks';
-import svgMap from './svgLib/svgMap';
+import svgMap from './svgLib/_svgMap';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -131,7 +131,7 @@ class Section extends Elements {
     const blockDiv = document.createElement('div');
     blockDiv.innerHTML = blocks.katex;
     blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = `
-    <div class="sl-katex-display">${latex}</div>
+    <div class="sl-katex-display"></div>
     <div style="display:none" class="sl-katex-raw">${latex}</div>`;
     this.dom.appendChild(blockDiv.childNodes[0]);
     this.editor.reload({});

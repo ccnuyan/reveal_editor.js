@@ -15,7 +15,7 @@ class Axis extends Elements {
       width: '960px',
       height: '700px',
       userSelect: 'none',
-      border: '2px solid rgba(128,128,128,0.3)',
+      border: '3px solid rgba(128,128,128,0.3)',
       zIndex: '-1',
     });
 

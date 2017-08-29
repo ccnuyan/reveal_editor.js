@@ -9,7 +9,8 @@
   "scripts": {
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
     "wp-dev": "export NODE_ENV=development && webpack-dev-server --config=webpack.dev-config.js",
-    "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms"
+    "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
+    "wp-build": "export NODE_ENV=production && webpack --config=webpack.build-config.js"
   },
   "#comment# - browserslist": "for postcss autoprefix, which is in ./webpack/postcss.config.js",
   "browserslist": [
@@ -49,7 +50,9 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
     "html-loader": "^0.5.1",
+    "humps": "^2.0.1",
     "immutable": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "markdown-loader": "^2.0.1",
     "material-colors": "^1.2.5",
@@ -157,6 +160,7 @@
     }
   },
   "dependencies": {
+    "es6-promise": "^4.1.1",
     "svg.js": "^2.6.3"
   }
 }
