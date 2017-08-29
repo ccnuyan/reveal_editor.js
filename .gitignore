@@ -1,9 +1,5 @@
 # Created by https://www.gitignore.io/api/node,grunt,macos,windows
 
-### grunt ###
-# Grunt usually compiles files inside this directory
-dist/
-
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp/
 
@@ -56,9 +52,6 @@ coverage
 
 # nyc test coverage
 .nyc_output
-
-# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
 
 # Bower dependency directory (https://bower.io/)
 bower_components
