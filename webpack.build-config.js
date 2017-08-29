@@ -8,7 +8,7 @@ const rules = require('./webpack/commonRules.js');
 
 const config = {
   entry: {
-    editor: './editor/editor.js',
+    editor: ['babel-polyfill', './editor/editor.js'],
     core: './core/core.js',
   },
   target: 'web',

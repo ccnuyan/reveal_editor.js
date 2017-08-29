@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   stylesheets: {
     reveal: '/reveal/css/reveal.css',
     semantic: '/semantic/dist/semantic.min.css',

@@ -30,7 +30,7 @@ const blocks = {
   },
   text: `<div class="sl-block" data-block-type="text" style="position: absolute; width: 800px; top: 140px; left: 80px;">
         <div class="sl-block-content">
-            <p>输入文本内容</p>
+            <p>Double-click to input</p>
         </div>
     </div>`,
 

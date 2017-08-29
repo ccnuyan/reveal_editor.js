@@ -52,32 +52,32 @@ class Elements extends Component {
           <span className={ 'elements-add-block-option-icon' }>
             <i className="font big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>文字</span>
+          <span className={ 'elements-add-block-option-label' }>Text</span>
         </button>
         <button onTouchTap={ this.onAddNewImage } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="image big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>图片</span>
+          <span className={ 'elements-add-block-option-label' }>Pics</span>
         </button>
         <input onChange={ this.onSelectImage } accept="image/png, image/jpeg" ref={ c => this.imageFileInput = c } type="file" name="file" id="image_file_select" className="inputfile" style={ { display: 'none' } }/>
         <button onTouchTap={ this.onAddSVGShape } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="square big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>形状</span>
+          <span className={ 'elements-add-block-option-label' }>Shape</span>
         </button>
         <button onTouchTap={ this.onAddSVGIcon } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="smile big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>图标</span>
+          <span className={ 'elements-add-block-option-label' }>ICON</span>
         </button>
         <button onTouchTap={ this.onAddLatex } className={ 'elements-add-block-option' }>
           <span className={ 'elements-add-block-option-icon' }>
             <i className="superscript big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>latex公式</span>
+          <span className={ 'elements-add-block-option-label' }>LATEX</span>
         </button>
         <div className="ui inverted fullscreen modal">
           {this.getIcons()}

@@ -10,7 +10,9 @@
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
     "wp-dev": "export NODE_ENV=development && webpack-dev-server --config=webpack.dev-config.js",
     "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
-    "wp-build": "export NODE_ENV=production && webpack --config=webpack.build-config.js"
+    "wp-build": "export NODE_ENV=production && webpack --config=webpack.build-config.js",
+    "bb-build": "babel server --out-dir server_prod",
+    "start": "export NODE_ENV=production && node server_prod"
   },
   "#comment# - browserslist": "for postcss autoprefix, which is in ./webpack/postcss.config.js",
   "browserslist": [
@@ -24,9 +26,14 @@
   ],
   "author": "ccnuyan",
   "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.0",
+    "express": "^4.15.4"
+  },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "autoprefixer": "^7.1.2",
+    "es6-promise": "^4.1.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.2",
     "babel-loader": "^7.1.1",
@@ -35,7 +42,6 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.1",
-    "compression": "^1.7.0",
     "css-loader": "^0.28.4",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
@@ -45,7 +51,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^6.10.3",
     "eslint-plugin-standard": "^3.0.1",
-    "express": "^4.15.4",
     "express-delay": "^0.2.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
@@ -158,9 +163,5 @@
         "always"
       ]
     }
-  },
-  "dependencies": {
-    "es6-promise": "^4.1.1",
-    "svg.js": "^2.6.3"
   }
 }
