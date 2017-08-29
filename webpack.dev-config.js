@@ -2,14 +2,19 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const AssetsPlugin = require('assets-webpack-plugin');
+// const AssetsPlugin = require('assets-webpack-plugin');
 
 const rules = require('./webpack/commonRules.js');
 
 const config = {
   entry: {
+<<<<<<< HEAD
     editor: ['babel-polyfill', './editor/editor.js'],
     core: './core/core.js',
+=======
+    app: ['babel-polyfill', './js/editor.js'],
+    // vendor: ['whatwg-fetch', 'react', 'react-dom'], // whatwg-fetch is imported in './includes.js'
+>>>>>>> c71e277ac13a2694f067c9b15109b50949d35276
   },
   target: 'web',
   output: {
@@ -22,11 +27,11 @@ const config = {
         NODE_ENV: JSON.stringify('development'),
       },
     }),
-    new AssetsPlugin({
-      path: path.resolve(__dirname, './build'),
-      filename: 'assets.json',
-      prettyPrint: true,
-    }),
+    // new AssetsPlugin({
+    //   path: path.resolve(__dirname, './build'),
+    //   filename: 'assets.json',
+    //   prettyPrint: true,
+    // }),
     new ExtractTextPlugin({
       filename: '[name].css',
     }),
