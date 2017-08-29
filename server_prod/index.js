@@ -1,5 +1,7 @@
 'use strict';
 
+require('babel-polyfill');
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -7,8 +9,6 @@ var _express2 = _interopRequireDefault(_express);
 var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
-
-require('babel-polyfill');
 
 var _compression = require('compression');
 
@@ -36,9 +36,9 @@ try {
         switch (_context.prev = _context.next) {
           case 0:
             app.use((0, _compression2.default)());
-            app.use('/', _express2.default.static(_path2.default.join(__dirname, '../build/')));
-            app.use('/', _express2.default.static(_path2.default.join(__dirname, '../public/')));
-            app.get('*', _EditorPage2.default);
+            app.use('/static/', _express2.default.static(_path2.default.join(__dirname, '../build/')));
+            app.use('/static/', _express2.default.static(_path2.default.join(__dirname, '../public/')));
+            app.get('/', _EditorPage2.default);
             app.listen(PORT, function (err) {
               if (err) {
                 console.log(err);
