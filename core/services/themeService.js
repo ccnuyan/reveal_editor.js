@@ -10,7 +10,7 @@ class themeService {
   themes = {
     light: {
       key: 'light',
-      css: `${resourceConfig.relativePath}/static/reveal/css/theme/white.css`,
+      css: './static/reveal/css/theme/white.css',
       sectionAdd: 'black',
       rotateAnchor: 'black',
       shape: {
@@ -22,7 +22,7 @@ class themeService {
     },
     dark: {
       key: 'dark',
-      css: `${resourceConfig.relativePath}/static/reveal/css/theme/black.css`,
+      css: './static/reveal/css/theme/black.css',
       rotateAnchor: 'white',
       sectionAdd: 'white',
       shape: {
@@ -34,7 +34,7 @@ class themeService {
     },
   };
 
-  reveal_override = `${resourceConfig.relativePath}/static/reveal_override/reveal.css`;
+  reveal_override = './static/reveal_override/reveal.css';
 
   getTheme = () => {
     return this.themes[this.themekey];

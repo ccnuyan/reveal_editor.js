@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// const AssetsPlugin = require('assets-webpack-plugin');
+const AssetsPlugin = require('assets-webpack-plugin');
 
 const rules = require('./webpack/commonRules.js');
 
@@ -22,11 +22,11 @@ const config = {
         NODE_ENV: JSON.stringify('development'),
       },
     }),
-    // new AssetsPlugin({
-    //   path: path.resolve(__dirname, './build'),
-    //   filename: 'assets.json',
-    //   prettyPrint: true,
-    // }),
+    new AssetsPlugin({
+      path: path.resolve(__dirname, './build'),
+      filename: 'assets.json',
+      prettyPrint: true,
+    }),
     new ExtractTextPlugin({
       filename: '[name].css',
     }),

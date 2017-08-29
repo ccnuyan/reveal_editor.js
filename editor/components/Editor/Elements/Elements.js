@@ -58,7 +58,7 @@ class Elements extends Component {
           <span className={ 'elements-add-block-option-icon' }>
             <i className="image big icon"></i>
           </span>
-          <span className={ 'elements-add-block-option-label' }>Pics</span>
+          <span className={ 'elements-add-block-option-label' }>Picture</span>
         </button>
         <input onChange={ this.onSelectImage } accept="image/png, image/jpeg" ref={ c => this.imageFileInput = c } type="file" name="file" id="image_file_select" className="inputfile" style={ { display: 'none' } }/>
         <button onTouchTap={ this.onAddSVGShape } className={ 'elements-add-block-option' }>
