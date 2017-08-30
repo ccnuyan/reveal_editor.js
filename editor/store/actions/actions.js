@@ -2,16 +2,14 @@ import actionTypes from '../actionTypes';
 
 const set_preview = dispatch => () => {
   dispatch({ type: actionTypes.SET_PREVIEW_MODE });
-  $('#reveal_container').css({ left: '0' });
-  $('#editor_panel').css({ display: 'none' });
-  $('#preview_panel').css({ display: 'true' });
+  document.querySelector('.reveal-container').style.left = 0;
+  document.querySelector('.editor_panel').style.display = 'none';
 };
 
 const set_edit = dispatch => () => {
   dispatch({ type: actionTypes.SET_EDIT_MODE });
-  $('#reveal_container').css({ left: '200px' });
-  $('#editor_panel').css({ display: 'true' });
-  $('#preview_panel').css({ display: 'none' });
+  document.querySelector('.reveal-container').style.left = '300px';
+  document.querySelector('.previewer_panel').style.display = 'none';
 };
 
 const set_editor = dispatch => (editor) => {

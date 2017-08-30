@@ -56,24 +56,19 @@ class FontSizeOptions extends Component {
     const selectedBlock = this.props.selectedBlocks[0];
 
     return (
-      <div className="block-option">
-        {this.props.isMain ?
-          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Font Size'}</div> :
-          <div>{this.props.label ? this.props.label : 'Color'}</div>}
-        <div className="ui buttons">
-          <button className="ui icon button" onTouchTap={ this.changeFontSize } data-change-direction='-'>
-            <i className="minus icon"></i>
-          </button>
-          <button className="ui button">
-            {selectedBlock.fontSize}
-          </button>
-          <button className="ui icon button" onTouchTap={ this.changeFontSize } data-change-direction='+'>
-            <i className="plus icon"></i>
-          </button>
-          <button className="ui icon button" onTouchTap={ this.changeFontSize } data-change-direction='0'>
-            <i className="remove icon"></i>
-          </button>
+      <div className="font-size-option">
+        <button className="editor-button" onTouchTap={ this.changeFontSize } data-change-direction='-'>
+          <div className="icon-minus"></div>
+        </button>
+        <div>
+          {selectedBlock.fontSize}
         </div>
+        <button className="editor-button" onTouchTap={ this.changeFontSize } data-change-direction='+'>
+          <div className="icon-plus"></div>
+        </button>
+        <button className="editor-button" onTouchTap={ this.changeFontSize } data-change-direction='0'>
+          <div className="icon-remove"></div>
+        </button>
       </div>
     );
   }

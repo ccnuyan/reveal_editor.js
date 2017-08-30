@@ -24,16 +24,10 @@ class RemoveOptions extends Component {
 
   render = () => {
     return (
-      <div className="block-option">
-        {this.props.isMain ?
-          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Remove'}</div> :
-          <div>{this.props.label ? this.props.label : 'Remove'}</div>}
-        <div className="ui buttons">
-          <button className="ui labeled icon button" onTouchTap={ this.onRemove } data-change-direction='+'>
-                        Remove
-            <i className="trash icon"></i>
-          </button>
-        </div>
+      <div className="remove-option">
+        <button className="editor-button" onTouchTap={ this.onRemove } data-change-direction='+'>
+          <div className="icon-trash"></div>
+        </button>
       </div>
     );
   }

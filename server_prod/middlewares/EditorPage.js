@@ -59,7 +59,7 @@ var EditorPage = function (_Component) {
           _react2.default.createElement(
             'title',
             null,
-            'reveal_editor.js'
+            'reveal-editor.js'
           ),
           Object.keys(_config2.default.stylesheets).map(function (key) {
             return _react2.default.createElement('link', { id: 'css_' + key, rel: 'stylesheet', key: key, href: _config2.default.stylesheets[key] });
@@ -74,13 +74,13 @@ var EditorPage = function (_Component) {
           null,
           _react2.default.createElement(
             'div',
-            { id: 'wrapper' },
+            { className: 'wrapper' },
             _react2.default.createElement(
               'div',
-              { id: 'reveal_container' },
+              { className: 'reveal-container' },
               _react2.default.createElement('div', { className: 'reveal' })
             ),
-            _react2.default.createElement('div', { id: 'reveal_editor' })
+            _react2.default.createElement('div', { className: 'reveal-editor' })
           ),
           Object.keys(_config2.default.scripts).map(function (key) {
             return _react2.default.createElement('script', { id: 'js_' + key, key: key, src: _config2.default.scripts[key] });

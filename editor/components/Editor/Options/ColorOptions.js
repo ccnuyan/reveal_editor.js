@@ -15,7 +15,6 @@ class ColorOptions extends Component {
 
   static propTypes = {
     label: PropTypes.string,
-    isMain: PropTypes.bool,
     blockProp: PropTypes.string.isRequired,
     selectedBlocks: PropTypes.array.isRequired,
     set_current_block: PropTypes.func.isRequired,
@@ -46,23 +45,9 @@ class ColorOptions extends Component {
 
   styles = reactCSS({
     default: {
-      color: {
-        width: 'auto',
-        height: '18px',
-        borderRadius: '2px',
-      },
-      swatch: {
-        display: 'inline-block',
-        width: '40%',
-        margin: '5%',
-        padding: '5px',
-        background: '#fff',
-        borderRadius: '1px',
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        cursor: 'pointer',
-      },
       popover: {
         position: 'absolute',
+        margin: '10px',
         zIndex: '2',
       },
       cover: {
@@ -75,30 +60,22 @@ class ColorOptions extends Component {
     },
   });
 
-  createPicker = () => {
-    const selectedBlock = this.props.selectedBlocks[0];
-    return React.createElement(pickerMap[this.state.picker], {
-      width: 200,
-      color: selectedBlock[this.props.blockProp],
-      onChange: this.handleChange,
-    });
-  }
-
   render = () => {
     const selectedBlock = this.props.selectedBlocks[0];
     return (
-      <div className="block-option">
-        <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Color'}</div>
-        <div>
-          <div style={ this.styles.swatch } onTouchTap={ this.handleClick } data-picker="SketchPicker">
-            <div style={ { ...this.styles.color, background: selectedBlock[this.props.blockProp] } } />
-          </div>
-          { this.state.displayColorPicker ?
-            <div style={ this.styles.popover }>
-              <div style={ this.styles.cover } onTouchTap={ this.handleClose }/>
-              {this.createPicker()}
-            </div> : null }
-        </div>
+      <div className="color-option">
+        <div className="color-square"
+          style={ { backgroundColor: selectedBlock[this.props.blockProp] } }
+          onTouchTap={ this.handleClick }
+        ></div>
+        { this.state.displayColorPicker ?
+          <div style={ this.styles.popover }>
+            <div style={ this.styles.cover } onTouchTap={ this.handleClose }/>
+            <SketchPicker width={ 200 }
+              color={ selectedBlock[this.props.blockProp] }
+              onChange={ this.handleChange }
+            />
+          </div> : null }
       </div>
     );
   }

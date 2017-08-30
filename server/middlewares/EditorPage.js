@@ -17,7 +17,7 @@ class EditorPage extends Component {
           <meta charSet="utf-8"/>
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-          <title>reveal_editor.js</title>
+          <title>reveal-editor.js</title>
           {
             Object.keys(config.stylesheets).map(key => <link id={ `css_${key}` } rel="stylesheet" key={ key } href={ config.stylesheets[key] }/>)
           }
@@ -27,12 +27,12 @@ class EditorPage extends Component {
           <link id={ 'css_theme_override' } rel="stylesheet"/>
         </head>
         <body>
-          <div id="wrapper">
-            <div id="reveal_container">
+          <div className="wrapper">
+            <div className="reveal-container">
               <div className="reveal">
               </div>
             </div>
-            <div id="reveal_editor"></div>
+            <div className="reveal-editor"></div>
           </div>
           {
             Object.keys(config.scripts).map(key => <script id={ `js_${key}` } key={ key } src={ config.scripts[key] }/>)

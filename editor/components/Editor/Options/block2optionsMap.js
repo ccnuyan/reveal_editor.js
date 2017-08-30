@@ -28,6 +28,8 @@ const b2oMap = {
       component: BorderOptions,
       props: {
         key: '3',
+        label: 'Border',
+        isMain: true,
       },
     },
     {

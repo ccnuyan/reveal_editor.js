@@ -1,0 +1,26 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    outline:none;
+}
+
+.reveal-editor div,.reveal-editor span,.reveal-editor button{
+    font-family: "Helvetica Neue", Helvetica,Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif; 
+    color:white;
+}
+
+.reveal-editor button.editor-button{
+    background: transparent;
+    border: 0px;
+    border-radius: 6px;
+}
+
+.reveal-editor button.editor-button:hover{
+    background-color:#733785;
+    transition:all 0.2s ease-in;
+}
+
+.reveal-editor button.editor-button:active{
+    background-color:#3B2C40;
+}

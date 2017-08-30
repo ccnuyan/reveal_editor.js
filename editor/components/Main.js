@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Editor from './Editor/Editor';
-import Previewer from './Previewer/Previewer';
+import Previewer from './Editor/Manipulations/Previewer';
 
 import actions from '../store/actions';
 

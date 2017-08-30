@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import actions from '../../../store/actions';
 import commonOptions from './commonOptions';
 import block2optionsMap from './block2optionsMap';
+import OptionContainer from './OptionContainer';
 
 class Elements extends Component {
   static propTypes = {
@@ -13,21 +14,29 @@ class Elements extends Component {
 
   getCommonOptions = () => {
     const optionsElements = [];
-    commonOptions.forEach((option) => {
-      const element = React.createElement(option.component, option.props);
-      optionsElements.push(element);
+    commonOptions.forEach((optconf) => {
+      const element = React.createElement(optconf.component, optconf.props);
+      const option = React.createElement(OptionContainer, {
+        children: element,
+        ...optconf.props,
+      });
+      optionsElements.push(option);
     });
 
-    return <div>{optionsElements}</div>;
+    return optionsElements;
   }
 
   getBlockOptions = (sb) => {
     const options = block2optionsMap[sb[0].blockType];
 
     const optionsElements = [];
-    options.forEach((option) => {
-      const element = React.createElement(option.component, option.props);
-      optionsElements.push(element);
+    options.forEach((optconf) => {
+      const element = React.createElement(optconf.component, optconf.props);
+      const option = React.createElement(OptionContainer, {
+        children: element,
+        ...optconf.props,
+      });
+      optionsElements.push(option);
     });
 
     return <div>{optionsElements}</div>;
@@ -36,7 +45,7 @@ class Elements extends Component {
   render = () => {
     const sb = this.props.selectedBlocks;
     return (
-      <div id='editor_options' className="ui center aligned segment">
+      <div className="editor_options">
         {
           sb.length === 1 ? this.getBlockOptions(sb) : ''
         }

@@ -8,6 +8,7 @@ import es6Promise from 'es6-promise';
 
 import store from './store';
 import Main from './components/Main';
+import './global.scss';
 import './editor.scss';
 
 injectTapEventPlugin();
@@ -17,4 +18,4 @@ ReactDom.render((
   <Provider store={ store }>
     <Main/>
   </Provider>),
-document.getElementById('reveal_editor'));
+document.querySelector('.reveal-editor'));

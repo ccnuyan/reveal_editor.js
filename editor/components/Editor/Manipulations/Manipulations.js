@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
-
 import actions from '../../../store/actions';
 
 const rawHTML =
@@ -11,7 +10,7 @@ const rawHTML =
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>reveal_editor.js</title>
+    <title>reveal-editor.js</title>
     <style>
       __STYLESHEET__
     </style>
@@ -99,44 +98,22 @@ class Manipulations extends Component {
 
   render = () => {
     return (
-      <div id='editor_manipulations' className="ui center aligned segment">
-        <div className="ui list">
-          <div className="item">
-            <button onTouchTap={ this.preview } className="ui icon button">
-              <i className="play icon"></i>
-            </button>
-          </div>
-          <div className="item">
-            <button onTouchTap={ this.undo } className="ui icon button">
-              <i className="reply icon"></i>
-            </button>
-          </div>
-          <div className="item">
-            <button onTouchTap={ this.redo } className="ui icon button">
-              <i className="share icon"></i>
-            </button>
-          </div>
-          <div onTouchTap={ this.export } className="item">
-            <button className="ui icon button">
-              <i className="save icon"></i>
-            </button>
-          </div>
-          <div className="item">
-            <button className="ui icon button">
-              <i className="sidebar icon"></i>
-            </button>
-          </div>
-          <div className="item">
-            <button className="ui icon button">
-              <i className="folder open icon"></i>
-            </button>
-          </div>
-          <div className="item">
-            <button className="ui icon button">
-              <i className="external icon"></i>
-            </button>
-          </div>
-        </div>
+      <div className="editor_manipulations">
+        <button onTouchTap={ this.preview } className="editor-button">
+          <i className="icon-play"></i>
+        </button>
+        <button onTouchTap={ this.undo } className="editor-button">
+          <i className="icon-reply"></i>
+        </button>
+        <button onTouchTap={ this.redo } className="editor-button">
+          <i className="icon-share"></i>
+        </button>
+        <button onTouchTap={ this.export } className="editor-button">
+          <i className="icon-save"></i>
+        </button>
+        <button className="editor-button">
+          <i className="icon-align-justify"></i>
+        </button>
       </div>
     );
   }

@@ -1,69 +1,247 @@
-#wrapper{
+.wrapper{
     width:100%;
     height:100%;
     position: fixed;
 }
-
-#wrapper>#reveal_editor{
+.wrapper>.reveal-editor{
     position: fixed;
     top:0;
     left:0;
-    width:320px;
+    width:300px;
     height:100%;
 }
-
-#wrapper>#reveal_container{
+.wrapper>.reveal-container{
     position: fixed;
-    left:320px;
+    left:300px;
     right:0;
     top:0;
     height:100%;
 }
-
-#editor_panel{
+.editor_panel{
     height:100%;
     margin: 0;
     border-radius: 0;
 }
 
-#editor_manipulations{
-    width:70px;
-    left:0;
-    position: absolute;
-    padding: 8px 0;
-    background-color: #333;
-}
-
-#editor_elements{
-    width:250px;
-    left:70px;
-    position: absolute;
-    background-color: #404040;
-}
-
-#editor_options{
-    width:250px;
-    left:70px;
-    background-color: #505050;
+.editor_elements, .editor_options{
+    width: 240px;
+    left: 60px;
+    height: 100%;
     position: absolute;
     overflow-y: auto;
     overflow-x: hidden;
 }
-
-#wrapper .button{
-    margin:0;
+.editor_elements{
+    background-color: #404040;
 }
 
-#editor_elements>.ui.list>*{
-    margin:20px 0;
+.editor_options{
+    background-color: #505050;
 }
 
-#preview_panel{
-    margin:16px;
+// mainipulations and previewers
+
+.editor_manipulations, .previewer_panel{
+    position: absolute;
+    padding: 3px 0;
+    height:100%;
+}
+
+.editor_manipulations{
+    width:60px;
+    background-color: #333;
+    left:0;
+}
+
+.previewer_panel{
+    background-color: transparent;
+    width:60px;
+    left:0;
+}
+
+.editor_manipulations>*, .previewer_panel>*{
+    margin:3px 6px;
+    width:48px;
+    height: 48px;
+}
+
+.previewer_panel>button{
+    background: transparent;
+    border: 0px;
+    border-radius: 6px;
+}
+
+.previewer_panel>button{
+    color:grey;
+}
+.previewer_panel>button:hover{
+    transition:all 0.2s ease-in;
+    background-color:#377385;
+    color:#fff;
+}
+
+.previewer_panel>button:active{
+    background-color:#2C3B40;
+}
+
+.editor_manipulations>button:focus, .previewer_panel>button:focus{
+    outline:0;
+}
+
+//elements
+
+.editor_elements{
+    color:white;
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica,Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif; 
+}
+
+.editor_elements .panel_title{
+    text-align: left;
+    font-size:16px;
+    font-weight: bold;
+    width:90%;
+    margin:20px 5% 0 5%;
+    padding:10px 0;
+    border-color:lightgrey;
+    border-style: solid;
+    border-width: 0 0 2px 0; 
+}
+
+.section-elements>div.section-element-each{
+    width:60%;
+    margin:10px 20%;
+    text-align: center;
+    padding:5px;
+    border: 2px solid transparent;
+}
+div.section-element-each>div{
+    transform: scale(2.5);
+    margin:20px;
+}
+
+div.section-element-each:hover{
+    border: 2px solid white;
+}
+
+.background-color-picker{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top:20px;
+}
+
+.section-background-square{
+    width: 64px;
+    height: 64px;
+    border-width:2px;
+    border-style:solid;
+    border-color:white;
+    border-radius: 8px;
+}
+
+.apply-section-background-to-all{
+    width: 50%;
+    height: 36px;
+    align-self: center;
 }
 
 .block-option{
-    width: 100%;
-    text-align: center;
-    margin:0 0 20px 0;
+    // text-align: center;
 }
+
+.main-option-title {
+    text-align: left;
+    font-size:16px;
+    font-weight: bold;
+    width:90%;
+    margin:20px 5% 10px 5%;
+    padding:10px 0;
+    border-color:lightgrey;
+    border-style: solid;
+    border-width: 0 0 3px 0; 
+}
+
+.sub-option-title {
+    text-align: left;
+    font-size:16px;
+    font-weight: normal;
+    width:90%;
+    margin:20px 5% 15px 5%;
+    padding:10px 0;
+    border-color:lightgrey;
+    border-style: solid;
+    border-width: 0 0 1px 0; 
+}
+
+.font-size-option{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.font-size-option>button>div{
+    transform: scale(1.5);
+    margin:10px;
+}
+
+.color-option{
+    height:40px;
+}
+
+.color-square{
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    height:36px;
+    margin-left:-25%;
+    border-width:2px;
+    border-style:solid;
+    border-color:white;
+    border-radius: 8px;
+}
+.zindex-option{
+    display: flex;
+    justify-content: space-around;
+}
+
+.zindex-option>button>div{
+    transform: scale(2);
+    margin:15px;
+}
+
+.remove-option{
+    display: flex;
+    justify-content: space-around;
+}
+.remove-option>button>div{
+    transform: scale(2);
+    margin:15px;
+}
+
+.width-option{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.width-option>input{
+    background-color: transparent;
+    font-weight: bold;
+    color:white;
+    border: 1px solid white;
+    padding:3px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.border-enable-checkbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.border-enable-checkbox>*{
+    margin:5px;
+}
+

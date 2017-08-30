@@ -6,6 +6,8 @@ import actions from '../../../store/actions';
 import WidthOptions from './WidthOptions';
 import ColorOptions from './ColorOptions';
 
+import OptionContainer from './OptionContainer';
+
 class BorderOptions extends Component {
 
   static propTypes = {
@@ -45,14 +47,21 @@ class BorderOptions extends Component {
     const selectedBlock = this.props.selectedBlocks[0];
 
     return (
-      <div className="ui container block-option">
-        <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Border'}</div>
-        <div style={ { display: 'block', width: 'auto', textAlign: 'left' } } className="ui checkbox">
+      <div>
+        <div className="border-enable-checkbox">
           <input checked={ selectedBlock.borderStyle !== 'none' } onChange={ this.onChange } type="checkbox" name="example"/>
           <label htmlFor="example" style={ { color: 'white' } }>Enable</label>
         </div>
-        {selectedBlock.borderStyle !== 'none' ? <WidthOptions isMain={ true } suffix={ 'px' } blockProp={ 'borderWidth' }/> : ''}
-        {selectedBlock.borderStyle !== 'none' ? <ColorOptions isMain={ true } blockProp={ 'borderColor' }/> : ''}
+        {selectedBlock.borderStyle !== 'none' ?
+          <OptionContainer isMain={ false } label={ 'Border Width' }>
+            <WidthOptions suffix={ 'px' } blockProp={ 'borderWidth' }/>
+          </OptionContainer> : ''
+        }
+
+        {selectedBlock.borderStyle !== 'none' ?
+          <OptionContainer isMain={ false } label={ 'Border Color' }>
+            <ColorOptions blockProp={ 'borderColor' }/>
+          </OptionContainer> : ''}
       </div>
     );
   }

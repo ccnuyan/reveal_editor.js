@@ -45,20 +45,15 @@ class ZIndexOptions extends Component {
 
   render = () => {
     return (
-      <div className="block-option">
-        {this.props.isMain ?
-          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Depth'}</div> :
-          <div>{this.props.label ? this.props.label : 'Depth'}</div>}
-        <div className="ui buttons">
-          <button className="ui small right icon button" onTouchTap={ this.changeZIndex } data-change-direction='-'>
-           To Bottom
-          <i className="down chevron icon"></i>
-          </button>
-          <button className="ui small icon button" onTouchTap={ this.changeZIndex } data-change-direction='+'>
-            <i className="up chevron icon"></i>
-            Up
-          </button>
-        </div>
+      <div className="zindex-option">
+        <button className="editor-button" onTouchTap={ this.changeZIndex } data-change-direction='-'>
+          <div className="icon-chevron-down"></div>
+          To Bottom
+        </button>
+        <button className="editor-button" onTouchTap={ this.changeZIndex } data-change-direction='+'>
+          <div className="icon-chevron-up"></div>
+            Level + 1
+        </button>
       </div>
     );
   }

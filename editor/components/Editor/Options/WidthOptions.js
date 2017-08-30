@@ -43,18 +43,13 @@ class WidthOptions extends Component {
     const selectedBlock = this.props.selectedBlocks[0];
 
     return (
-      <div className="block-option" style={ { textAlign: 'left' } }>
-        {this.props.isMain ?
-          <div className="ui horizontal inverted divider">{this.props.label ? this.props.label : 'Width'}</div> :
-          <div>{this.props.label ? this.props.label : 'Width'}</div>}
-        <div className="ui right labeled input" style={ { width: '175px' } }>
-          <input onWheel={ this.onWheel }
+      <div className="width-option" >
+        <input onWheel={ this.onWheel }
             onChange={ this.onWidthChange }
             value={ parseInt(selectedBlock[this.props.blockProp]) } type="text" placeholder="number"
-          />
-          <div className="ui basic label">
-            px
-          </div>
+        />
+        <div className="ui basic label">
+            PX
         </div>
       </div>
     );

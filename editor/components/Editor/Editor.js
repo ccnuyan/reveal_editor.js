@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Manipulations from './Manipulations/Manipulations';
-import Elements from './Elements/Elements';
+import EditorSectionPanel from './EditorSectionPanel/EditorSectionPanel';
 import Options from './Options/Options';
-
 
 class Editor extends Component {
 
@@ -17,10 +16,10 @@ class Editor extends Component {
 
   render =() => {
     return (
-      <div id='editor_panel' className="ui horizontal segments">
+      <div className='editor_panel'>
         <Manipulations></Manipulations>
         {
-          this.props.selectedBlocks.length ? <Options></Options> : <Elements></Elements>
+          this.props.selectedBlocks.length ? <Options></Options> : <EditorSectionPanel></EditorSectionPanel>
         }
       </div>
     );
