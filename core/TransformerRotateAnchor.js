@@ -67,7 +67,9 @@ class TransformerAnchor extends Elements {
     this.editor.draggingElement = this;
 
     event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
+    event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
+
+    debugger;
 
     const blockStyle = getComputedStyle(this.parent.parent.dom);
     const originalStyle = {

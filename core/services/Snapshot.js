@@ -69,8 +69,8 @@ const getSnapshot = (editor) => {
   const blocks = slides.querySelectorAll('div.sl-block');
 
   Array.prototype.forEach.call(sections, (section) => {
-    section.querySelectorAll('section>div:not(.sl-block)').forEach((el) => {
-      section.removeChild(el);
+    Array.prototype.forEach.call(section.querySelectorAll('section>div:not(.sl-block)'), (el) => {
+      if (el.parentNode === section)section.removeChild(el);
     });
     const cavs = section.querySelector('canvas');
     if (cavs) {
@@ -82,16 +82,19 @@ const getSnapshot = (editor) => {
   Array.prototype.forEach.call(sections, (el) => {
     removeClassNotExistedInArray(el, rules.section.classesAllowed);
   });
-  Array.prototype.forEach.call(blocks, (el) => {
-    removeClassNotExistedInArray(el, rules.block.classesAllowed);
+  Array.prototype.forEach.call(blocks, (block) => {
+    Array.prototype.forEach.call(block.querySelectorAll('div.sl-block>div:not(.sl-block-content)'), (el) => {
+      if (el.parentNode === block)block.removeChild(el);
+    });
+    removeClassNotExistedInArray(block, rules.block.classesAllowed);
   });
 
   removeAttrNotExistedInArray(slides, rules.slides.attributesAllowed);
-  Array.prototype.forEach.call(sections, (el) => {
-    removeAttrNotExistedInArray(el, rules.section.attributesAllowed);
+  Array.prototype.forEach.call(sections, (section) => {
+    removeAttrNotExistedInArray(section, rules.section.attributesAllowed);
   });
-  Array.prototype.forEach.call(blocks, (el) => {
-    removeAttrNotExistedInArray(el, rules.block.attributesAllowed);
+  Array.prototype.forEach.call(blocks, (block) => {
+    removeAttrNotExistedInArray(block, rules.block.attributesAllowed);
   });
 
   return slides.innerHTML;

@@ -101,14 +101,14 @@ class Editor {
     this.state.struct = {};
     let h = 0;
 
-    _u.findChildren(this.reveal, '.slides>section').forEach((section) => {
+    Array.prototype.forEach.call(this.reveal.querySelectorAll('.slides>section'), (section) => {
       this.state.struct[h] = true;
       this.state.struct.count = 0;
       const subSections = section.querySelectorAll('section');
       let v = 0;
       if (subSections.length > 0) {
         this.state.struct[h] = {};
-        subSections.forEach((subsection) => {
+        Array.prototype.forEach.call(subSections, (subsection) => {
           this.bornNewSection(subsection, h, v, true);
           this.state.struct[h][v] = true;
           v += 1;
@@ -196,7 +196,7 @@ class Editor {
     this.selectRect.style.height = '0px';
     _u.show(this.selectRect);
     event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
+    event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
 
     this.dragfrom = {
       x: event.clientX,

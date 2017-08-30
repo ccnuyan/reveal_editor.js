@@ -70,7 +70,7 @@ class Transformer extends Elements {
     this.editor.draggingElement = this;
 
     event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
+    event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
 
     this.section.getSelectedBlocks().forEach((block) => {
       const orignalStyle = getComputedStyle(block.dom);

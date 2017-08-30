@@ -34,7 +34,7 @@ class Block extends Elements {
 
   afterInstanciated() {
     const transformerDom = _u.create('div', [config.classnames.transform, 'editing-ui'], config.styles.transform);
-    this.dom.append(transformerDom);
+    this.dom.appendChild(transformerDom);
 
     this.blockTransformer = new Transformer({
       parent: this,

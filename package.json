@@ -8,7 +8,7 @@
   },
   "scripts": {
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
-    "wp-dev": "export NODE_ENV=development && webpack-dev-server --config=webpack.dev-config.js",
+    "wp-dev": "export NODE_ENV=development && webpack-dev-server --host 0.0.0.0 --config=webpack.dev-config.js",
     "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
     "wp-build": "export NODE_ENV=production && webpack --config=webpack.build-config.js",
     "bb-build": "babel server --out-dir server_prod",

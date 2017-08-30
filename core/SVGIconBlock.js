@@ -14,9 +14,9 @@ class SVGIconBlock extends Block {
     this.draw.setAttribute('width', '100%');
     this.draw.setAttribute('height', '100%');
 
-
     this.state.fill = this.draw.getAttribute('fill');
   }
+
   getState = () => {
     return this.state;
   }
@@ -25,6 +25,9 @@ class SVGIconBlock extends Block {
     if (params.fill) {
       this.state.fill = params.fill;
       this.draw.setAttribute('fill', this.state.fill);
+      Array.prototype.forEach.call(this.dom.querySelectorAll('svg>path'), (path) => {
+        path.removeAttribute('fill');
+      });
     }
   }
 

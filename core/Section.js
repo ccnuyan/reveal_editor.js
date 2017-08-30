@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
+
 import _u from './util';
 import config from './config';
 import Elements from './Elements';
@@ -10,7 +12,7 @@ import SVGIconBlock from './SVGIconBlock';
 import SectionArrangement from './SectionArrangement';
 import Axis from './Axis';
 import blocks from './blocks';
-import svgMap from './svgLib/_svgMap';
+import pathConfig from '../config';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -29,7 +31,7 @@ class Section extends Elements {
     this.editor = parent;
     this.blocks = new Set([]);
 
-    _u.findChildren(this.dom, '.sl-block').forEach((block) => {
+    Array.prototype.forEach.call(this.dom.querySelectorAll('.sl-block'), (block) => {
       const BlockType = Section.map[block.dataset.blockType];
       this.blocks.add(new BlockType({
         parent: this,
@@ -116,13 +118,20 @@ class Section extends Elements {
   }
 
   addSVGIcon = ({ icon }) => {
-    this.undo_point();
-    const blockDiv = document.createElement('div');
-    blockDiv.innerHTML = blocks.icon;
-    blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = svgMap[icon];
-    blockDiv.querySelector(`div.${config.classnames.content}>svg`).setAttribute('fill', 'rgba(192,192,192,1)');
-    this.dom.appendChild(blockDiv.childNodes[0]);
-    this.editor.reload({});
+    const iconFile = pathConfig.svgIconPath + icon;
+    fetch(iconFile).then((response) => {
+      return response.text();
+    }).then((text) => {
+      const blockDiv = document.createElement('div');
+      blockDiv.innerHTML = blocks.icon;
+      blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = text;
+      blockDiv.querySelector(`div.${config.classnames.content}>svg`).setAttribute('fill', 'rgba(192,192,192,1)');
+      this.dom.appendChild(blockDiv.childNodes[0]);
+      this.editor.reload({});
+      return true;
+    }).catch(() => {
+      // todo handle the exception
+    });
   }
 
   addLatex = ({ latex }) => {
