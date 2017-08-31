@@ -181,12 +181,12 @@ class Editor {
 
   // do = dargover, capture the event emmited by this dom elements
   do = (event) => {
-    event.stopPropagation();
     // redirect to the handler where the dragstart
     this.draggingElement.dragover(event);
   }
 
   dragstart = (event) => {
+    console.log('Editor dragstart');  // eslint-disable-line
     event.stopPropagation();
 
     this.dragMode = 'select';
@@ -195,6 +195,7 @@ class Editor {
     this.selectRect.style.width = '0px';
     this.selectRect.style.height = '0px';
     _u.show(this.selectRect);
+
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
 
@@ -204,8 +205,8 @@ class Editor {
     };
   }
 
-  dragover = () => {
-    event.preventDefault();
+  dragover = (event) => {
+    event.stopPropagation();
 
     event.dataTransfer.dropEffect = 'move';
 
@@ -238,8 +239,10 @@ class Editor {
     });
   }
 
-  dragend = () => {
-    event.preventDefault();
+  dragend = (event) => {
+    console.log('Editor dragend');
+
+    event.stopPropagation();
     _u.hide(this.selectRect);
   };
 

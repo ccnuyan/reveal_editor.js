@@ -21,11 +21,12 @@
     height:100%;
     margin: 0;
     border-radius: 0;
+    overflow: hidden;
+    background: #333;
 }
 
 .editor_elements, .editor_options{
     width: 240px;
-    left: 60px;
     height: 100%;
     position: absolute;
     overflow-y: auto;
@@ -33,10 +34,34 @@
 }
 .editor_elements{
     background-color: #404040;
+    transition: width 0.15s ease-in;
 }
 
 .editor_options{
     background-color: #505050;
+    transition: width 0.15s ease-in;
+}
+
+.editor_elements{
+    background-color: #404040;
+}
+
+.panel-activated{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    left: 60px;
+    opacity:1;
+    transition: left 0.1s ease-in-out;
+}
+
+.panel-deactivated{
+    position: relative;
+    opacity:0;
+    height: 0;
+    width:0;
+    left: 300px;
+    transition: left 0.1s ease-in-out;
 }
 
 // mainipulations and previewers
@@ -200,13 +225,17 @@ div.section-element-each:hover{
     border-color:white;
     border-radius: 8px;
 }
+
+.section-background-square, .color-square{
+    cursor: pointer;
+}
+
 .zindex-option{
     display: flex;
     justify-content: space-around;
 }
 
 .zindex-option>button>div{
-    transform: scale(2);
     margin:15px;
 }
 
@@ -221,11 +250,16 @@ div.section-element-each:hover{
 
 .width-option{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 
+.width-option>*{
+    margin:0 5px ;
+}
+
 .width-option>input{
+    width:80px;
     background-color: transparent;
     font-weight: bold;
     color:white;
@@ -235,13 +269,153 @@ div.section-element-each:hover{
     border-radius: 6px;
 }
 
-.border-enable-checkbox{
+/**
+ * border-enable checkbox 
+ */
+
+input[type=checkbox] {
+	visibility: hidden;
+}
+.border-enable-checkbox {
+    width: 120px;
+    height: 40px;
+    background: #333;
+    margin: 20px 60px;
+    border-radius: 50px;
+    position: relative;
+}
+
+/**
+ * Create the text for the On position
+ */
+.border-enable-checkbox:before {
+	content: 'On';
+	position: absolute;
+	top: 12px;
+	left: 13px;
+	height: 2px;
+	color: #26ca28;
+	font-size: 16px;
+}
+
+/**
+ * Create the label for the off position
+ */
+.border-enable-checkbox:after {
+	content: 'Off';
+	position: absolute;
+	top: 12px;
+	left: 84px;
+	height: 2px;
+    color:white;
+	font-size: 16px;
+}
+
+/**
+ * Create the pill to click
+ */
+.border-enable-checkbox label {
+	display: block;
+	width: 52px;
+	height: 22px;
+	border-radius: 50px;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 9px;
+	z-index: 1;
+	left: 12px;
+	background: #ddd;
+}
+
+/**
+ * Create the checkbox event for the label
+ */
+.border-enable-checkbox input[type=checkbox]:checked + label {
+	left: 60px;
+	background: #26ca28;
+}
+
+.border-additional-options{
+    opacity: 1;
+    height: 200px;
+    overflow: hidden;
+    transition: height 0.1s ease-in;
+}
+
+.hidden{
+    opacity: 0; 
+    height: 0;
+    overflow: hidden;
+    transition: height 0.1s ease-out;
+}
+
+.svg-elements-panel{
+    position: fixed;
+    right:100%;
+    top:0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    padding:0 80px 0 400px;
+    background-color: rgba(0,0,0,0.3);
+    display: block;
+    z-index: -1;
+}
+
+.show-up{
+    position: fixed;
+    opacity: 1;
+    right:0;
+    z-index: 255;
+    transition: opacity 0.2s ease-in-out, right 0.2s ease-in-out;
+}
+
+.icon-selector{
+    height: 100%;
+    padding: 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #333;
+}
+
+.shape-selector{
+    padding: 80px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #333;
 }
 
-.border-enable-checkbox>*{
-    margin:5px;
+.svg-icon-button{
+    background: transparent;
+    color: grey;
+    border: 2px solid grey;
+    font-size: 20px;
+    border-radius: 6px;
+    width: 48px;
+    height: 48px;
+    margin: 2px;
 }
 
+.svg-shape-button{
+    background: transparent;
+    border: 0px solid grey;
+    border-style: none;
+    width: 160px;
+    height: 160px;
+    margin: 2px;
+}
+
+
+.svg-shape-button>svg:hover{
+    stroke: white;
+}

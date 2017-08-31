@@ -52,7 +52,6 @@ class TransformerResizeAnchor extends Elements {
 
   // do = dargover, capture the event emmited by this dom elements
   do = (event) => {
-    event.stopPropagation();
     // redirect to the handler where the dragstart
     this.editor.draggingElement.dragover(event);
   }

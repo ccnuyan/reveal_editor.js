@@ -3,14 +3,12 @@ import Elements from './Elements';
 import _u from './util';
 import _config from './config';
 
-import rotateLeft from './svgResource/rotate-left.svg';
-
 /* eslint-disable no-param-reassign, radix */
 
 class TransformerAnchor extends Elements {
   R2D = 180 / Math.PI
   constructor({ parent }) {
-    const anchor = _u.create('div', 'rotate_anchor', _config.styles.rotateAnchor);
+    const anchor = _u.create('button', 'rotate-anchor', _config.styles.rotateAnchor);
     super({ parent, el: anchor });
 
     this.editor = this.parent.editor;
@@ -18,28 +16,7 @@ class TransformerAnchor extends Elements {
 
     this.parent.dom.appendChild(anchor);
 
-    _u.setHTML(this.dom, rotateLeft);
-
-    this.svg = this.dom.querySelector('svg');
-
-    _u.applyStyle(this.svg, {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width: 24,
-      height: 24,
-    });
-
-    _u.setAttr(this.svg, 'fill', 'lightgrey');
-
-    _u.on(this.dom, 'mouseover', () => {
-      const theme = this.editor.services.theme.getTheme();
-      _u.setAttr(this.svg, 'fill', theme.rotateAnchor);
-    });
-
-    _u.on(this.dom, 'mouseleave', () => {
-      _u.setAttr(this.svg, 'fill', 'lightgrey');
-    });
+    _u.setHTML(this.dom, '<i class="editing-ui icon-cw dead-center"></i>');
 
     this.dom.setAttribute('draggable', true);
     _u.on(this.dom, 'dragstart', this.dragstart);
@@ -68,8 +45,6 @@ class TransformerAnchor extends Elements {
 
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
-
-    debugger;
 
     const blockStyle = getComputedStyle(this.parent.parent.dom);
     const originalStyle = {
@@ -107,7 +82,7 @@ class TransformerAnchor extends Elements {
     this.parent.parent.setTransform(this.toRotate);
   }
 
-  dragend = () => {
+  dragend = (event) => {
     event.stopPropagation();
     this.parent.parent.saveTransform(this.toRotate);
     console.log(this.block.state.transform);

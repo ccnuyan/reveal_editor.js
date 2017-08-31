@@ -18,6 +18,8 @@ class Transformer extends Elements {
 
     _u.on(this.dom, 'dragstart', this.dragstart);
     _u.on(this.dom, 'dragover', this.do);
+    _u.on(this.dom, 'dragend', this.dragend);
+
 
     _u.on(this.dom, 'click', this.onClick);
     _u.on(this.dom, 'dblclick', this.onDblclick);
@@ -57,19 +59,22 @@ class Transformer extends Elements {
 
   // do = dargover, capture the event emmited by this dom elements
   do = (event) => {
-    event.stopPropagation();
     // redirect to the handler where the dragstart
     this.editor.draggingElement.dragover(event);
   }
 
   dragstart = (event) => {
+    console.log('Transformer dragstart'); // eslint-disable-line
     event.stopPropagation();
 
     // transformer.block.section.editor
     this.editor.draggingMode = 'move';
     this.editor.draggingElement = this;
 
+    this.dom.style.cursor = 'move';
+
     event.dataTransfer.effectAllowed = 'move';
+
     event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
 
     this.section.getSelectedBlocks().forEach((block) => {
@@ -95,9 +100,14 @@ class Transformer extends Elements {
     const offsetY = event.clientY - this.editor.dragfrom.y;
 
     this.section.getSelectedBlocks().forEach((block) => {
-      block.dom.style.left = `${block.originalLocation.left + offsetX}px`;
-      block.dom.style.top = `${block.originalLocation.top + offsetY}px`;
+      Math.abs(offsetX) > 1 && (block.dom.style.left = `${block.originalLocation.left + offsetX}px`);
+      Math.abs(offsetX) > 1 && (block.dom.style.top = `${block.originalLocation.top + offsetY}px`);
     });
+  }
+
+  dragend = (event) => {
+    event.stopPropagation();
+    this.dom.style.cursor = 'default';
   }
 }
 

@@ -100,19 +100,22 @@ class Manipulations extends Component {
     return (
       <div className="editor_manipulations">
         <button onTouchTap={ this.preview } className="editor-button">
-          <i className="icon-play"></i>
+          <i className="icon-controller-play"></i>
         </button>
         <button onTouchTap={ this.undo } className="editor-button">
-          <i className="icon-reply"></i>
+          <i className="icon-level-up"></i>
         </button>
         <button onTouchTap={ this.redo } className="editor-button">
-          <i className="icon-share"></i>
-        </button>
-        <button onTouchTap={ this.export } className="editor-button">
-          <i className="icon-save"></i>
+          <i className="icon-level-down"></i>
         </button>
         <button className="editor-button">
-          <i className="icon-align-justify"></i>
+          <i className="icon-grid"></i>
+        </button>
+        <button className="editor-button">
+          <i className="icon-save"></i>
+        </button>
+        <button onTouchTap={ this.export } className="editor-button">
+          <i className="icon-download"></i>
         </button>
       </div>
     );

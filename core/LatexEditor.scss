@@ -1,0 +1,25 @@
+.latex-editor button{
+    position :absolute;
+    top :20px;
+    width :48px;
+    height :48px;
+    font-size :32px;
+    color:lightgrey;
+    border-style:none;
+    background: transparent;
+}
+
+.latex-editor button.close{
+    right :20px;
+}
+.latex-editor button.check{
+    right :88px;
+}
+
+
+.latex-editor button.close:hover{
+    color :green;
+}
+.latex-editor button.check:hover{
+    color :darkred;
+}

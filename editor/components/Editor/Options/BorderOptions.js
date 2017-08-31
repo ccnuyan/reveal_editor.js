@@ -48,20 +48,22 @@ class BorderOptions extends Component {
 
     return (
       <div>
-        <div className="border-enable-checkbox">
-          <input checked={ selectedBlock.borderStyle !== 'none' } onChange={ this.onChange } type="checkbox" name="example"/>
+        {/* <div className="border-enable-checkbox">
+          <input className="big-checkbox" checked={ selectedBlock.borderStyle !== 'none' } onChange={ this.onChange } type="checkbox" name="example"/>
           <label htmlFor="example" style={ { color: 'white' } }>Enable</label>
+        </div> */}
+        <div className="border-enable-checkbox">
+          <input type="checkbox" value={ selectedBlock.borderStyle === 'none' ? 0 : 1 } id="boder-enbale-cb" name="" onChange={ this.onChange } />
+          <label htmlFor="boder-enbale-cb"></label>
         </div>
-        {selectedBlock.borderStyle !== 'none' ?
+        <div className={ `border-additional-options${(selectedBlock.borderStyle === 'none') ? ' hidden' : ''}` }>
           <OptionContainer isMain={ false } label={ 'Border Width' }>
             <WidthOptions suffix={ 'px' } blockProp={ 'borderWidth' }/>
-          </OptionContainer> : ''
-        }
-
-        {selectedBlock.borderStyle !== 'none' ?
+          </OptionContainer>
           <OptionContainer isMain={ false } label={ 'Border Color' }>
             <ColorOptions blockProp={ 'borderColor' }/>
-          </OptionContainer> : ''}
+          </OptionContainer>
+        </div>
       </div>
     );
   }

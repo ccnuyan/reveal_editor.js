@@ -47,11 +47,11 @@ class ZIndexOptions extends Component {
     return (
       <div className="zindex-option">
         <button className="editor-button" onTouchTap={ this.changeZIndex } data-change-direction='-'>
-          <div className="icon-chevron-down"></div>
+          <div className="icon-controller-next" style={ { transform: 'scale(2) rotate(90deg)' } }></div>
           To Bottom
         </button>
         <button className="editor-button" onTouchTap={ this.changeZIndex } data-change-direction='+'>
-          <div className="icon-chevron-up"></div>
+          <div className="icon-controller-play" style={ { transform: 'scale(2) rotate(270deg)' } }></div>
             Level + 1
         </button>
       </div>

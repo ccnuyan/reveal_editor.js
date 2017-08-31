@@ -1,15 +1,5 @@
 /* eslint-disable no-param-reassign, radix */
 
-import plusSvg from './svgResource/plus.svg';
-import arrowLeft from './svgResource/arrow-left2.svg';
-import arrowRight from './svgResource/arrow-right2.svg';
-import arrowUp from './svgResource/arrow-up2.svg';
-import arrowDown from './svgResource/arrow-down2.svg';
-import embedLeft from './svgResource/arrow-down-left2.svg';
-import embedRight from './svgResource/arrow-down-right2.svg';
-import batchLeft from './svgResource/arrow-left.svg';
-import batchRight from './svgResource/arrow-right.svg';
-import bin from './svgResource/bin.svg';
 import templates from './templates';
 
 class SectionArrangement {
@@ -21,15 +11,15 @@ class SectionArrangement {
   }
 
   initializeSectionAddButtons = () => {
-    this.rightAdd = document.createElement('div');
-    this.rightAdd.innerHTML = plusSvg;
+    this.rightAdd = document.createElement('button');
+    this.rightAdd.innerHTML = '<i class="icon-plus dead-center" />';
     this.rightAdd.dataset.direction = 'right';
-    this.bottomAdd = document.createElement('div');
-    this.bottomAdd.innerHTML = plusSvg;
+    this.bottomAdd = document.createElement('button');
+    this.bottomAdd.innerHTML = '<i class="icon-plus dead-center" />';
     this.bottomAdd.dataset.direction = 'bottom';
 
-    this.rightAdd.classList.add('editing-ui', 'section-manipulator', 'section-add');
-    this.bottomAdd.classList.add('editing-ui', 'section-manipulator', 'section-add');
+    this.rightAdd.setAttribute('class', 'editing-ui section-manipulator section-add');
+    this.bottomAdd.setAttribute('class', 'editing-ui section-manipulator section-add');
 
     this.section.dom.appendChild(this.rightAdd);
     this.section.dom.appendChild(this.bottomAdd);
@@ -41,45 +31,45 @@ class SectionArrangement {
   }
 
   initializeArrangementButtons = () => {
-    this.left = document.createElement('div');
-    this.left.innerHTML = arrowLeft;
+    this.left = document.createElement('button');
+    this.left.innerHTML = '<i class="icon-angle-left dead-center" />';
     this.left.dataset.direction = 'left';
-    this.left.classList.add('section-manipulator', 'arranging-ui');
+    this.left.setAttribute('class', 'section-manipulator arranging-ui');
     this.right = document.createElement('div');
-    this.right.innerHTML = arrowRight;
+    this.right.innerHTML = '<i class="icon-angle-right dead-center" />';
     this.right.dataset.direction = 'right';
-    this.right.classList.add('section-manipulator', 'arranging-ui');
+    this.right.setAttribute('class', 'section-manipulator arranging-ui');
     this.up = document.createElement('div');
-    this.up.innerHTML = arrowUp;
+    this.up.innerHTML = '<i class="icon-angle-up dead-center" />';
     this.up.dataset.direction = 'up';
-    this.up.classList.add('section-manipulator', 'arranging-ui');
+    this.up.setAttribute('class', 'section-manipulator arranging-ui');
     this.down = document.createElement('div');
-    this.down.innerHTML = arrowDown;
+    this.down.innerHTML = '<i class="icon-angle-down dead-center" />';
     this.down.dataset.direction = 'down';
-    this.down.classList.add('section-manipulator', 'arranging-ui');
+    this.down.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.embedleft = document.createElement('div');
-    this.embedleft.innerHTML = embedLeft;
+    this.embedleft.innerHTML = '<i class="icon-angle-down dead-center" />';
     this.embedleft.dataset.direction = 'embedleft';
-    this.embedleft.classList.add('section-manipulator', 'arranging-ui');
+    this.embedleft.setAttribute('class', 'section-manipulator arranging-ui');
     this.embedright = document.createElement('div');
-    this.embedright.innerHTML = embedRight;
+    this.embedright.innerHTML = '<i class="icon-angle-right dead-center" />';
     this.embedright.dataset.direction = 'embedright';
-    this.embedright.classList.add('section-manipulator', 'arranging-ui');
+    this.embedright.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.batchleft = document.createElement('div');
-    this.batchleft.innerHTML = batchLeft;
+    this.batchleft.innerHTML = '<i class="icon-angle-double-left dead-center" />';
     this.batchleft.dataset.direction = 'batchleft';
-    this.batchleft.classList.add('section-manipulator', 'arranging-ui');
+    this.batchleft.setAttribute('class', 'section-manipulator arranging-ui');
     this.batchright = document.createElement('div');
-    this.batchright.innerHTML = batchRight;
+    this.batchright.innerHTML = '<i class="icon-angle-double-right dead-center" />';
     this.batchright.dataset.direction = 'batchright';
-    this.batchright.classList.add('section-manipulator', 'arranging-ui');
+    this.batchright.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.remove = document.createElement('div');
-    this.remove.innerHTML = bin;
+    this.remove.innerHTML = '<i class="icon-trash-o dead-center" />';
     this.remove.dataset.direction = 'remove';
-    this.remove.classList.add('section-manipulator', 'arranging-ui');
+    this.remove.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.arrangingButtons = this.getEnabledArrangingButtons();
 

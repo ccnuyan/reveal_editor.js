@@ -26,7 +26,7 @@ class RemoveOptions extends Component {
     return (
       <div className="remove-option">
         <button className="editor-button" onTouchTap={ this.onRemove } data-change-direction='+'>
-          <div className="icon-trash"></div>
+          <div className="icon-trash-o"></div>
         </button>
       </div>
     );

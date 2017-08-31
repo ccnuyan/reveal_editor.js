@@ -21,7 +21,7 @@ const styles = {
     left: '0px',
     top: '0px',
     zIndex: '255',
-    cursor: 'pointer',
+    // cursor: 'pointer',
     border: '2px solid rgb(27, 173, 225)',
     background: 'rgba(0,0,0,0.1)',
   },

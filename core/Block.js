@@ -154,8 +154,8 @@ class Block extends Elements {
     const targetxt = (m.m11 * targetx) + (m.m12 * targety);
     const targetyt = (m.m21 * targetx) + (m.m22 * targety);
 
-    const dx = originxt + intvx - targetxt;
-    const dy = originyt + intvy - targetyt;
+    const dx = (originxt + intvx) - targetxt;
+    const dy = (originyt + intvy) - targetyt;
 
     this.dom.style.left = `${os.left + dx}px`;
     this.dom.style.top = `${os.top - dy}px`;

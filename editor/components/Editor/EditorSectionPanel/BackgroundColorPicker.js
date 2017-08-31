@@ -78,7 +78,8 @@ class ThemeAndBackgroundColorPicker extends Component {
           <div className="section-background-square"
           style={ { backgroundColor: this.props.currentSection.backgroundColor } }
           onTouchTap={ this.handleOpen }
-          ></div>
+          >
+          </div>
           <button className={ 'apply-section-background-to-all editor-button' }
               onTouchTap={ this.handleChangeBackgroundToAll }
           >Apply to all</button>

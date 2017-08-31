@@ -12,7 +12,8 @@ import SVGIconBlock from './SVGIconBlock';
 import SectionArrangement from './SectionArrangement';
 import Axis from './Axis';
 import blocks from './blocks';
-import pathConfig from '../config';
+
+const svgIconPath = './static/icomoon/SVG/';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -29,11 +30,11 @@ class Section extends Elements {
   constructor({ parent, el }) {
     super({ parent, el });
     this.editor = parent;
-    this.blocks = new Set([]);
+    this.blocks = [];
 
     Array.prototype.forEach.call(this.dom.querySelectorAll('.sl-block'), (block) => {
       const BlockType = Section.map[block.dataset.blockType];
-      this.blocks.add(new BlockType({
+      this.blocks.push(new BlockType({
         parent: this,
         el: block,
       }));
@@ -110,6 +111,7 @@ class Section extends Elements {
   }
 
   addSVGShape = ({ shape }) => {
+    if (!blocks.shape[shape]) return;
     this.undo_point();
     const blockDiv = document.createElement('div');
     blockDiv.innerHTML = blocks.shape[shape];
@@ -118,7 +120,7 @@ class Section extends Elements {
   }
 
   addSVGIcon = ({ icon }) => {
-    const iconFile = pathConfig.svgIconPath + icon;
+    const iconFile = svgIconPath + icon;
     fetch(iconFile).then((response) => {
       return response.text();
     }).then((text) => {
@@ -161,7 +163,13 @@ class Section extends Elements {
   }
 
   getSelectedBlocks() {
-    return _.filter([...this.blocks], { state: { mode: 'manipulating' } });
+    const selectedBlocks = [];
+    this.blocks.forEach((blk) => {
+      if (blk.state.mode === 'manipulating' || blk.state.mode === 'editing') {
+        selectedBlocks.push(blk);
+      }
+    });
+    return selectedBlocks;
   }
 
   toPreview() {

@@ -1,26 +1,41 @@
 *,
 *:before,
 *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+button{
     outline:none;
 }
+
+.dead-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+  
 
 .reveal-editor div,.reveal-editor span,.reveal-editor button{
     font-family: "Helvetica Neue", Helvetica,Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif; 
     color:white;
 }
 
-.reveal-editor button.editor-button{
+.editor-button{
     background: transparent;
     border: 0px;
     border-radius: 6px;
 }
 
-.reveal-editor button.editor-button:hover{
+.editor-button:hover{
     background-color:#733785;
     transition:all 0.2s ease-in;
 }
 
-.reveal-editor button.editor-button:active{
+.editor-button:active{
     background-color:#3B2C40;
 }

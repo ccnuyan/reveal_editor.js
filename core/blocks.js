@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const blocks = {
   shape: {
-    Circle: `<div class="sl-block" data-block-type="shape" data-svg-shape="circle" style="width: 200px; height: 200px;">
+    circle: `<div class="sl-block" data-block-type="shape" data-svg-shape="circle" style="width: 200px; height: 200px;">
             <div class="sl-block-content" style="width: 100%; height: 100%;">
                 <svg id="SvgjsSvg1018" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     xmlns:svgjs="http://svgjs.com/svgjs">
@@ -9,7 +9,7 @@ const blocks = {
                 </svg>
             </div>
         </div>`,
-    Ellipse: `<div class="sl-block" data-block-type="shape" data-svg-shape="ellipse" style="width: 200px; height: 200px;">
+    ellipse: `<div class="sl-block" data-block-type="shape" data-svg-shape="ellipse" style="width: 200px; height: 200px;">
             <div class="sl-block-content" style="width: 100%; height: 100%;">
                 <svg id="SvgjsSvg1011" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     xmlns:svgjs="http://svgjs.com/svgjs">
@@ -18,7 +18,7 @@ const blocks = {
                 </svg>
             </div>
         </div>`,
-    Rect: `<div class="sl-block" data-block-type="shape" data-svg-shape="rect" style="width: 200px; height: 200px;">
+    rect: `<div class="sl-block" data-block-type="shape" data-svg-shape="rect" style="width: 200px; height: 200px;">
             <div class="sl-block-content" style="width: 100%; height: 100%;">
                 <svg id="SvgjsSvg1006" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     xmlns:svgjs="http://svgjs.com/svgjs">

@@ -1,8 +1,9 @@
+import './LatexEditor.scss';
 
 /* eslint-disable max-len */
 class LatexEditor {
   constructor() {
-    if (document.body.querySelector('#latex_editor')) {
+    if (document.body.querySelector('.latex-editor')) {
       throw new Error('that shouldnot happen');
     } else {
       this.createFrame();
@@ -12,7 +13,7 @@ class LatexEditor {
 
   createFrame() {
     this.frame = document.createElement('div');
-    this.frame.setAttribute('id', 'latex_editor');
+    this.frame.setAttribute('class', 'latex-editor');
     this.frame.style.left = '0';
     this.frame.style.top = '0';
     this.frame.style.position = 'fixed';
@@ -25,30 +26,15 @@ class LatexEditor {
       event.stopPropagation();
     });
 
-    this.close = document.createElement('div');
-    this.close.innerHTML = `<svg width="100%" height="100%" id="icon-close" viewBox="0 0 22 28" fill="grey">
-    <title>close</title>
-        <path d="M20.281 20.656c0 0.391-0.156 0.781-0.438 1.062l-2.125 2.125c-0.281 0.281-0.672 0.438-1.062 0.438s-0.781-0.156-1.062-0.438l-4.594-4.594-4.594 4.594c-0.281 0.281-0.672 0.438-1.062 0.438s-0.781-0.156-1.062-0.438l-2.125-2.125c-0.281-0.281-0.438-0.672-0.438-1.062s0.156-0.781 0.438-1.062l4.594-4.594-4.594-4.594c-0.281-0.281-0.438-0.672-0.438-1.062s0.156-0.781 0.438-1.062l2.125-2.125c0.281-0.281 0.672-0.438 1.062-0.438s0.781 0.156 1.062 0.438l4.594 4.594 4.594-4.594c0.281-0.281 0.672-0.438 1.062-0.438s0.781 0.156 1.062 0.438l2.125 2.125c0.281 0.281 0.438 0.672 0.438 1.062s-0.156 0.781-0.438 1.062l-4.594 4.594 4.594 4.594c0.281 0.281 0.438 0.672 0.438 1.062z"></path>
-    </svg>`;
-    this.close.style.position = 'absolute';
-    this.close.style.right = '20px';
-    this.close.style.top = '20px';
-    this.close.style.width = '48px';
-    this.close.style.height = '48px';
+    this.close = document.createElement('button');
+    this.close.setAttribute('class', ' close');
+    this.close.innerHTML = '<i class="icon-close dead-center" />';
 
     this.closesvg = this.close.querySelector('svg');
 
-    this.check = document.createElement('div');
-    this.check.innerHTML = `<svg width="100%" height="100%" id="icon-close" viewBox="0 0 28 28" fill="grey">
-    <title>check</title>
-        <path d="M26.109 8.844c0 0.391-0.156 0.781-0.438 1.062l-13.438 13.438c-0.281 0.281-0.672 0.438-1.062 0.438s-0.781-0.156-1.062-0.438l-7.781-7.781c-0.281-0.281-0.438-0.672-0.438-1.062s0.156-0.781 0.438-1.062l2.125-2.125c0.281-0.281 0.672-0.438 1.062-0.438s0.781 0.156 1.062 0.438l4.594 4.609 10.25-10.266c0.281-0.281 0.672-0.438 1.062-0.438s0.781 0.156 1.062 0.438l2.125 2.125c0.281 0.281 0.438 0.672 0.438 1.062z"></path>
-    </symbol>`;
-    this.check.style.position = 'absolute';
-    this.check.style.right = '88px';
-    this.check.style.top = '20px';
-    this.check.style.width = '48px';
-    this.check.style.height = '48px';
-    this.check.style.height = '48px';
+    this.check = document.createElement('button');
+    this.check.setAttribute('class', ' check');
+    this.check.innerHTML = '<i class="icon-check dead-center" />';
 
     this.checksvg = this.check.querySelector('svg');
 

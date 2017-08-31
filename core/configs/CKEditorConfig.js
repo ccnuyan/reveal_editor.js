@@ -3,9 +3,10 @@ const ckeditorConfig = {};
 const ckeditorPlugins = 'basicstyles,blockquote,colorbutton,colordialog,dialogadvtab,enterkey,entities,floatingspace,format,htmlwriter,justify,link,list,magicline,removeformat,toolbar,remove-extra-nbsp'; // eslint-disable-line
 
 ckeditorConfig.toolbar = [
-  ['Format', 'FontSize', 'TextColor'],
+  // ['Format', 'FontSize', 'TextColor'],
+  ['Format'],
   ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'],
-  ['NumberedList', 'BulletedList', '-', 'Blockquote'],
+  // ['NumberedList', 'BulletedList', '-', 'Blockquote'],
   ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
   ['Link', 'Unlink'],
 ];

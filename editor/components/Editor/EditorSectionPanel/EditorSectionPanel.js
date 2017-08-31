@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import svgFilesMap from '../../../../icomoon_icons/svgFilesMap';
 import BackgroundColorPicker from './BackgroundColorPicker';
+import IconSelector from './IconSelector';
+import ShapeSelector from './ShapeSelector';
+
 
 /* eslint-disable max-len */
 class Elements extends Component {
@@ -12,15 +14,9 @@ class Elements extends Component {
     editor: PropTypes.object.isRequired,
   }
 
-  getIcons() {
-    if (!this.icons) {
-      this.icons =
-      Object.keys(svgFilesMap)
-      .map((key) => {
-        return (<span className={ `big svg-icon icon-${key}` } key={ key } data-icon-file={ svgFilesMap[key] } onTouchTap={ this.onSelectIcon }></span>);
-      });
-    }
-    return this.icons;
+  state ={
+    showIcons: false,
+    showShapes: false,
   }
 
   render = () => {
@@ -48,13 +44,13 @@ class Elements extends Component {
           </div>
           <div onTouchTap={ this.onAddSVGShape } className={ 'section-element-each' }>
             <div>
-              <i className="icon-circle"></i>
+              <i className="icon-document-landscape"></i>
             </div>
             <span>SHAPES</span>
           </div>
           <div onTouchTap={ this.onAddSVGIcon } className={ 'section-element-each' }>
             <div>
-              <i className="icon-cube"></i>
+              <i className="icon-smile-o"></i>
             </div>
             <span>ICONS</span>
           </div>
@@ -66,6 +62,12 @@ class Elements extends Component {
           </div>
         </div>
         <input onChange={ this.onSelectImage } accept="image/png, image/jpeg" ref={ c => this.imageFileInput = c } type="file" name="file" id="image_file_select" className="inputfile" style={ { display: 'none' } }/>
+        <div onTouchTap={ this.hideShapes } className={ `svg-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
+          <ShapeSelector hideShapes={ this.hideShapes } />
+        </div>
+        <div onTouchTap={ this.hideIcons } className={ `svg-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
+          <IconSelector hideIcons={ this.hideIcons } />
+        </div>
       </div>
     );
   }
@@ -82,41 +84,40 @@ class Elements extends Component {
     reader.readAsDataURL(files[0]);
   }
 
-  onSelectIcon = (event) => {
-    window.RevealEditor.currentSection
-      .addSVGIcon({ icon: event.currentTarget.dataset.iconFile });
-    $('.ui.modal').modal('hide');
-  }
-
-  onAddNewText = () => {
+  onAddNewText = (event) => {
     event.preventDefault();
     window.RevealEditor.currentSection.addText();
   }
 
-  onAddNewImage = () => {
+  onAddNewImage = (event) => {
     event.preventDefault();
     this.imageFileInput.click();
   }
 
-  onAddSVGShape = () => {
+  onAddSVGShape = (event) => {
     event.preventDefault();
-    // window.RevealEditor.currentSection.addSVGShape({ shape: 'Rect' });
-    // window.RevealEditor.currentSection.addSVGShape({ shape: 'Ellipse' });
-    // window.RevealEditor.currentSection.addSVGShape({ shape: 'Circle' });
+    this.setState({ showShapes: true });
   }
 
-  onAddSVGIcon = () => {
+  onAddSVGIcon = (event) => {
     event.preventDefault();
-    $('.ui.modal').modal({ allowMultiple: false }).modal('show');
+    this.setState({ showIcons: true });
   }
 
-  onAddLatex = () => {
+  hideIcons = () => {
+    this.setState({ showIcons: false });
+  }
+
+  hideShapes = () => {
+    this.setState({ showShapes: false });
+  }
+
+  onAddLatex = (event) => {
     event.preventDefault();
     window.RevealEditor.currentSection.addLatex({ latex: 'a^2+2ab+b^2=(a+b)^2' });
   }
 
-
-  onTest = () => {
+  onTest = (event) => {
     event.preventDefault();
   }
 }

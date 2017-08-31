@@ -18,9 +18,12 @@ class Editor extends Component {
     return (
       <div className='editor_panel'>
         <Manipulations></Manipulations>
-        {
-          this.props.selectedBlocks.length ? <Options></Options> : <EditorSectionPanel></EditorSectionPanel>
-        }
+        <div className={ this.props.selectedBlocks.length ? 'panel-activated' : 'panel-deactivated' }>
+          <Options></Options>
+        </div>
+        <div className={ this.props.selectedBlocks.length ? 'panel-deactivated' : 'panel-activated' }>
+          <EditorSectionPanel></EditorSectionPanel>
+        </div>
       </div>
     );
   }

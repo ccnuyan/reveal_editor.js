@@ -17,9 +17,12 @@ class BlockContent extends Elements {
     });
 
     _u.on(this.dom, 'click', (event) => {
+      // here is editor state
       if (this.editor.state.mode === 'previewing') {
         return;
       }
+
+      // here is block state
       if (this.block.state.mode !== 'editing') {
         event.stopPropagation();
         this.section.blocks.forEach((block) => {

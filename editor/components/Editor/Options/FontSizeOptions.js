@@ -67,7 +67,7 @@ class FontSizeOptions extends Component {
           <div className="icon-plus"></div>
         </button>
         <button className="editor-button" onTouchTap={ this.changeFontSize } data-change-direction='0'>
-          <div className="icon-remove"></div>
+          <div className="icon-cw" ></div>
         </button>
       </div>
     );

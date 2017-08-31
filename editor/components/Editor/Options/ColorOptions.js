@@ -2,14 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import reactCSS from 'reactcss';
-import { SwatchesPicker, SketchPicker } from 'react-color';
+import { SketchPicker } from 'react-color';
 
 import actions from '../../../store/actions';
-
-const pickerMap = {
-  SwatchesPicker,
-  SketchPicker,
-};
 
 class ColorOptions extends Component {
 
@@ -22,11 +17,10 @@ class ColorOptions extends Component {
 
   state = {
     displayColorPicker: false,
-    picker: 'SwatchesPicker',
   };
 
-  handleClick = (event) => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker, picker: event.currentTarget.dataset.picker });
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
 
   handleClose = () => {
@@ -47,7 +41,7 @@ class ColorOptions extends Component {
     default: {
       popover: {
         position: 'absolute',
-        margin: '10px',
+        margin: '50px 10px',
         zIndex: '2',
       },
       cover: {
