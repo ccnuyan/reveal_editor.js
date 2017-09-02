@@ -1,4 +1,6 @@
 import Block from './Block';
+import DDMRR from './ddmrr';
+
 /* eslint-disable no-param-reassign, radix, import/no-unresolved */
 class SVGIconBlock extends Block {
 
@@ -31,44 +33,16 @@ class SVGIconBlock extends Block {
     }
   }
 
-  resize_e({ os, ox, oy }) {
-    super.resize_e({ os, ox, oy });
-    this.relocate_e({ os });
-  }
-
-  resize_w({ os, ox, oy }) {
-    super.resize_w({ os, ox, oy });
-    this.relocate_w({ os });
-  }
-
-  resize_n({ os, ox, oy }) {
-    super.resize_n({ os, ox, oy });
-    this.relocate_n({ os });
-  }
-
-  resize_s({ os, ox, oy }) {
-    super.resize_s({ os, ox, oy });
-    this.relocate_s({ os });
-  }
-
-  resize_ne({ os, ox, oy }) {
-    this.resize_n({ os, ox, oy });
-    this.relocate_ne({ os });
-  }
-
-  resize_nw({ os, ox, oy }) {
-    this.resize_n({ os, ox, oy });
-    this.relocate_nw({ os });
-  }
-
-  resize_se({ os, ox, oy }) {
-    this.resize_s({ os, ox, oy });
-    this.relocate_se({ os });
-  }
-
-  resize_sw({ os, ox, oy }) {
-    this.resize_s({ os, ox, oy });
-    this.relocate_sw({ os });
+  toManipulate() {
+    super.toManipulate();
+    this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
+      resize: {
+        key: 'resize',
+        enable: true,
+        preserveAspectRatio: true,
+        anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
+      },
+    });
   }
 }
 

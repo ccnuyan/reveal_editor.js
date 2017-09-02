@@ -1,6 +1,7 @@
 import CKEditorConfig from './configs/CKEditorConfig';
 import _u from './util';
 import Block from './Block';
+import DDMRR from './ddmrr';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -12,7 +13,7 @@ class TextBlock extends Block {
     this.anchorTypes = ['e', 'w'];
   }
 
-  getState = () => {
+  getState() {
     const style = getComputedStyle(this.dom);
     return {
       ...this.state,
@@ -26,33 +27,43 @@ class TextBlock extends Block {
     };
   }
 
-  setState = (params) => {
+  setState(params) {
     Object.keys(params).forEach((key) => {
       this.dom.style[key] = params[key];
     });
   }
 
-  resize_e({ os, ox, oy }) {
-    super.resize_e({ os, ox, oy });
-    this.relocate_e({ os });
+  toManipulate() {
+    this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
+      resize: {
+        key: 'resize',
+        enable: true,
+        anchors: ['e', 'w'],
+      },
+    });
+
+    this.ddmrr.emitter.on('dblclick', () => {
+      this.ddmrr.release();
+      this.ddmrr = null;
+      this.toEdit();
+    });
+
+    super.toManipulate();
   }
 
-  resize_w({ os, ox, oy }) {
-    super.resize_w({ os, ox, oy });
-    this.relocate_w({ os });
-  }
-
-  beforeToPreview = () => {
+  toPreview = () => {
     if (this.CKEDITORInstance) {
       this.CKEDITORInstance.destroy();
     }
     this.blockContent.dom.setAttribute('contenteditable', false);
-    this.blockTransformer.hide();
+    super.toPreview();
+  }
+
+  stopPropagation = (event) => {
+    event.stopPropagation();
   }
 
   toEdit() {
-    super.toEdit();
-
     this.editor.dom.setAttribute('draggable', false);
     this.state.mode = 'editing';
     this.blockContent.dom.setAttribute('contenteditable', 'true');
@@ -71,10 +82,9 @@ class TextBlock extends Block {
     if (!initiatedFlag) {
       this.CKEDITORInstance = CKEDITOR.inline(this.blockContent.dom, CKEditorConfig);
     }
-    this.blockTransformer.hide();
     _u.clearUserSelection();
 
-    this.editor.debouncedEventEmit();
+    super.toEdit();
   }
 }
 

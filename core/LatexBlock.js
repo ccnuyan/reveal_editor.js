@@ -1,6 +1,8 @@
 import LatexEditor from './LatexEditor';
 import _u from './util';
 import Block from './Block';
+import DDMRR from './ddmrr';
+
 
 class LatexBlock extends Block {
   anchorTypes = [];
@@ -34,9 +36,18 @@ class LatexBlock extends Block {
     });
   }
 
+  toManipulate() {
+    super.toManipulate();
+    this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
+      resize: {
+        key: 'resize',
+        enable: false,
+      },
+    });
+  }
+
   toEdit() {
     super.toEdit();
-
     _u.clearUserSelection();
     this.editor.dom.setAttribute('draggable', false);
     const originalTex = this.blockContent.dom.querySelector('span.katex>span.katex-mathml>math>semantics>annotation').innerHTML;
@@ -45,13 +56,12 @@ class LatexBlock extends Block {
       this.editor.latexEditor = new LatexEditor();
     }
     this.editor.latexEditor.load({ latex: originalTex }, ({ input }) => {
-      console.log(input);
       this.load({ latex: input });
     });
   }
 
-  beforeToPreview = () => {
-    this.blockTransformer.hide();
+  toPreview() {
+    super.toPreview();
     if (this.blockContent.dom.querySelector('span') === null) {
       katex.render(this.blockContent.dom.innerHTML, this.blockContent.dom);
     }

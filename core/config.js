@@ -29,8 +29,7 @@ const styles = {
     position: 'absolute',
     zIndex: '255',
     pointerEvents: 'none',
-    border: '2px solid rgba(27, 173, 225, 0.7)',
-    background: 'rgba(27, 173, 225, 0.1)',
+    border: '2px solid rgb(27, 173, 225)',
     display: 'none',
   },
   axis: {

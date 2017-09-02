@@ -1,4 +1,5 @@
 import Block from './Block';
+import DDMRR from './ddmrr';
 
 /* eslint-disable no-param-reassign, radix */
 
@@ -36,52 +37,16 @@ class SVGShapeBlock extends Block {
     this.svgShape.setAttribute('fill', fill);
   }
 
-  resize_e({ os, ox, oy }) {
-    super.resize_e({ os, ox, oy });
-    this.relocate_e({ os });
-    this.rearrange();
-  }
-
-  resize_w({ os, ox, oy }) {
-    super.resize_w({ os, ox, oy });
-    this.relocate_w({ os });
-    this.rearrange();
-  }
-
-  resize_n({ os, ox, oy }) {
-    super.resize_n({ os, ox, oy });
-    this.relocate_n({ os });
-    this.rearrange();
-  }
-
-  resize_s({ os, ox, oy }) {
-    super.resize_s({ os, ox, oy });
-    this.relocate_s({ os });
-    this.rearrange();
-  }
-
-  resize_ne({ os, ox, oy }) {
-    this.resize_n({ os, ox, oy });
-    this.relocate_ne({ os });
-    this.rearrange();
-  }
-
-  resize_nw({ os, ox, oy }) {
-    this.resize_n({ os, ox, oy });
-    this.relocate_nw({ os });
-    this.rearrange();
-  }
-
-  resize_se({ os, ox, oy }) {
-    this.resize_s({ os, ox, oy });
-    this.relocate_se({ os });
-    this.rearrange();
-  }
-
-  resize_sw({ os, ox, oy }) {
-    this.resize_s({ os, ox, oy });
-    this.relocate_sw({ os });
-    this.rearrange();
+  toManipulate() {
+    super.toManipulate();
+    this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
+      resize: {
+        key: 'resize',
+        enable: true,
+        preserveAspectRatio: true,
+        anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
+      },
+    });
   }
 
   rearrange() {

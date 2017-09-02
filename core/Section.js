@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 
 import _u from './util';
@@ -44,10 +43,6 @@ class Section extends Elements {
   afterInstanciated = () => {
     this.axis = new Axis({ section: this });
     this.arrangment = new SectionArrangement({ parent: this });
-
-    this.blocks.forEach((block) => {
-      block.afterInstanciated();
-    });
   }
 
   getNewBlock = (type, content) => {
@@ -156,10 +151,10 @@ class Section extends Elements {
         toBeRemoved.push(block);
       }
     });
-
     toBeRemoved.forEach((block) => {
       block.remove();
     });
+    this.editor.reload({});
   }
 
   getSelectedBlocks() {
