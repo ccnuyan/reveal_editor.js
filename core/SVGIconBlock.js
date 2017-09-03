@@ -15,12 +15,14 @@ class SVGIconBlock extends Block {
     this.draw = this.blockContent.dom.querySelector('svg');
     this.draw.setAttribute('width', '100%');
     this.draw.setAttribute('height', '100%');
-
-    this.state.fill = this.draw.getAttribute('fill');
   }
 
   getState = () => {
-    return this.state;
+    const style = getComputedStyle(this.draw);
+    return {
+      ...this.state,
+      fill: this.getColor(style.fill),
+    };
   }
 
   setState = (params) => {
@@ -31,6 +33,8 @@ class SVGIconBlock extends Block {
         path.removeAttribute('fill');
       });
     }
+
+    return this.getState();
   }
 
   toManipulate() {

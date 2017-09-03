@@ -16,24 +16,26 @@ class LatexBlock extends Block {
     this.load({});
   }
 
-  getState = () => {
+  getState() {
     const style = getComputedStyle(this.dom);
     return {
       ...this.state,
-      borderWidth: style.borderWidth,
-      borderStyle: style.borderStyle,
-      borderColor: style.borderColor,
-      color: style.color,
-      backgroundColor: style.backgroundColor,
-      fontSize: this.dom.style.fontSize ? this.dom.style.fontSize : '100%',
-      zIndex: style.zIndex === 'auto' ? 0 : style.zIndex,
+      borderWidth: this.getLength(style.borderWidth),
+      borderStyle: this.getBorderStyle(style.borderStyle),
+      borderColor: this.getColor(style.borderColor),
+      color: this.getColor(style.color),
+      backgroundColor: this.getColor(style.backgroundColor),
+      fontSize: this.getFontSize(this.dom.style.fontSize),
+      zIndex: this.getZIndex(style.zIndex),
     };
   }
 
-  setState = (params) => {
+  setState(params) {
     Object.keys(params).forEach((key) => {
       this.dom.style[key] = params[key];
     });
+
+    return this.getState();
   }
 
   toManipulate() {
@@ -44,6 +46,14 @@ class LatexBlock extends Block {
         enable: false,
       },
     });
+
+    this.ddmrr.emitter.on('dblclick', () => {
+      this.ddmrr.release();
+      this.ddmrr = null;
+      this.toEdit();
+    });
+
+    super.toManipulate();
   }
 
   toEdit() {

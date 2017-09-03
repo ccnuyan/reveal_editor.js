@@ -15,11 +15,8 @@ class RemoveOptions extends Component {
   }
 
   onRemove = () => {
-    const blocksToBeRemoved = window.RevealEditor.currentSection.getSelectedBlocks();
-    blocksToBeRemoved.forEach((block) => {
-      block.remove();
-    });
-    this.props.set_selected_blocks([]);
+    window.RevealEditor.currentSection.removeSelectedBlocks();
+    this.props.set_selected_blocks(window.RevealEditor.currentSection.getSelectedBlockStates());
   }
 
   render = () => {

@@ -222,17 +222,15 @@ class Editor {
     this.selectRect.style.height = `${Math.abs(offsetY)}px`;
 
     const rectloc = _u.offset(this.selectRect);
-    const rectStyle = getComputedStyle(this.selectRect);
 
     this.currentSection.blocks.forEach((block) => {
       const blockloc = _u.offset(block.dom);
-      const blockStyle = getComputedStyle(block.dom);
 
       if (
         rectloc.left < blockloc.left &&
         rectloc.top < blockloc.top &&
-        rectloc.left + parseInt(rectStyle.width) > blockloc.left + parseInt(blockStyle.width) &&
-        rectloc.top + parseInt(rectStyle.height) > blockloc.top + parseInt(blockStyle.height)) {
+        rectloc.left + parseInt(this.selectRect.offsetWidth) > blockloc.left + parseInt(block.dom.offsetWidth) &&
+        rectloc.top + parseInt(this.selectRect.offsetHeight) > blockloc.top + parseInt(block.dom.offsetHeight)) {
         if (block.state.mode !== 'manipulating') {
           block.toManipulate();
         }

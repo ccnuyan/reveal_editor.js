@@ -22,16 +22,28 @@ class ImageBlock extends Block {
     });
   }
 
-  getState = () => {
+  getState() {
     const style = getComputedStyle(this.image);
     return {
       ...this.state,
       src: _u.getAttribute(this.image, 'src'),
-      borderWidth: style.borderWidth,
-      borderStyle: style.borderStyle,
-      borderColor: style.borderColor,
-      zIndex: style.zIndex === 'auto' ? 0 : style.zIndex,
+      borderWidth: this.getLength(style.borderWidth),
+      borderStyle: this.getBorderStyle(style.borderStyle),
+      borderColor: this.getColor(style.borderColor),
+      zIndex: this.getZIndex(style.zIndex),
     };
+  }
+
+  setState(params) {
+    Object.keys(params).forEach((key) => {
+      if (key === 'src') {
+        this.image.style[key] = params[key];
+      } else {
+        this.dom.style[key] = params[key];
+      }
+    });
+
+    return this.getState();
   }
 
   toManipulate() {
@@ -43,16 +55,6 @@ class ImageBlock extends Block {
         preserveAspectRatio: true,
         anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
       },
-    });
-  }
-
-  setState = (params) => {
-    Object.keys(params).forEach((key) => {
-      if (key === 'src') {
-        this.image.style[key] = params[key];
-      } else {
-        this.dom.style[key] = params[key];
-      }
     });
   }
 

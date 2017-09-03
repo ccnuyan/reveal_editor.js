@@ -60,24 +60,6 @@ class LatexEditor {
         });
       }
     });
-
-
-    this.close.addEventListener('mouseenter', () => {
-      this.closesvg.setAttribute('fill', 'red');
-    });
-
-    this.check.addEventListener('mouseenter', () => {
-      this.checksvg.setAttribute('fill', 'lightgreen');
-    });
-
-
-    this.close.addEventListener('mouseleave', () => {
-      this.closesvg.setAttribute('fill', 'grey');
-    });
-
-    this.check.addEventListener('mouseleave', () => {
-      this.checksvg.setAttribute('fill', 'grey');
-    });
   }
 
   createInputOutput() {

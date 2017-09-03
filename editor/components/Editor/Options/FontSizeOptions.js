@@ -45,11 +45,9 @@ class FontSizeOptions extends Component {
       }
     }
 
-    selectedBlock.fontSize = newPer;
-    const params = {};
-    params.fontSize = newPer;
-    window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-    this.props.set_current_block(selectedBlock);
+    const params = { fontSize: newPer };
+    const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
+    this.props.set_current_block(newState);
   }
 
   render = () => {

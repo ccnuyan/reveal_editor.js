@@ -62,16 +62,21 @@ class Section extends Elements {
   }
 
   getState = () => {
+    return {
+      ...this.state,
+      backgroundColor: this.dom.dataset.backgroundColor ? this.dom.dataset.backgroundColor : 'transparent',
+      selectedBlocks: this.getSelectedBlockStates(),
+    };
+  }
+
+  getSelectedBlockStates = () => {
     const selectedBlocks = [];
 
     this.getSelectedBlocks().forEach((block) => {
       selectedBlocks.push(block.getState());
     });
-    return {
-      ...this.state,
-      backgroundColor: this.dom.dataset.backgroundColor ? this.dom.dataset.backgroundColor : 'transparent',
-      selectedBlocks,
-    };
+
+    return selectedBlocks;
   }
 
   setState = ({ backgroundColor }) => {

@@ -7,10 +7,34 @@ class Block extends Elements {
   anchorTypes = [];
   D2R = Math.PI / 180;
   state = { mode: 'previewing', transform: 0 };
+
   minsize = {
     width: 24,
     height: 24,
   };
+
+  getLength=(len) => {
+    return len ? parseFloat(len) : 0;
+  }
+
+  getColor=(color) => {
+    return color || 'transparent';
+  }
+
+  getFontSize=(fs) => {
+    return fs || '100%';
+  }
+
+  getBorderStyle=(bs) => {
+    return bs || 'none';
+  }
+
+  getZIndex=(zi) => {
+    if (!zi || zi === 'auto') {
+      return 0;
+    }
+    return parseInt(zi);
+  }
 
   constructor({ parent, el }) {
     super({ parent, el });
@@ -26,16 +50,6 @@ class Block extends Elements {
       parent: this,
       el: contentDom,
     });
-  }
-
-  getTs() {
-    const blockStyle = getComputedStyle(this.dom);
-    return {
-      left: parseInt(blockStyle.left),
-      top: parseInt(blockStyle.top),
-      width: parseInt(blockStyle.width),
-      height: parseInt(blockStyle.height),
-    };
   }
 
   toEdit() {
