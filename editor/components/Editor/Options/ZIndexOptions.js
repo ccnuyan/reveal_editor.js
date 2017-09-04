@@ -40,7 +40,7 @@ class ZIndexOptions extends Component {
       window.RevealEditor.currentSection.getSelectedBlocks()[index].setState(params);
       index += 1;
     });
-    this.props.set_selected_blocks(this.props.selectedBlocks);
+    this.props.set_selected_blocks(window.RevealEditor.currentSection.getState().selectedBlocks);
   }
 
   render = () => {

@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const shapes = {
-  // square: `
-  // <svg stroke="grey" width="160" height="160" viewBox="0 0 160 160" version="1.1" fill="transparent"
-  // xmlns="http://www.w3.org/2000/svg">
-  //   <rect x="40" y="40" width="80" height="80" stroke-width="4"/>
-  // </svg>`,
+  square: `
+  <svg stroke="grey" width="160" height="160" viewBox="0 0 160 160" version="1.1" fill="transparent"
+  xmlns="http://www.w3.org/2000/svg">
+    <rect x="40" y="40" width="80" height="80" stroke-width="4"/>
+  </svg>`,
   rect: `
   <svg stroke="grey" width="160" height="160" viewBox="0 0 160 160" version="1.1" fill="transparent"
   xmlns="http://www.w3.org/2000/svg">

@@ -8,9 +8,9 @@
   },
   "scripts": {
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
-    "wp-dev": "export NODE_ENV=development && webpack-dev-server --host 0.0.0.0 --config=webpack.dev-config.js",
-    "fe-dev": "export NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
-    "wp-build": "export NODE_ENV=production && webpack --config=webpack.build-config.js",
+    "wp-dev": "cross-env NODE_ENV=development && webpack-dev-server --host 0.0.0.0 --config=webpack.dev-config.js",
+    "fe-dev": "cross-env NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
+    "wp-build": "cross-env NODE_ENV=production && webpack --config=webpack.build-config.js",
     "bb-build": "babel server --out-dir server_prod",
     "start": "export NODE_ENV=production && node server_prod"
   },
@@ -36,7 +36,6 @@
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
     "autoprefixer": "^7.1.2",
-    "es6-promise": "^4.1.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.2",
     "babel-loader": "^7.1.1",
@@ -44,7 +43,9 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.1.1",
+    "cross-env": "^5.0.5",
     "css-loader": "^0.28.4",
+    "es6-promise": "^4.1.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",

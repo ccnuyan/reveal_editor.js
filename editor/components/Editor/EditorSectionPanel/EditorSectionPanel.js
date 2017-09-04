@@ -6,6 +6,9 @@ import BackgroundColorPicker from './BackgroundColorPicker';
 import IconSelector from './IconSelector';
 import ShapeSelector from './ShapeSelector';
 
+import PasteOption from '../Options/PasteOption';
+import OptionContainer from '../Options/OptionContainer';
+
 
 /* eslint-disable max-len */
 class Elements extends Component {
@@ -26,6 +29,10 @@ class Elements extends Component {
           Theme
         </div>
         <BackgroundColorPicker />
+        {
+          this.props.editor.clipboard ?
+            <OptionContainer label="Paste" isMain={ true }><PasteOption/></OptionContainer> : ''
+        }
         <div className="panel_title">
           Add
         </div>

@@ -18,12 +18,10 @@ class WidthOptions extends Component {
 
   applyWidth = (rawWidth) => {
     const width = Math.min(Math.max(rawWidth, 1), 50);
-    const selectedBlock = this.props.selectedBlocks[0];
-    selectedBlock[this.props.blockProp] = `${width}${this.props.suffix}`;
     const params = {};
     params[this.props.blockProp] = `${width}${this.props.suffix}`;
-    window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-    this.props.set_current_block(selectedBlock);
+    const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
+    this.props.set_current_block(newState);
   }
 
   onWidthChange = (event) => {
@@ -33,6 +31,7 @@ class WidthOptions extends Component {
   }
 
   onWheel = (event) => {
+    event.preventDefault();
     const orgWidth = this.props.selectedBlocks[0][this.props.blockProp];
     const width = event.deltaY > 0 ? -1 : 1;
     this.applyWidth(parseInt(orgWidth) + width);

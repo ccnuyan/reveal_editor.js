@@ -1,6 +1,16 @@
 import Block from './Block';
+import DDMRR from './ddmrr';
 
 /* eslint-disable no-param-reassign, radix */
+
+const ratioShapes = ['square', 'circle'];
+
+const keySvgTagMap = {
+  square: 'rect',
+  rect: 'rect',
+  circle: 'circle',
+  ellipse: 'ellipse',
+};
 
 class SVGShapeBlock extends Block {
   anchorTypes = ['e', 'w', 'n', 's', 'ne', 'nw', 'se', 'sw'];
@@ -13,106 +23,69 @@ class SVGShapeBlock extends Block {
     this.state.shape = this.dom.dataset.svgShape;
 
     this.draw = this.blockContent.dom.querySelector('svg');
-    this.svgShape = this.draw.querySelector(this.state.shape);
-
-    this.state.stroke = this.svgShape.getAttribute('stroke');
-    this.state.fill = this.svgShape.getAttribute('fill');
-    this.state.strokeWidth = parseInt(this.svgShape.getAttribute('stroke-width'));
+    this.svgShape = this.draw.querySelector(keySvgTagMap[this.state.shape]);
   }
 
   setStoke({ stroke }) {
-    this.state.stroke = stroke;
     this.svgShape.setAttribute('stroke', stroke);
   }
 
   setStrokeWidth({ strokeWidth }) {
-    this.state.strokeWidth = strokeWidth;
     this.svgShape.setAttribute('stroke-width', strokeWidth);
     this.rearrange();
   }
 
   setFill({ fill }) {
-    this.state.fill = fill;
     this.svgShape.setAttribute('fill', fill);
   }
 
-  resize_e({ os, ox, oy }) {
-    super.resize_e({ os, ox, oy });
-    this.relocate_e({ os });
-    this.rearrange();
-  }
+  toManipulate() {
+    super.toManipulate();
+    this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
+      resize: {
+        key: 'resize',
+        enable: true,
+        preserveAspectRatio: ratioShapes.indexOf(this.state.shape) >= 0,
+        anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
+      },
+    });
 
-  resize_w({ os, ox, oy }) {
-    super.resize_w({ os, ox, oy });
-    this.relocate_w({ os });
-    this.rearrange();
-  }
-
-  resize_n({ os, ox, oy }) {
-    super.resize_n({ os, ox, oy });
-    this.relocate_n({ os });
-    this.rearrange();
-  }
-
-  resize_s({ os, ox, oy }) {
-    super.resize_s({ os, ox, oy });
-    this.relocate_s({ os });
-    this.rearrange();
-  }
-
-  resize_ne({ os, ox, oy }) {
-    this.resize_n({ os, ox, oy });
-    this.relocate_ne({ os });
-    this.rearrange();
-  }
-
-  resize_nw({ os, ox, oy }) {
-    this.resize_n({ os, ox, oy });
-    this.relocate_nw({ os });
-    this.rearrange();
-  }
-
-  resize_se({ os, ox, oy }) {
-    this.resize_s({ os, ox, oy });
-    this.relocate_se({ os });
-    this.rearrange();
-  }
-
-  resize_sw({ os, ox, oy }) {
-    this.resize_s({ os, ox, oy });
-    this.relocate_sw({ os });
-    this.rearrange();
+    this.ddmrr.emitter.on('resize_going', () => {
+      this.rearrange();
+    });
   }
 
   rearrange() {
-    const style = getComputedStyle(this.dom);
+    const state = this.getState();
 
-    const styleWH = {
-      width: parseInt(style.width),
-      height: parseInt(style.height),
-    };
+    const sw = state.strokeWidth;
 
-    const sw = this.state.strokeWidth;
-
-    switch (this.state.shape) {
+    switch (state.shape) {
+      case 'square': {
+        this.svgShape.setAttribute('width', this.dom.offsetWidth - 2);
+        this.svgShape.setAttribute('height', this.dom.offsetHeight - 2);
+        this.svgShape.setAttribute('x', 1);
+        this.svgShape.setAttribute('y', 1);
+        break;
+      }
       case 'rect': {
-        this.svgShape.setAttribute('width', styleWH.width - sw);
-        this.svgShape.setAttribute('height', styleWH.height - sw);
-        this.svgShape.setAttribute('cx', styleWH.width / 2);
-        this.svgShape.setAttribute('cy', styleWH.height / 2);
+        this.svgShape.setAttribute('width', this.dom.offsetWidth - 2);
+        this.svgShape.setAttribute('height', this.dom.offsetHeight - 2);
+        this.svgShape.setAttribute('x', 1);
+        this.svgShape.setAttribute('y', 1);
         break;
       }
       case 'circle': {
-        this.svgShape.setAttribute('r', (Math.min(styleWH.height, styleWH.width) - sw) / 2);
-        this.svgShape.setAttribute('cx', styleWH.width / 2);
-        this.svgShape.setAttribute('cy', styleWH.height / 2);
+        this.svgShape.setAttribute('r', (Math.min(this.dom.offsetHeight, this.dom.offsetWidth) - sw) / 2);
+        this.svgShape.setAttribute('cx', this.dom.offsetWidth / 2);
+        this.svgShape.setAttribute('cy', this.dom.offsetHeight / 2);
         break;
       }
       case 'ellipse': {
-        this.svgShape.setAttribute('rx', (styleWH.width - sw) / 2);
-        this.svgShape.setAttribute('ry', (styleWH.height - sw) / 2);
-        this.svgShape.setAttribute('cx', styleWH.width / 2);
-        this.svgShape.setAttribute('cy', styleWH.height / 2);
+        this.svgShape.setAttribute('rx', (this.dom.offsetWidth - sw) / 2);
+        this.svgShape.setAttribute('ry', (this.dom.offsetHeight - sw) / 2);
+        this.svgShape.setAttribute('cx', this.dom.offsetWidth / 2);
+        this.svgShape.setAttribute('cy', this.dom.offsetHeight / 2);
         break;
       }
       default:
@@ -120,7 +93,15 @@ class SVGShapeBlock extends Block {
   }
 
   getState() {
-    return this.state;
+    const style = getComputedStyle(this.svgShape);
+    const state = {
+      ...this.state,
+      fill: this.getColor(style.fill),
+      stroke: this.getColor(style.stroke),
+      strokeWidth: this.getLength(style.strokeWidth),
+    };
+
+    return state;
   }
 
   setState(params) {
@@ -133,6 +114,8 @@ class SVGShapeBlock extends Block {
     if (params.fill) {
       this.setFill(params);
     }
+
+    return this.getState();
   }
 }
 

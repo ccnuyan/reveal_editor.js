@@ -25,10 +25,10 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var app = (0, _express2.default)();
 /* eslint-disable no-console */
 
-var PORT = process.env.PORT || 10000;
+var PORT = process.env.PORT || 8000;
 
 try {
-  _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+  _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {

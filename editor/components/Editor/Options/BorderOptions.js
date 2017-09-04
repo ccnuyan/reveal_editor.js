@@ -17,43 +17,23 @@ class BorderOptions extends Component {
   }
 
   onChange = (event) => {
+    let params;
     if (event.currentTarget.checked) {
-      const selectedBlock = this.props.selectedBlocks[0];
-      selectedBlock.borderStyle = 'solid';
-
-      const params = {};
-      params.borderStyle = 'solid';
-
-      if (selectedBlock.borderWidth.startsWith('0')) {
-        params.borderWidth = '1px';
-        selectedBlock.borderWidth = '1px';
-      }
-
-      window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-      this.props.set_current_block(selectedBlock);
+      params = { borderStyle: 'solid', borderWidth: '1px', borderColor: 'black' };
     } else {
-      const selectedBlock = this.props.selectedBlocks[0];
-      selectedBlock.borderStyle = 'none';
-
-      const params = {};
-      params.borderStyle = 'none';
-
-      window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-      this.props.set_current_block(selectedBlock);
+      params = { borderStyle: 'none' };
     }
+    const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
+
+    this.props.set_current_block(newState);
   }
 
   render = () => {
     const selectedBlock = this.props.selectedBlocks[0];
-
     return (
       <div>
-        {/* <div className="border-enable-checkbox">
-          <input className="big-checkbox" checked={ selectedBlock.borderStyle !== 'none' } onChange={ this.onChange } type="checkbox" name="example"/>
-          <label htmlFor="example" style={ { color: 'white' } }>Enable</label>
-        </div> */}
         <div className="border-enable-checkbox">
-          <input type="checkbox" value={ selectedBlock.borderStyle === 'none' ? 0 : 1 } id="boder-enbale-cb" name="" onChange={ this.onChange } />
+          <input type="checkbox" checked={ selectedBlock.borderStyle !== 'none' } id="boder-enbale-cb" name="" onChange={ this.onChange } />
           <label htmlFor="boder-enbale-cb"></label>
         </div>
         <div className={ `border-additional-options${(selectedBlock.borderStyle === 'none') ? ' hidden' : ''}` }>

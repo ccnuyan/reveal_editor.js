@@ -10,4 +10,4 @@ RUN npm install --production --registry=https://registry.npm.taobao.org && npm c
 COPY . /usr/src/app
 
 CMD [ "npm", "start" ]
-EXPOSE 10000
+EXPOSE 8000

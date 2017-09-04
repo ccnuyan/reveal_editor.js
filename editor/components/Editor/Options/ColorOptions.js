@@ -29,12 +29,10 @@ class ColorOptions extends Component {
 
   handleChange = (color) => {
     const rgba = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a ? color.rgb.a : 1})`;
-    const selectedBlock = this.props.selectedBlocks[0];
-    selectedBlock[this.props.blockProp] = rgba;
     const params = {};
     params[this.props.blockProp] = rgba;
-    window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-    this.props.set_current_block(selectedBlock);
+    const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
+    this.props.set_current_block(newState);
   };
 
   styles = reactCSS({
@@ -59,7 +57,7 @@ class ColorOptions extends Component {
     return (
       <div className="color-option">
         <div className="color-square"
-          style={ { backgroundColor: selectedBlock[this.props.blockProp] } }
+          style={ { backgroundColor: selectedBlock[this.props.blockProp], display: 'inherit!important' } }
           onTouchTap={ this.handleClick }
         ></div>
         { this.state.displayColorPicker ?

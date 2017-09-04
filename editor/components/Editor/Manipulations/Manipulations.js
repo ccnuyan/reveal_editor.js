@@ -52,6 +52,10 @@ class Manipulations extends Component {
     this.props.set_preview();
   }
 
+  arrange = () => {
+    window.RevealEditor.toArrange();
+  }
+
   export = async () => {
     const stylesheets = this.exportRequiredStylesheets.map((ss) => {
       return document.querySelector(`link#css_${ss}`).getAttribute('href');
@@ -108,12 +112,12 @@ class Manipulations extends Component {
         <button onTouchTap={ this.redo } className="editor-button">
           <i className="icon-level-down"></i>
         </button>
-        <button className="editor-button">
+        <button onTouchTap={ this.arrange } className="editor-button">
           <i className="icon-grid"></i>
         </button>
-        <button className="editor-button">
+        {/* <button className="editor-button">
           <i className="icon-save"></i>
-        </button>
+        </button> */}
         <button onTouchTap={ this.export } className="editor-button">
           <i className="icon-download"></i>
         </button>
