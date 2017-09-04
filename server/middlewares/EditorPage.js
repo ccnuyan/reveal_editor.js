@@ -6,6 +6,7 @@ import ReactDOMServer from 'react-dom/server';
 import assets from '../../build/assets.json';
 import config from '../../config';
 
+
 class EditorPage extends Component {
   static propTypes = {
     app: PropTypes.string.isRequired,
@@ -15,8 +16,8 @@ class EditorPage extends Component {
       <html className="no-js" lang="zh-CN">
         <head>
           <meta charSet="utf-8"/>
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
           <title>reveal-editor.js</title>
           {
             Object.keys(config.stylesheets).map(key => <link id={ `css_${key}` } rel="stylesheet" key={ key } href={ config.stylesheets[key] }/>)

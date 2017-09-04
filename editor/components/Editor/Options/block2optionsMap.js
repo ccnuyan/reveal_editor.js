@@ -47,6 +47,8 @@ const b2oMap = {
       component: BorderOptions,
       props: {
         key: '1',
+        label: 'Border',
+        isMain: true,
       },
     },
   ],
@@ -114,6 +116,8 @@ const b2oMap = {
       component: BorderOptions,
       props: {
         key: '3',
+        label: 'Border',
+        isMain: true,
       },
     },
     {

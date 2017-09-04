@@ -22,11 +22,20 @@ const blocks = {
             <div class="sl-block-content" style="width: 100%; height: 100%;">
                 <svg id="SvgjsSvg1006" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
                     xmlns:svgjs="http://svgjs.com/svgjs">
-                    <rect width="197" height="197" x="1.5" y="1.5" stroke="rgba(192,192,192,1)" stroke-width="3px"
+                    <rect width="198" height="198" x="1" y="1" stroke="rgba(192,192,192,1)" stroke-width="3px"
                         fill="rgba(0,0,0,0)"></rect>
                 </svg>
             </div>
         </div>`,
+    square: `<div class="sl-block" data-block-type="shape" data-svg-shape="square" style="width: 200px; height: 200px;">
+                <div class="sl-block-content" style="width: 100%; height: 100%;">
+                    <svg id="SvgjsSvg1006" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        xmlns:svgjs="http://svgjs.com/svgjs">
+                        <rect width="198" height="198" x="1" y="1" stroke="rgba(192,192,192,1)" stroke-width="3px"
+                            fill="rgba(0,0,0,0)"></rect>
+                    </svg>
+                </div>
+            </div>`,
   },
   text: `<div class="sl-block" data-block-type="text" style="position: absolute; width: 800px; top: 140px; left: 80px;">
         <div class="sl-block-content">

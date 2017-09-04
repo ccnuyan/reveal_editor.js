@@ -55,6 +55,7 @@ var EditorPage = function (_Component) {
           'head',
           null,
           _react2.default.createElement('meta', { charSet: 'utf-8' }),
+          _react2.default.createElement('meta', { httpEquiv: 'X-UA-Compatible', content: 'IE=edge' }),
           _react2.default.createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' }),
           _react2.default.createElement(
             'title',

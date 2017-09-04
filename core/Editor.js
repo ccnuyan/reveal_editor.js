@@ -14,7 +14,7 @@ import Emitter from './Emitter';
 class Editor {
   constructor({ reveal, initialHTML }) {
     this.dom = reveal;
-    this.reveal = this.dom;
+    this.reveal = reveal;
     this.services = services(this);
     this.state = {};
 
@@ -146,24 +146,9 @@ class Editor {
   }
 
   linkDomEvents = () => {
-    // link drag events
-    this.reveal.setAttribute('draggable', true);
-    _u.on(this.reveal, 'dragstart', this.dragstart);
-    _u.on(this.reveal, 'dragover', this.do);
-    _u.on(this.reveal, 'dragend', this.dragend);
-
-    // on blank clicked
-    _u.on(this.reveal, 'click', (event) => {
-      event.stopPropagation();
-      if (event.currentTarget === this.reveal) {
-        this.currentSection.blocks.forEach((block) => {
-          block.toPreview();
-        });
-      }
-      if (this.state.mode === 'editing') {
-        this.reveal.setAttribute('draggable', true);
-      }
-    });
+    this.reveal.parentNode.addEventListener('mousedown', this.mousedown);
+    this.reveal.parentNode.addEventListener('mousemove', this.mousemove);
+    this.reveal.parentNode.addEventListener('mouseup', this.mouseup);
   }
 
   bornNewSection(sectionDom, h, v, isSub) {
@@ -179,79 +164,112 @@ class Editor {
     this.sections.add(section);
   }
 
-  // do = dargover, capture the event emmited by this dom elements
-  do = (event) => {
-    // redirect to the handler where the dragstart
-    this.draggingElement.dragover(event);
+  isChildOfBlock(el) {
+    if (el.tagName === 'DIV' && el.classList.contains('sl-block')) {
+      return true;
+    } else if (el === document.body) {
+      return false;
+    }
+    return this.isChildOfBlock(el.parentNode);
   }
 
-  dragstart = (event) => {
-    console.log('Editor dragstart');  // eslint-disable-line
+  mousedown = (event) => {
     event.stopPropagation();
 
-    this.dragMode = 'select';
-    this.draggingElement = this;
+    if (this.isChildOfBlock(event.target)) {
+      return;
+    }
 
+    this.currentSection.blocks.forEach((block) => {
+      block.toPreview();
+    });
+
+    this.slidesDom.style.pointerEvents = 'none';
+
+    if (this.state.mode !== 'editing') {
+      return;
+    }
+
+    // start drag select
+
+    this.draggingToSelect = true;
     this.selectRect.style.width = '0px';
     this.selectRect.style.height = '0px';
-    _u.show(this.selectRect);
 
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setDragImage && event.dataTransfer.setDragImage(_u.emptyDragImage, 0, 0);
-
-    this.dragfrom = {
+    this.startfrom = {
       x: event.clientX,
       y: event.clientY,
     };
   }
 
-  dragover = (event) => {
+  mousemove = (event) => {
     event.stopPropagation();
 
-    event.dataTransfer.dropEffect = 'move';
+    if (!this.draggingToSelect) {
+      return;
+    }
 
-    const offsetX = event.clientX - this.dragfrom.x;
-    const offsetY = event.clientY - this.dragfrom.y;
+    this.selectRect.style.display = 'block';
+
+    const offsetX = event.clientX - this.startfrom.x;
+    const offsetY = event.clientY - this.startfrom.y;
 
     const offset = _u.offset(this.reveal);
 
-    this.selectRect.style.left = `${(offsetX >= 0 ? this.dragfrom.x : event.clientX) - offset.left}px`;
-    this.selectRect.style.top = `${(offsetY >= 0 ? this.dragfrom.y : event.clientY) - offset.top}px`;
+    this.selectRect.style.left = `${(offsetX >= 0 ? this.startfrom.x : event.clientX) - offset.left}px`;
+    this.selectRect.style.top = `${(offsetY >= 0 ? this.startfrom.y : event.clientY) - offset.top}px`;
     this.selectRect.style.width = `${Math.abs(offsetX)}px`;
     this.selectRect.style.height = `${Math.abs(offsetY)}px`;
 
     const rectloc = _u.offset(this.selectRect);
-    const rectStyle = getComputedStyle(this.selectRect);
 
     this.currentSection.blocks.forEach((block) => {
       const blockloc = _u.offset(block.dom);
-      const blockStyle = getComputedStyle(block.dom);
 
       if (
         rectloc.left < blockloc.left &&
         rectloc.top < blockloc.top &&
-        rectloc.left + parseInt(rectStyle.width) > blockloc.left + parseInt(blockStyle.width) &&
-        rectloc.top + parseInt(rectStyle.height) > blockloc.top + parseInt(blockStyle.height)) {
-        block.toManipulate();
-      } else {
+        rectloc.left + parseInt(this.selectRect.offsetWidth) > blockloc.left + parseInt(block.dom.offsetWidth) &&
+        rectloc.top + parseInt(this.selectRect.offsetHeight) > blockloc.top + parseInt(block.dom.offsetHeight)) {
+        if (block.state.mode !== 'manipulating') {
+          block.toManipulate();
+        }
+      } else if (block.state.mode !== 'previewing') {
         block.toPreview();
       }
     });
   }
 
-  dragend = (event) => {
-    console.log('Editor dragend');
+  mouseup = (event) => {
+    if (!this.draggingToSelect) {
+      return;
+    }
 
+    this.slidesDom.style.pointerEvents = 'auto';
     event.stopPropagation();
-    _u.hide(this.selectRect);
+    this.draggingToSelect = false;
+    this.selectRect.style.display = 'none';
+
+    const blocks = this.currentSection.getSelectedBlocks();
+    if (blocks.length > 1) {
+      const blocksDom = blocks.map(b => b.dom);
+      blocks.forEach((block) => {
+        block.ddmrr.multiple = true;
+        block.ddmrr.elements = blocksDom;
+      });
+    }
   };
 
   toPreview() {
-    this.reveal.setAttribute('draggable', false);
+    // this.reveal.setAttribute('draggable', false);
     this.sections.forEach((section) => {
       section.toPreview();
     });
     this.state.mode = 'previewing';
+  }
+
+  toArrange = () => {
+    window.Reveal.toggleOverview();
   }
 
   isOverview = () => {
@@ -259,7 +277,7 @@ class Editor {
   }
 
   toEdit() {
-    this.reveal.setAttribute('draggable', true);
+    // this.reveal.setAttribute('draggable', true);
     this.state.mode = 'editing';
     this.sections.forEach((section) => {
       section.toEdit();

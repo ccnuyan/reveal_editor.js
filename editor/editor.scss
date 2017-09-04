@@ -51,17 +51,14 @@
     height: 100%;
     width: 100%;
     left: 60px;
-    opacity:1;
-    transition: left 0.1s ease-in-out;
+    display: block;
+    transition: left 0.2s ease-in-out;
 }
 
 .panel-deactivated{
     position: relative;
-    opacity:0;
-    height: 0;
-    width:0;
+    display: hidden;
     left: 300px;
-    transition: left 0.1s ease-in-out;
 }
 
 // mainipulations and previewers
@@ -345,14 +342,12 @@ input[type=checkbox] {
     opacity: 1;
     height: 200px;
     overflow: hidden;
-    transition: height 0.1s ease-in;
 }
 
 .hidden{
-    opacity: 0; 
     height: 0;
+    display: none;
     overflow: hidden;
-    transition: height 0.1s ease-out;
 }
 
 .svg-elements-panel{

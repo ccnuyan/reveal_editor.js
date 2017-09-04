@@ -38,6 +38,10 @@
     color: inherit;
 }
 
+.sl-block[data-block-type='text'], .sl-block[data-block-type='text']>.sl-block-content{
+    height: auto !important;
+}
+
 .sl-block[data-block-type='text']>div.sl-block-content{
     padding: 10px;
 }

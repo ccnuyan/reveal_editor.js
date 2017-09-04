@@ -7,14 +7,12 @@ import EditorSectionPanel from './EditorSectionPanel/EditorSectionPanel';
 import Options from './Options/Options';
 
 class Editor extends Component {
-
   static propTypes = {
     editor: PropTypes.object.isRequired,
     currentSection: PropTypes.object.isRequired,
     selectedBlocks: PropTypes.array.isRequired,
   }
-
-  render =() => {
+  render = () => {
     return (
       <div className='editor_panel'>
         <Manipulations></Manipulations>
