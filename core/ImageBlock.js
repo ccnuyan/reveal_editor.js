@@ -23,7 +23,8 @@ class ImageBlock extends Block {
   }
 
   getState() {
-    const style = getComputedStyle(this.image);
+    const style = getComputedStyle(this.dom);
+
     return {
       ...this.state,
       src: _u.getAttribute(this.image, 'src'),
