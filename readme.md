@@ -10,3 +10,4 @@ I'm still woring on it.
 ### bugs:
 1. undo redo when overviewing bug
 1. IE add block automation
+1. IE save to file

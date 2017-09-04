@@ -24,6 +24,7 @@ class BorderOptions extends Component {
       params = { borderStyle: 'none' };
     }
     const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
+
     this.props.set_current_block(newState);
   }
 
