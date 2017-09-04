@@ -25,7 +25,7 @@ class ImageBlock extends Block {
   getState() {
     const style = getComputedStyle(this.dom);
 
-    return {
+    const state = {
       ...this.state,
       src: _u.getAttribute(this.image, 'src'),
       borderWidth: this.getLength(style.borderTopWidth),
@@ -33,6 +33,8 @@ class ImageBlock extends Block {
       borderColor: this.getColor(style.borderTopColor),
       zIndex: this.getZIndex(style.zIndex),
     };
+
+    return state;
   }
 
   setState(params) {
