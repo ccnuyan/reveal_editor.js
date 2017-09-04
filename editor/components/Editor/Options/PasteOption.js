@@ -10,20 +10,21 @@ class RemoveOptions extends Component {
   static propTypes = {
     isMain: PropTypes.bool,
     label: PropTypes.string,
+    editor: PropTypes.object.isRequired,
     selectedBlocks: PropTypes.array.isRequired,
+    set_editor: PropTypes.func.isRequired,
     set_selected_blocks: PropTypes.func.isRequired,
   }
 
-  onRemove = () => {
-    window.RevealEditor.currentSection.removeSelectedBlocks();
-    this.props.set_selected_blocks(window.RevealEditor.currentSection.getSelectedBlockStates());
+  onPaste = () => {
+    window.RevealEditor.currentSection.paste(this.props.editor.clipboard);
   }
 
   render = () => {
     return (
       <div className="remove-option">
-        <button className="editor-button" onTouchTap={ this.onRemove } data-change-direction='+'>
-          <div className="icon-trash-o"></div>
+        <button className="editor-button" onTouchTap={ this.onPaste } data-change-direction='+'>
+          <div className="icon-paste"></div>
         </button>
       </div>
     );
@@ -32,6 +33,7 @@ class RemoveOptions extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    editor: state.editor.toJSON(),
     selectedBlocks: state.editor.toJSON().currentSection.selectedBlocks,
   };
 };
@@ -39,6 +41,7 @@ const mapStateToProps = (state) => {
 const mapActionsToProps = (dispacher) => {
   return {
     set_selected_blocks: actions.set_selected_blocks(dispacher),
+    set_editor: actions.set_editor(dispacher),
   };
 };
 

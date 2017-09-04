@@ -86,12 +86,10 @@ class Section extends Elements {
     window.Reveal.sync();
   }
 
-  undo_point = () => {
-    this.parent.services.undoredo.enqueue();
-  }
-
   addText = () => {
-    this.undo_point();
+    if (this.editor.isOverview()) return;
+    this.editor.services.undoredo.enqueue();
+
     const blockDiv = document.createElement('div');
     blockDiv.innerHTML = blocks.text;
     this.dom.appendChild(blockDiv.childNodes[0]);
@@ -99,7 +97,8 @@ class Section extends Elements {
   }
 
   addImage({ imageUrl }) {
-    this.undo_point();
+    if (this.editor.isOverview()) return;
+    this.editor.services.undoredo.enqueue();
 
     const blockDiv = document.createElement('div');
     blockDiv.innerHTML = blocks.image;
@@ -111,8 +110,11 @@ class Section extends Elements {
   }
 
   addSVGShape = ({ shape }) => {
+    if (this.editor.isOverview()) return;
     if (!blocks.shape[shape]) return;
-    this.undo_point();
+
+    this.editor.services.undoredo.enqueue();
+
     const blockDiv = document.createElement('div');
     blockDiv.innerHTML = blocks.shape[shape];
     this.dom.appendChild(blockDiv.childNodes[0]);
@@ -120,6 +122,10 @@ class Section extends Elements {
   }
 
   addSVGIcon = ({ icon }) => {
+    if (this.editor.isOverview()) return;
+
+    this.editor.services.undoredo.enqueue();
+
     const iconFile = svgIconPath + icon;
     fetch(iconFile).then((response) => {
       return response.text();
@@ -137,7 +143,8 @@ class Section extends Elements {
   }
 
   addLatex = ({ latex }) => {
-    this.undo_point();
+    if (this.editor.isOverview()) return;
+    this.editor.services.undoredo.enqueue();
 
     const blockDiv = document.createElement('div');
     blockDiv.innerHTML = blocks.katex;
@@ -149,7 +156,8 @@ class Section extends Elements {
   }
 
   removeSelectedBlocks() {
-    this.parent.services.undoredo.enqueue();
+    if (this.editor.isOverview()) return;
+    this.editor.services.undoredo.enqueue();
     const toBeRemoved = [];
     this.blocks.forEach((block) => {
       if (block.state.mode === 'manipulating') {
@@ -172,6 +180,31 @@ class Section extends Elements {
     return selectedBlocks;
   }
 
+  copySelectedBlocks() {
+    if (this.editor.isOverview()) return;
+    const doms = this.getSelectedBlocks().map(block => block.dom);
+    const container = document.createElement('div');
+    Array.prototype.forEach.call(doms, (dom) => {
+      container.appendChild(dom.cloneNode(true));
+    });
+    this.editor.state.clipboard = container.innerHTML;
+    return this.editor.state.clipboard;
+  }
+
+  paste(innerHTML) {
+    if (this.editor.isOverview()) return;
+    this.editor.services.undoredo.enqueue();
+
+    const container = document.createElement('div');
+    container.innerHTML = innerHTML;
+    const blks = container.querySelectorAll('div.sl-block');
+
+    Array.prototype.forEach.call(blks, (blk) => {
+      this.dom.appendChild(blk);
+    });
+    this.editor.reload({});
+  }
+
   toPreview() {
     this.blocks.forEach((block) => {
       block.toPreview();
@@ -183,6 +216,7 @@ class Section extends Elements {
   }
 
   toEdit = () => {
+    if (this.editor.isOverview()) return;
     this.axis.show();
     this.arrangment.addButtons.forEach((dom) => {
       dom.style.display = 'bock';

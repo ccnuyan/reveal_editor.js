@@ -145,6 +145,10 @@ class SectionArrangement {
   }
 
   createSection = (event) => {
+    event.stopPropagation();
+
+    this.editor.services.undoredo.enqueue();
+
     if (event.currentTarget.dataset.direction === 'right') {
       let domAfter = this.section.dom;
       const h = this.section.state.h;
@@ -185,6 +189,9 @@ class SectionArrangement {
 
   moveSection = (event) => {
     event.stopPropagation();
+
+    this.editor.services.undoredo.enqueue();
+
     const h = this.section.state.h;
     const v = this.section.state.v;
     const isSub = this.section.state.isSub;

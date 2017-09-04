@@ -20,9 +20,9 @@ class LatexBlock extends Block {
     const style = getComputedStyle(this.dom);
     return {
       ...this.state,
-      borderWidth: this.getLength(style.borderWidth),
-      borderStyle: this.getBorderStyle(style.borderStyle),
-      borderColor: this.getColor(style.borderColor),
+      borderWidth: this.getLength(style.borderTopWidth),
+      borderStyle: this.getBorderStyle(style.borderTopStyle),
+      borderColor: this.getColor(style.borderTopColor),
       color: this.getColor(style.color),
       backgroundColor: this.getColor(style.backgroundColor),
       fontSize: this.getFontSize(this.dom.style.fontSize),

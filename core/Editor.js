@@ -268,6 +268,10 @@ class Editor {
     this.state.mode = 'previewing';
   }
 
+  toArrange = () => {
+    window.Reveal.toggleOverview();
+  }
+
   isOverview = () => {
     return window.Reveal.isOverview();
   }

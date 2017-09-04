@@ -1,5 +1,5 @@
 import ZIndexOptions from './ZIndexOptions';
-import RemoveOptions from './RemoveOptions';
+import EditOptions from './EditOptions';
 
 const commonOptions = [
   {
@@ -11,10 +11,10 @@ const commonOptions = [
     },
   },
   {
-    component: RemoveOptions,
+    component: EditOptions,
     props: {
       key: '2',
-      label: 'Remove',
+      label: 'Options',
       isMain: true,
     },
   },

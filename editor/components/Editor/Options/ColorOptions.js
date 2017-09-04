@@ -57,7 +57,7 @@ class ColorOptions extends Component {
     return (
       <div className="color-option">
         <div className="color-square"
-          style={ { backgroundColor: selectedBlock[this.props.blockProp] } }
+          style={ { backgroundColor: selectedBlock[this.props.blockProp], display: 'inherit!important' } }
           onTouchTap={ this.handleClick }
         ></div>
         { this.state.displayColorPicker ?

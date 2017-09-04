@@ -54,6 +54,9 @@ class Block extends Elements {
 
   toEdit() {
     if (this.state.mode === 'editing') return;
+
+    this.editor.services.undoredo.enqueue();
+
     this.section.blocks.forEach((block) => {
       if (block.dom !== this.dom) {
         block.toPreview();
@@ -66,6 +69,9 @@ class Block extends Elements {
   // when selected;
   toManipulate() {
     if (this.state.mode === 'manipulating') return;
+
+    this.editor.services.undoredo.enqueue();
+
     this.state.mode = 'manipulating';
     // set ddmrr in inherit classes
 

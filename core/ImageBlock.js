@@ -27,9 +27,9 @@ class ImageBlock extends Block {
     return {
       ...this.state,
       src: _u.getAttribute(this.image, 'src'),
-      borderWidth: this.getLength(style.borderWidth),
-      borderStyle: this.getBorderStyle(style.borderStyle),
-      borderColor: this.getColor(style.borderColor),
+      borderWidth: this.getLength(style.borderTopWidth),
+      borderStyle: this.getBorderStyle(style.borderTopStyle),
+      borderColor: this.getColor(style.borderTopColor),
       zIndex: this.getZIndex(style.zIndex),
     };
   }

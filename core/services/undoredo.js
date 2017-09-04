@@ -20,6 +20,10 @@ class UndoRedo {
   enqueue() {
     const innerHtml = this.editor.services.snapshot(this.editor);
 
+    if (innerHtml === this.queue[this.pointer - 1]) {
+      return;
+    }
+
     this.queue.splice(this.pointer);
     this.queue.push(innerHtml);
     this.pointer = this.queue.length;

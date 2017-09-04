@@ -18,9 +18,9 @@ class TextBlock extends Block {
 
     const state = {
       ...this.state,
-      borderWidth: this.getLength(style.borderWidth),
-      borderStyle: this.getBorderStyle(style.borderStyle),
-      borderColor: this.getColor(style.borderColor),
+      borderWidth: this.getLength(style.borderTopWidth),
+      borderColor: this.getColor(style.borderTopColor),
+      borderStyle: this.getBorderStyle(style.borderTopStyle),
       color: this.getColor(style.color),
       backgroundColor: this.getColor(style.backgroundColor),
       fontSize: this.getFontSize(this.dom.style.fontSize),
