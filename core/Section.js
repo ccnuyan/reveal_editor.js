@@ -206,6 +206,7 @@ class Section extends Elements {
   }
 
   toPreview() {
+    this.axis.clearActives();
     this.blocks.forEach((block) => {
       block.toPreview();
     });

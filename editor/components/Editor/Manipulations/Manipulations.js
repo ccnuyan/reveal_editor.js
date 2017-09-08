@@ -86,7 +86,7 @@ class Manipulations extends Component {
 
     let newHTML = rawHTML.replace('__STYLESHEET__', cssContents.join('\n'));
     newHTML = newHTML.replace('__SCRIPTS__', jsContents.join('\n'));
-    newHTML = newHTML.replace('__REVEAL__', window.RevealEditor.services.snapshot(window.RevealEditor));
+    newHTML = newHTML.replace('__REVEAL__', window.RevealEditor.services.snapshot.getSnapshot());
 
     const uri = `data:text/html;charset=utf-8,${newHTML}`;
 

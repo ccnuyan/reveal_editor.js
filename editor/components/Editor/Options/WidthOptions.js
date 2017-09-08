@@ -34,9 +34,9 @@ class WidthOptions extends Component {
     event.preventDefault();
     const orgWidth = this.props.selectedBlocks[0][this.props.blockProp];
     const width = event.deltaY > 0 ? -1 : 1;
+
     this.applyWidth(parseInt(orgWidth) + width);
   }
-
 
   render = () => {
     const selectedBlock = this.props.selectedBlocks[0];

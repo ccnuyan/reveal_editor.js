@@ -13,23 +13,23 @@ class Block extends Elements {
     height: 24,
   };
 
-  getLength=(len) => {
-    return len ? parseFloat(len) : 0;
+  getLength = (len) => {
+    return len ? Math.round(parseFloat(len)) : 0;
   }
 
-  getColor=(color) => {
+  getColor = (color) => {
     return color || 'transparent';
   }
 
-  getFontSize=(fs) => {
+  getFontSize = (fs) => {
     return fs || '100%';
   }
 
-  getBorderStyle=(bs) => {
+  getBorderStyle = (bs) => {
     return bs || 'none';
   }
 
-  getZIndex=(zi) => {
+  getZIndex = (zi) => {
     if (!zi || zi === 'auto') {
       return 0;
     }
@@ -79,6 +79,61 @@ class Block extends Elements {
     this.dom.style.mozUserSelect = 'none';
     this.dom.style.webkitUserSelect = 'none';
     this.dom.style.msUserSelect = 'none';
+
+
+    const currentRect = this.dom.getBoundingClientRect();
+    this.section.axis.activate(
+      [currentRect.top, (currentRect.top + currentRect.bottom) / 2.0, currentRect.bottom - 1],
+      [currentRect.left, (currentRect.left + currentRect.right) / 2.0, currentRect.right - 1],
+    );
+
+    this.ddmrr.emitter.on('move_going', () => {
+      const rect = this.dom.getBoundingClientRect();
+      this.section.axis.activate(
+        [rect.top, (rect.top + rect.bottom) / 2.0, rect.bottom - 1],
+        [rect.left, (rect.left + rect.right) / 2.0, rect.right - 1],
+      );
+    });
+
+    this.ddmrr.emitter.on('rotate_going', () => {
+      const rect = this.dom.getBoundingClientRect();
+      this.section.axis.activate(
+        [rect.top, (rect.top + rect.bottom) / 2.0, rect.bottom - 1],
+        [rect.left, (rect.left + rect.right) / 2.0, rect.right - 1],
+      );
+    });
+
+    this.ddmrr.emitter.on('resize_going', () => {
+      const rect = this.dom.getBoundingClientRect();
+      this.section.axis.activate(
+        [rect.top, (rect.top + rect.bottom) / 2.0, rect.bottom - 1],
+        [rect.left, (rect.left + rect.right) / 2.0, rect.right - 1],
+      );
+    });
+
+    this.ddmrr.emitter.on('move_end', () => {
+      const rect = this.dom.getBoundingClientRect();
+      this.section.axis.activate(
+        [rect.top, (rect.top + rect.bottom) / 2.0, rect.bottom - 1],
+        [rect.left, (rect.left + rect.right) / 2.0, rect.right - 1],
+      );
+    });
+
+    this.ddmrr.emitter.on('rotate_end', () => {
+      const rect = this.dom.getBoundingClientRect();
+      this.section.axis.activate(
+        [rect.top, (rect.top + rect.bottom) / 2.0, rect.bottom - 1],
+        [rect.left, (rect.left + rect.right) / 2.0, rect.right - 1],
+      );
+    });
+
+    this.ddmrr.emitter.on('resize_end', () => {
+      const rect = this.dom.getBoundingClientRect();
+      this.section.axis.activate(
+        [rect.top, (rect.top + rect.bottom) / 2.0, rect.bottom - 1],
+        [rect.left, (rect.left + rect.right) / 2.0, rect.right - 1],
+      );
+    });
 
     this.editor.debouncedEventEmit();
   }

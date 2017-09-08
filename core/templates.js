@@ -4,7 +4,7 @@ const slidesTemplates = {
   default: `
     <div class="slides">
         <section>
-            <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+            <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 270px; height: auto;">
                 <div class="sl-block-content">
                     <h1>Title</h1>
                 </div>
@@ -12,24 +12,24 @@ const slidesTemplates = {
         </section>
         <section>
             <section>
-                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+                <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 70px; height: auto;">
                     <div class="sl-block-content" contenteditable="false">
                         <h2>Sub Title 1</h2>
                     </div>
                 </div>
-                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 210px; height: auto; text-align:left">
                     <div class="sl-block-content" contenteditable="false">
                         <p>Content</p>
                     </div>
                 </div>
             </section>
             <section>
-                <div class="sl-block" data-block-type="text" style="width: 720px; left: 80px; top: 70px; height: auto;">
+                <div class="sl-block" data-block-type="text" style="width: 721px; left: 80px; top: 70px; height: auto;">
                     <div class="sl-block-content" contenteditable="false">
                         <h2>1.1</h2>
                     </div>
                 </div>
-                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 210px; height: auto; text-align:left">
                     <div class="sl-block-content" contenteditable="false">
                         <p>Content</p>
                     </div>
@@ -38,24 +38,24 @@ const slidesTemplates = {
         </section>
         <section>
             <section>
-                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 70px; height: auto;">
+                <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 70px; height: auto;">
                     <div class="sl-block-content" contenteditable="false">
                         <h2>Sub Title 2</h2>
                     </div>
                 </div>
-                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 210px; height: auto; text-align:left">
                     <div class="sl-block-content" contenteditable="false">
                         <p>Content</p>
                     </div>
                 </div>
             </section>
             <section>
-                <div class="sl-block" data-block-type="text" style="width: 720px; left: 80px; top: 70px; height: auto;">
+                <div class="sl-block" data-block-type="text" style="width: 721px; left: 80px; top: 70px; height: auto;">
                     <div class="sl-block-content" contenteditable="false">
                         <h2>2.1</h2>
                     </div>
                 </div>
-                <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-align:left">
+                <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 210px; height: auto; text-align:left">
                     <div class="sl-block-content" contenteditable="false">
                         <p>Content</p>
                     </div>
@@ -63,7 +63,7 @@ const slidesTemplates = {
             </section>
         </section>
         <section>
-            <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+            <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 270px; height: auto;">
                 <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" contenteditable="false">
                     <h1>End</h1>
                 </div>
@@ -74,27 +74,27 @@ const slidesTemplates = {
 
 const sectionTemplates = {
   blank: '',
-  title: `<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;">
+  title: `<div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 270px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
             <h1>Title Text</h1>
         </div>
     </div>`,
-  titleAndSubtitle: `<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+  titleAndSubtitle: `<div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 190px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
             <h1>Title Text</h1>
         </div>
         </div>
-        <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 350px; height: auto;">
+        <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 350px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Subtitle">
             <h2>Subtitle</h2>
         </div>
     </div>`,
-  list: `<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+  list: `<div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 190px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
             <h2>Title Text</h2>
         </div>
         </div>
-        <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;">
+        <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 264px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
             <ul>
                 <li>Bullet One</li>
@@ -104,17 +104,17 @@ const sectionTemplates = {
         </div>
     </div>`,
     // maybe wrong
-  textblocks: `<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;">
+  textblocks: `<div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 190px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
             <h1>Title Text</h1>
         </div>
         </div>
-        <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 287px; height: auto;">
+        <div class="sl-block" data-block-type="text" style="width: 801px; left: 80px; top: 287px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Subtitle">
             <h2>Subtitle</h2>
         </div>
     </div>`,
-  image: `<div class="sl-block" data-block-type="text" style="width: 800px; left: 79px; top: 50px; height: auto;">
+  image: `<div class="sl-block" data-block-type="text" style="width: 801px; left: 79px; top: 50px; height: auto;">
         <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
             <h2>Title Text</h2>
         </div>

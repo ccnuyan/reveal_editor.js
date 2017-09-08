@@ -115,6 +115,7 @@ class SVGShapeBlock extends Block {
       this.setFill(params);
     }
 
+    this.ddmrr && this.ddmrr.relocateDom();
     return this.getState();
   }
 }

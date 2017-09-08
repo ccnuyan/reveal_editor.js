@@ -10,6 +10,8 @@ const baseConf = {
   margin: 0.1,
   transition: 'slide',
   fragments: false,
+  postMessage: true,
+  postMessageEvents: true,
 };
 
 export default {

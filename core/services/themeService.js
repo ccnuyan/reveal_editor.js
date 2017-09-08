@@ -1,5 +1,3 @@
-import resourceConfig from '../../config';
-
 class themeService {
   constructor(editor) {
     this.editor = editor;
@@ -10,7 +8,7 @@ class themeService {
   themes = {
     light: {
       key: 'light',
-      css: './static/reveal/css/theme/white.css',
+      css: '//cdn.bootcss.com/reveal.js/3.5.0/css/theme/white.min.css',
       sectionAdd: 'black',
       rotateAnchor: 'black',
       shape: {
@@ -22,7 +20,7 @@ class themeService {
     },
     dark: {
       key: 'dark',
-      css: './static/reveal/css/theme/black.css',
+      css: '//cdn.bootcss.com/reveal.js/3.5.0/css/theme/black.min.css',
       rotateAnchor: 'white',
       sectionAdd: 'white',
       shape: {

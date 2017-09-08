@@ -149,6 +149,8 @@ class SectionArrangement {
 
     this.editor.services.undoredo.enqueue();
 
+    const content = templates.sectionTemplates.title;
+
     if (event.currentTarget.dataset.direction === 'right') {
       let domAfter = this.section.dom;
       const h = this.section.state.h;
@@ -156,7 +158,8 @@ class SectionArrangement {
         domAfter = this.section.dom.parentNode;
       }
       const newSection = document.createElement('section');
-      newSection.innerHTML = templates.sectionTemplates.title;
+      newSection.innerHTML = content;
+      newSection.setAttribute('data-background-color', this.section.getState().backgroundColor);
       domAfter.insertAdjacentHTML('afterend', newSection.outerHTML);
       this.editor.reload({});
       window.Reveal.navigateTo(h + 1, 0);
@@ -168,14 +171,16 @@ class SectionArrangement {
       if (this.section.state.isSub) {
         const domAfter = this.section.dom;
         const newSection = document.createElement('section');
-        newSection.innerHTML = templates.sectionTemplates.title;
+        newSection.innerHTML = content;
+        newSection.setAttribute('data-background-color', this.section.getState().backgroundColor);
         domAfter.insertAdjacentHTML('afterend', newSection.outerHTML);
         this.editor.reload({});
         window.Reveal.navigateTo(h, v + 1);
       } else {
         const mainSection = document.createElement('section');
         const newSection = document.createElement('section');
-        newSection.innerHTML = templates.sectionTemplates.title;
+        newSection.innerHTML = content;
+        newSection.setAttribute('data-background-color', this.section.getState().backgroundColor);
         const clonedCurrentSectionHtml = this.section.dom.outerHTML;
         mainSection.innerHTML = clonedCurrentSectionHtml;
         mainSection.appendChild(newSection);

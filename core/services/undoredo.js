@@ -18,7 +18,7 @@ class UndoRedo {
   }
 
   enqueue() {
-    const innerHtml = this.editor.services.snapshot(this.editor);
+    const innerHtml = this.editor.services.snapshot.getSnapshot();
 
     if (innerHtml === this.queue[this.pointer - 1]) {
       return;
@@ -34,7 +34,7 @@ class UndoRedo {
       return false;
     }
     if (this.queue.length === this.pointer) {
-      const innerHtml = this.editor.services.snapshot(this.editor);
+      const innerHtml = this.editor.services.snapshot.getSnapshot();
       this.queue.push(innerHtml);
     }
     this.pointer -= 1;

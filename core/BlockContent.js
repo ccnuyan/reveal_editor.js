@@ -21,6 +21,10 @@ class BlockContent extends Elements {
 
       event.stopPropagation();
 
+      if (window.Reveal.isOverview()) {
+        return;
+      }
+
       if (this.editor.state.mode === 'previewing') {
         return;
       }

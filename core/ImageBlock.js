@@ -46,6 +46,7 @@ class ImageBlock extends Block {
       }
     });
 
+    this.ddmrr && this.ddmrr.relocateDom();
     return this.getState();
   }
 

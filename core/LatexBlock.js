@@ -35,6 +35,7 @@ class LatexBlock extends Block {
       this.dom.style[key] = params[key];
     });
 
+    this.ddmrr && this.ddmrr.relocateDom();
     return this.getState();
   }
 

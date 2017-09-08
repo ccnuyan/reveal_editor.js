@@ -8,7 +8,6 @@ import services from './services';
 import Emitter from './Emitter';
 
 /* eslint-disable no-param-reassign, radix */
-
 // this.reveal should be the reveal element;
 
 class Editor {
@@ -51,7 +50,7 @@ class Editor {
     this.sections.forEach(section => section.afterInstanciated());
 
     window.Reveal.addEventListener('slidechanged', (event) => {
-      [...this.sections].some((section) => {
+      _.some([...this.sections], (section) => {
         if (event.currentSlide === section.dom) {
           this.currentSection = section;
           return true;
@@ -69,21 +68,30 @@ class Editor {
   }
 
   reload({ html, toOverview, h, v }) {
-    if (h === undefined) h = Reveal.getIndices().h;
-    if (v === undefined) v = Reveal.getIndices().v;
+    let state = false;
+    if (h === undefined || v === undefined) {
+      state = window.Reveal.getState();
+    }
     if (html) {
       this.slidesDom.innerHTML = html;
     } else {
-      this.slidesDom.innerHTML = this.services.snapshot(this);
+      this.slidesDom.innerHTML = this.services.snapshot.getSnapshot();
     }
     this.initializeSections();
     this.sections.forEach(section => section.afterInstanciated());
 
     window.Reveal.sync();
 
-    window.Reveal.navigateTo(h, v);
+    if (state) {
+      window.Reveal.setState(state);
+    } else {
+      window.Reveal.slide(h, v);
+    }
+
     if (toOverview && !window.Reveal.isOverview()) {
-      window.Reveal.toggleOverview();
+      setTimeout(() => {
+        window.Reveal.toggleOverview();
+      }, 1);
     }
 
     // it must reset the currentSection when sync done!
@@ -95,7 +103,7 @@ class Editor {
     });
   }
 
-      // this method make sure the currentSection is always exist
+  // this method make sure the currentSection is always exist
   initializeSections = () => {
     this.sections = new Set([]);
     this.state.struct = {};
@@ -183,6 +191,8 @@ class Editor {
     this.currentSection.blocks.forEach((block) => {
       block.toPreview();
     });
+
+    this.currentSection.axis.clearActives();
 
     this.slidesDom.style.pointerEvents = 'none';
 
