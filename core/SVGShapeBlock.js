@@ -20,7 +20,7 @@ class SVGShapeBlock extends Block {
     this.blockContent.dom.style.width = '100%';
     this.blockContent.dom.style.height = '100%';
 
-    this.state.shape = this.dom.dataset.svgShape;
+    this.state.shape = this.dom.getAttribute('data-svg-shape');
 
     this.draw = this.blockContent.dom.querySelector('svg');
     this.svgShape = this.draw.querySelector(keySvgTagMap[this.state.shape]);
@@ -40,7 +40,6 @@ class SVGShapeBlock extends Block {
   }
 
   toManipulate() {
-    super.toManipulate();
     this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
       resize: {
         key: 'resize',
@@ -53,6 +52,7 @@ class SVGShapeBlock extends Block {
     this.ddmrr.emitter.on('resize_going', () => {
       this.rearrange();
     });
+    super.toManipulate();
   }
 
   rearrange() {

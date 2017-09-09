@@ -60,7 +60,7 @@ ckeditorConfig.removeButtons = 'Underline,Subscript,Superscript';
 
 ckeditorConfig.startupFocus = true;
 
-ckeditorConfig.floatSpaceDockedOffsetX = -4;
+ckeditorConfig.floatSpaceDockedOffsetX = -3;
 ckeditorConfig.floatSpaceDockedOffsetY = 10;
 
 export default ckeditorConfig;

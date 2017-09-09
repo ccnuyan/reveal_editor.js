@@ -11,15 +11,14 @@
     "wp-dev": "cross-env NODE_ENV=development && webpack-dev-server --host 0.0.0.0 --config=webpack.dev-config.js",
     "fe-dev": "cross-env NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
     "wp-build": "cross-env NODE_ENV=production && webpack --config=webpack.build-config.js",
-    "bb-build": "babel server --out-dir server_prod",
-    "start": "export NODE_ENV=production && node server_prod"
+    "start": "export NODE_ENV=production && node server"
   },
   "#comment# - browserslist": "for postcss autoprefix, which is in ./webpack/postcss.config.js",
   "browserslist": [
     ">1%",
     "last 4 versions",
-    "Firefox ESR",
-    "not ie <= 8"
+    "Firefox > 20",
+    "not ie <= 9"
   ],
   "pre-commit1": [
     "eslint"

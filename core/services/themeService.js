@@ -43,13 +43,13 @@ class themeService {
       this.themekey = theme;
       document.getElementById('css_theme').setAttribute('href', this.themes[theme].css);
       document.getElementById('css_theme_override').setAttribute('href', this.reveal_override);
-      this.editor.slidesDom.dataset.theme = theme;
+      this.editor.slidesDom.setAttribute('data-theme', theme);
       return theme;
     }
     this.themekey = 'light';
     document.getElementById('css_theme').setAttribute('href', this.themes.light.css);
     document.getElementById('css_theme_override').setAttribute('href', this.reveal_override);
-    this.editor.slidesDom.dataset.theme = 'light';
+    this.editor.slidesDom.setAttribute('data-theme', 'light');
     return 'light';
   }
 }

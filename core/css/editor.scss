@@ -1,60 +1,5 @@
-.reveal .anchor {
-    pointer-events: auto;
-    width: 12px;
-    height: 12px;
-    border: 2px solid rgb(27, 173, 225);
-    display: block;
-    background-color: white;
-    position: absolute;
-    cursor: default;
-}
-.reveal .anchor[data-direction='e'] {
-    right: 0;
-    top: 50%;
-    margin-top:-6px;
-    margin-right:-8px;
-}
-.reveal .anchor[data-direction='w'] {
-    left: 0;
-    top: 50%;
-    margin-top:-6px;
-    margin-left:-8px;
-}
-.reveal .anchor[data-direction='n'] {
-    left: 50%;
-    top: 0;
-    margin-left:-6px;
-    margin-top:-8px;
-}
-.reveal .anchor[data-direction='s'] {
-    left: 50%;
-    bottom: 0;
-    margin-left:-6px;
-    margin-bottom:-8px;
-}
-.reveal .anchor[data-direction='ne'] {
-    right: 0;
-    top: 0;
-    margin-right:-8px;
-    margin-top:-8px;
-}
-.reveal .anchor[data-direction='nw'] {
-    left: 0;
-    top: 0;
-    margin-left:-8px;
-    margin-top:-8px;
-}
-.reveal .anchor[data-direction='se'] {
-    right: 0;
-    bottom: 0;
-    margin-right:-8px;
-    margin-bottom:-8px;
-}
-.reveal .anchor[data-direction='sw'] {
-    left: 0;
-    bottom: 0;
-    margin-left:-8px;
-    margin-bottom:-8px;
+div[contenteditable] {
+    outline: 2px solid rgb(27, 173, 225);
 }
 
 .reveal .section-add{
@@ -79,6 +24,7 @@
     bottom: -70px;
     margin-left: -24px;
 }
+
 .reveal .arranging-ui{
     width: 160px;
     height: 160px;
@@ -181,4 +127,10 @@
 
 .reveal button.rotate-anchor:hover {
     color:darkgray;
+}
+.reveal *{
+    user-select: none;
+}
+.reveal div.sc-block[sc-block-status=editing] *{
+    user-select: text;
 }

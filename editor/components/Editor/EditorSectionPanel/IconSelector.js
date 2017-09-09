@@ -39,7 +39,7 @@ class IconSelector extends Component {
   onSelectIcon = (event) => {
     event.stopPropagation();
     window.RevealEditor.currentSection
-      .addSVGIcon({ icon: event.currentTarget.dataset.iconFile });
+      .addSVGIcon({ icon: event.currentTarget.getAttribute('data-icon-file') });
     this.props.hideIcons();
   }
 }

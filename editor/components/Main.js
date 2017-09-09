@@ -39,11 +39,11 @@ class Main extends Component {
   }
 
   render =() => {
-    if (this.props.editor.mode === 'editing' && this.props.editor.initialized) {
+    if (this.props.editor.status === 'editing' && this.props.editor.initialized) {
       return (<Editor></Editor>);
     }
 
-    if (this.props.editor.mode === 'previewing') {
+    if (this.props.editor.status === 'previewing') {
       return (<Previewer></Previewer>);
     }
 

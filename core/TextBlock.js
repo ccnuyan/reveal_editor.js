@@ -58,10 +58,10 @@ class TextBlock extends Block {
   }
 
   toPreview = () => {
+    this.blockContent.dom.removeAttribute('contenteditable');
     if (this.CKEDITORInstance) {
       this.CKEDITORInstance.destroy();
     }
-    this.blockContent.dom.setAttribute('contenteditable', false);
     super.toPreview();
   }
 
@@ -70,9 +70,9 @@ class TextBlock extends Block {
   }
 
   toEdit() {
-    this.editor.dom.setAttribute('draggable', false);
-    this.state.mode = 'editing';
+    this.state.status = 'editing';
     this.blockContent.dom.setAttribute('contenteditable', 'true');
+    this.dom.setAttribute('sc-block-status', 'editing');
 
     let initiatedFlag = false;
     Object.keys(CKEDITOR.instances).some((name) => {

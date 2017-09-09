@@ -30,9 +30,9 @@ class Editor {
       this.reveal.appendChild(this.selectRect);
       this.linkDomEvents();
 
-      this.state.mode = 'editing';
+      this.state.status = 'editing';
       this.state.initialized = true;
-      this.state.theme = this.services.theme.loadTheme(this.slidesDom.dataset.theme);
+      this.state.theme = this.services.theme.loadTheme(this.slidesDom.getAttribute('data-theme'));
 
       this.sections.forEach((section) => {
         const currentSectionDom = window.Reveal.getCurrentSlide();
@@ -44,6 +44,14 @@ class Editor {
       this.emitter.emit('editorInitialized', {
         editor: this.getState(),
       });
+
+      setTimeout(() => {
+        const spinner = document.querySelector('div.spinner-container');
+        if (spinner) spinner.parentNode.removeChild(spinner);
+
+        const wrapper = document.querySelector('div.wrapper');
+        if (wrapper) wrapper.style.display = 'block';
+      }, 2000);
     });
 
     window.Reveal.initialize(revealConf.editingConf);
@@ -67,34 +75,26 @@ class Editor {
     });
   }
 
-  reload({ html, toOverview, h, v }) {
-    let state = false;
-    if (h === undefined || v === undefined) {
-      state = window.Reveal.getState();
-    }
+  reload({ html, overview, h, v }) {
+    const state = window.Reveal.getState();
+    if (h) { state.indexh = h; }
+    if (v) { state.indexh = v; }
+    if (overview) { state.overview = overview; }
+
     if (html) {
       this.slidesDom.innerHTML = html;
     } else {
       this.slidesDom.innerHTML = this.services.snapshot.getSnapshot();
     }
+
+    window.Reveal.setState(state);
+
+    window.Reveal.sync();
+    window.Reveal.layout();
+
     this.initializeSections();
     this.sections.forEach(section => section.afterInstanciated());
 
-    window.Reveal.sync();
-
-    if (state) {
-      window.Reveal.setState(state);
-    } else {
-      window.Reveal.slide(h, v);
-    }
-
-    if (toOverview && !window.Reveal.isOverview()) {
-      setTimeout(() => {
-        window.Reveal.toggleOverview();
-      }, 1);
-    }
-
-    // it must reset the currentSection when sync done!
     this.sections.forEach((section) => {
       const currentSectionDom = window.Reveal.getCurrentSlide();
       if (section.dom === currentSectionDom) {
@@ -105,7 +105,7 @@ class Editor {
 
   // this method make sure the currentSection is always exist
   initializeSections = () => {
-    this.sections = new Set([]);
+    this.sections = [];
     this.state.struct = {};
     let h = 0;
 
@@ -169,11 +169,11 @@ class Editor {
     section.state.v = v;
     section.state.isSub = isSub;
 
-    this.sections.add(section);
+    this.sections.push(section);
   }
 
   isChildOfBlock(el) {
-    if (el.tagName === 'DIV' && el.classList.contains('sl-block')) {
+    if (el.tagName === 'DIV' && el.classList.contains('sc-block')) {
       return true;
     } else if (el === document.body) {
       return false;
@@ -194,9 +194,7 @@ class Editor {
 
     this.currentSection.axis.clearActives();
 
-    this.slidesDom.style.pointerEvents = 'none';
-
-    if (this.state.mode !== 'editing') {
+    if (this.state.status !== 'editing') {
       return;
     }
 
@@ -210,6 +208,17 @@ class Editor {
       x: event.clientX,
       y: event.clientY,
     };
+
+    // lower the computing burden
+
+    const parentRect = this.selectRect.parentNode.getBoundingClientRect();
+    this.parentRect = parentRect;
+
+    this.toBeComputedBlocks = _.filter(this.currentSection.blocks, (blk) => {
+      blk.rect = blk.dom.getBoundingClientRect();
+      // return (blk.rect.left < this.startfrom.x && blk.rect.right < this.startfrom.x) ||
+      //  (blk.rect.bottom < this.startfrom.y && blk.rect.top > this.startfrom.y);
+    });
   }
 
   mousemove = (event) => {
@@ -221,44 +230,42 @@ class Editor {
 
     this.selectRect.style.display = 'block';
 
-    const offsetX = event.clientX - this.startfrom.x;
-    const offsetY = event.clientY - this.startfrom.y;
+    const rect = {
+      width: Math.abs(this.startfrom.x - event.clientX),
+      height: Math.abs(this.startfrom.y - event.clientY),
+      clientLeft: Math.min(this.startfrom.x, event.clientX),
+      clientTop: Math.min(this.startfrom.y, event.clientY),
+      left: Math.min(this.startfrom.x, event.clientX) - this.parentRect.left,
+      top: Math.min(this.startfrom.y, event.clientY) - this.parentRect.top,
+    };
 
-    const offset = _u.offset(this.reveal);
-
-    this.selectRect.style.left = `${(offsetX >= 0 ? this.startfrom.x : event.clientX) - offset.left}px`;
-    this.selectRect.style.top = `${(offsetY >= 0 ? this.startfrom.y : event.clientY) - offset.top}px`;
-    this.selectRect.style.width = `${Math.abs(offsetX)}px`;
-    this.selectRect.style.height = `${Math.abs(offsetY)}px`;
-
-    const rectloc = _u.offset(this.selectRect);
+    this.selectRect.style.left = `${rect.left}px`;
+    this.selectRect.style.top = `${rect.top}px`;
+    this.selectRect.style.width = `${rect.width}px`;
+    this.selectRect.style.height = `${rect.height}px`;
 
     this.currentSection.blocks.forEach((block) => {
-      const blockloc = _u.offset(block.dom);
-
-      if (
-        rectloc.left < blockloc.left &&
-        rectloc.top < blockloc.top &&
-        rectloc.left + parseInt(this.selectRect.offsetWidth) > blockloc.left + parseInt(block.dom.offsetWidth) &&
-        rectloc.top + parseInt(this.selectRect.offsetHeight) > blockloc.top + parseInt(block.dom.offsetHeight)) {
-        if (block.state.mode !== 'manipulating') {
+      if (block.rect.left > rect.clientLeft &&
+        block.rect.right < (rect.clientLeft + rect.width) &&
+        block.rect.top > rect.clientTop &&
+        block.rect.bottom < rect.clientTop + rect.height) {
+        if (block.state.status !== 'manipulating') {
           block.toManipulate();
         }
-      } else if (block.state.mode !== 'previewing') {
+      } else if (block.state.status !== 'previewing') {
         block.toPreview();
       }
     });
   }
 
   mouseup = (event) => {
+    event.stopPropagation();
+    this.selectRect.style.display = 'none';
+
     if (!this.draggingToSelect) {
       return;
     }
-
-    this.slidesDom.style.pointerEvents = 'auto';
-    event.stopPropagation();
     this.draggingToSelect = false;
-    this.selectRect.style.display = 'none';
 
     const blocks = this.currentSection.getSelectedBlocks();
     if (blocks.length > 1) {
@@ -271,11 +278,10 @@ class Editor {
   };
 
   toPreview() {
-    // this.reveal.setAttribute('draggable', false);
     this.sections.forEach((section) => {
       section.toPreview();
     });
-    this.state.mode = 'previewing';
+    this.state.status = 'previewing';
   }
 
   toArrange = () => {
@@ -287,8 +293,7 @@ class Editor {
   }
 
   toEdit() {
-    // this.reveal.setAttribute('draggable', true);
-    this.state.mode = 'editing';
+    this.state.status = 'editing';
     this.sections.forEach((section) => {
       section.toEdit();
     });

@@ -7,7 +7,5 @@ I'm still woring on it.
 1. fragments
 1. set background image, overflow check, animation
 
-### bugs:
-1. undo redo when overviewing bug
-1. IE add block automation
-1. IE save to file
+1. reset color, reset all background
+1. width add width 

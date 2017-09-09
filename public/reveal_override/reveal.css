@@ -30,36 +30,36 @@
     margin:0
 }
 
-.sl-block{
+.sc-block{
     position: absolute;
 }
 
-.sl-block[data-block-type='text'] *{
+.sc-block[data-block-type='text'] *{
     color: inherit;
 }
 
-.sl-block[data-block-type='text'], .sl-block[data-block-type='text']>.sl-block-content{
+.sc-block[data-block-type='text'], .sc-block[data-block-type='text']>.sc-block-content{
     height: auto !important;
 }
 
-.sl-block[data-block-type='text']>div.sl-block-content{
+.sc-block[data-block-type='text']>div.sc-block-content{
     padding: 10px;
 }
 
-.sl-block[data-block-type='text']>div.sl-block-content>*{
+.sc-block[data-block-type='text']>div.sc-block-content>*{
     padding: 0px;
     margin: 0px;
 }
 
-.sl-block[data-block-type='text'] pre{
+.sc-block[data-block-type='text'] pre{
     padding:5px;
     width:100%;
 }
 
 /* or else there will be bugs when zoom out the elements */
-.sl-block[data-block-type='shape'], 
-.sl-block[data-block-type='icon'], 
-.sl-block[data-block-type='image']{
+.sc-block[data-block-type='shape'], 
+.sc-block[data-block-type='icon'], 
+.sc-block[data-block-type='image']{
     line-height:0.1;
 }
 

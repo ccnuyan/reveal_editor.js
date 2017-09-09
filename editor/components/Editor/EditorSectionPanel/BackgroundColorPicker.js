@@ -31,7 +31,7 @@ class ThemeAndBackgroundColorPicker extends Component {
 
   switchTheme = (event) => {
     window.RevealEditor.services.theme.loadTheme(event.currentTarget.dataset.theme);
-    this.props.editor.theme = event.currentTarget.dataset.theme;
+    this.props.editor.theme = event.currentTarget.getAttribute('data-theme');
     this.props.set_editor(this.props.editor);
   }
 
@@ -76,9 +76,18 @@ class ThemeAndBackgroundColorPicker extends Component {
       <div>
         <div className='background-color-picker'>
           <div className="section-background-square"
-          style={ { backgroundColor: this.props.currentSection.backgroundColor } }
+          style={ {
+            background: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==")', // eslint-disbale-line
+          } }
           onTouchTap={ this.handleOpen }
           >
+            <div className="color" style={ {
+              borderRadius: 'inherit',
+              width: '100%',
+              height: '100%',
+              backgroundColor: this.props.currentSection.backgroundColor,
+            } }
+            ></div>
           </div>
           <button className={ 'apply-section-background-to-all editor-button' }
               onTouchTap={ this.handleChangeBackgroundToAll }

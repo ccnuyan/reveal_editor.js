@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
 
-import _u from './util';
 import config from './config';
 import Elements from './Elements';
 import TextBlock from './TextBlock';
@@ -18,7 +17,7 @@ const svgIconPath = './static/icomoon/SVG/';
 
 class Section extends Elements {
   // block type to Element Type
-  static map = {
+  blockNameAndTypeMap = {
     text: TextBlock,
     image: ImageBlock,
     latex: LatexBlock,
@@ -31,8 +30,8 @@ class Section extends Elements {
     this.editor = parent;
     this.blocks = [];
 
-    Array.prototype.forEach.call(this.dom.querySelectorAll('.sl-block'), (block) => {
-      const BlockType = Section.map[block.dataset.blockType];
+    Array.prototype.forEach.call(this.dom.querySelectorAll('.sc-block'), (block) => {
+      const BlockType = this.blockNameAndTypeMap[block.getAttribute('data-block-type')];
       this.blocks.push(new BlockType({
         parent: this,
         el: block,
@@ -45,26 +44,10 @@ class Section extends Elements {
     this.arrangment = new SectionArrangement({ parent: this });
   }
 
-  getNewBlock = (type, content) => {
-    const blockDiv = _u.create('div', 'sl-block', config.styles[`${type}Block`]);
-
-    blockDiv.setAttribute('data-block-type', type);
-    blockDiv.appendChild(content);
-
-    this.dom.appendChild(blockDiv);
-
-    const block = new (Section.map[type])({
-      parent: this,
-      el: blockDiv,
-    });
-
-    return block;
-  }
-
   getState = () => {
     return {
       ...this.state,
-      backgroundColor: this.dom.dataset.backgroundColor ? this.dom.dataset.backgroundColor : 'transparent',
+      backgroundColor: this.dom.getAttribute('data-background-color') ? this.dom.getAttribute('data-background-color') : 'transparent',
       selectedBlocks: this.getSelectedBlockStates(),
     };
   }
@@ -81,7 +64,7 @@ class Section extends Elements {
 
   setState = ({ backgroundColor }) => {
     if (backgroundColor) {
-      this.dom.dataset.backgroundColor = backgroundColor;
+      this.dom.setAttribute('data-background-color', backgroundColor);
     }
     window.Reveal.sync();
   }
@@ -90,9 +73,11 @@ class Section extends Elements {
     if (this.editor.isOverview()) return;
     this.editor.services.undoredo.enqueue();
 
-    const blockDiv = document.createElement('div');
-    blockDiv.innerHTML = blocks.text;
-    this.dom.appendChild(blockDiv.childNodes[0]);
+    const blockContainer = document.createElement('div');
+    blockContainer.innerHTML = blocks.text;
+    const blockDom = blockContainer.childNodes[0];
+    this.dom.appendChild(blockDom);
+
     this.editor.reload({});
   }
 
@@ -100,12 +85,14 @@ class Section extends Elements {
     if (this.editor.isOverview()) return;
     this.editor.services.undoredo.enqueue();
 
-    const blockDiv = document.createElement('div');
-    blockDiv.innerHTML = blocks.image;
+    const blockContainer = document.createElement('div');
+    blockContainer.innerHTML = blocks.image;
     if (imageUrl) {
-      blockDiv.querySelector('img').setAttribute('src', imageUrl);
+      blockContainer.querySelector('img').setAttribute('src', imageUrl);
     }
-    this.dom.appendChild(blockDiv.childNodes[0]);
+    const blockDom = blockContainer.childNodes[0];
+    this.dom.appendChild(blockDom);
+
     this.editor.reload({});
   }
 
@@ -115,9 +102,12 @@ class Section extends Elements {
 
     this.editor.services.undoredo.enqueue();
 
-    const blockDiv = document.createElement('div');
-    blockDiv.innerHTML = blocks.shape[shape];
-    this.dom.appendChild(blockDiv.childNodes[0]);
+    const blockContainer = document.createElement('div');
+    blockContainer.innerHTML = blocks.shape[shape];
+
+    const blockDom = blockContainer.childNodes[0];
+    this.dom.appendChild(blockDom);
+
     this.editor.reload({});
   }
 
@@ -130,11 +120,14 @@ class Section extends Elements {
     fetch(iconFile).then((response) => {
       return response.text();
     }).then((text) => {
-      const blockDiv = document.createElement('div');
-      blockDiv.innerHTML = blocks.icon;
-      blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = text;
-      blockDiv.querySelector(`div.${config.classnames.content}>svg`).setAttribute('fill', 'rgba(192,192,192,1)');
-      this.dom.appendChild(blockDiv.childNodes[0]);
+      const blockContainer = document.createElement('div');
+      blockContainer.innerHTML = blocks.icon;
+      blockContainer.querySelector(`div.${config.classnames.content}`).innerHTML = text;
+      blockContainer.querySelector(`div.${config.classnames.content}>svg`).setAttribute('fill', 'rgba(192,192,192,1)');
+
+      const blockDom = blockContainer.childNodes[0];
+      this.dom.appendChild(blockDom);
+
       this.editor.reload({});
       return true;
     }).catch(() => {
@@ -146,12 +139,15 @@ class Section extends Elements {
     if (this.editor.isOverview()) return;
     this.editor.services.undoredo.enqueue();
 
-    const blockDiv = document.createElement('div');
-    blockDiv.innerHTML = blocks.katex;
-    blockDiv.querySelector(`div.${config.classnames.content}`).innerHTML = `
-    <div class="sl-katex-display"></div>
-    <div style="display:none" class="sl-katex-raw">${latex}</div>`;
-    this.dom.appendChild(blockDiv.childNodes[0]);
+    const blockContainer = document.createElement('div');
+    blockContainer.innerHTML = blocks.katex;
+    blockContainer.querySelector(`div.${config.classnames.content}`).innerHTML = `
+    <div class="sc-katex-display"></div>
+    <div style="display:none" class="sc-katex-raw">${latex}</div>`;
+
+    const blockDom = blockContainer.childNodes[0];
+    this.dom.appendChild(blockDom);
+
     this.editor.reload({});
   }
 
@@ -160,20 +156,21 @@ class Section extends Elements {
     this.editor.services.undoredo.enqueue();
     const toBeRemoved = [];
     this.blocks.forEach((block) => {
-      if (block.state.mode === 'manipulating') {
+      if (block.state.status === 'manipulating') {
         toBeRemoved.push(block);
       }
     });
     toBeRemoved.forEach((block) => {
       block.remove();
     });
-    this.editor.reload({});
+
+    this.axis.clearActives();
   }
 
   getSelectedBlocks() {
     const selectedBlocks = [];
     this.blocks.forEach((blk) => {
-      if (blk.state.mode === 'manipulating' || blk.state.mode === 'editing') {
+      if (blk.state.status === 'manipulating' || blk.state.status === 'editing') {
         selectedBlocks.push(blk);
       }
     });
@@ -197,7 +194,7 @@ class Section extends Elements {
 
     const container = document.createElement('div');
     container.innerHTML = innerHTML;
-    const blks = container.querySelectorAll('div.sl-block');
+    const blks = container.querySelectorAll('div.sc-block');
 
     Array.prototype.forEach.call(blks, (blk) => {
       this.dom.appendChild(blk);

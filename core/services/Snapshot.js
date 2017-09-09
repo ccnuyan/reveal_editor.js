@@ -13,7 +13,7 @@ class Snapshot {
       attributesAllowed: ['data-id', 'data-background-color'],
     },
     block: {
-      classesAllowed: ['sl-block'],
+      classesAllowed: ['sc-block'],
       attributesAllowed: ['data-id',
         'data-svg-shape',
         'data-block-type',
@@ -68,10 +68,10 @@ class Snapshot {
     });
 
     const sections = slides.querySelectorAll('section');
-    const blocks = slides.querySelectorAll('div.sl-block');
+    const blocks = slides.querySelectorAll('div.sc-block');
 
     Array.prototype.forEach.call(sections, (section) => {
-      Array.prototype.forEach.call(section.querySelectorAll('section>div:not(.sl-block)'), (el) => {
+      Array.prototype.forEach.call(section.querySelectorAll('section>div:not(.sc-block)'), (el) => {
         if (el.parentNode === section)section.removeChild(el);
       });
       const cavs = section.querySelector('canvas');
@@ -85,7 +85,7 @@ class Snapshot {
       this.removeClassNotExistedInArray(el, this.rules.section.classesAllowed);
     });
     Array.prototype.forEach.call(blocks, (block) => {
-      Array.prototype.forEach.call(block.querySelectorAll('div.sl-block>div:not(.sl-block-content)'), (el) => {
+      Array.prototype.forEach.call(block.querySelectorAll('div.sc-block>div:not(.sc-block-content)'), (el) => {
         if (el.parentNode === block)block.removeChild(el);
       });
       this.removeClassNotExistedInArray(block, this.rules.block.classesAllowed);

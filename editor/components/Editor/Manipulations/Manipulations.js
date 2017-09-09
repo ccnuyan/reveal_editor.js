@@ -31,8 +31,8 @@ const rawHTML =
 </html>`;
 
 class Manipulations extends Component {
-  exportRequiredStylesheets = ['reveal', 'katex', 'theme', 'theme_override'];
-  exportRequiredScripts = ['head', 'html5shiv', 'classList', 'reveal'];
+  exportRequiredStylesheets = ['normalize', 'katex', 'reveal', 'theme', 'theme_override'];
+  exportRequiredScripts = ['head', 'html5shiv', 'reveal'];
   static propTypes = {
     set_preview: PropTypes.func.isRequired,
   }
@@ -91,9 +91,10 @@ class Manipulations extends Component {
     const uri = `data:text/html;charset=utf-8,${newHTML}`;
 
     const downloadLink = document.createElement('a');
+    downloadLink.setAttribute('target', '_blank');
     downloadLink.style.display = 'none';
     downloadLink.href = uri;
-    downloadLink.download = 'slides.html';
+    downloadLink.download = 'offline_player.html';
 
     document.body.appendChild(downloadLink);
     downloadLink.click();

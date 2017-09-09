@@ -41,7 +41,8 @@ class LatexEditor {
     this.frame.appendChild(this.close);
     this.frame.appendChild(this.check);
 
-    this.close.addEventListener('click', () => {
+    this.close.addEventListener('click', (event) => {
+      event.stopPropagation();
       this.hide();
       if (this.cancelCallback) {
         this.cancelCallback({
@@ -51,7 +52,8 @@ class LatexEditor {
       }
     });
 
-    this.check.addEventListener('click', () => {
+    this.check.addEventListener('click', (event) => {
+      event.stopPropagation();
       this.hide();
       if (this.okCallback) {
         this.okCallback({

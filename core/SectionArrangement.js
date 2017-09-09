@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign, radix */
-
+import _ from 'lodash';
 import templates from './templates';
 
 class SectionArrangement {
@@ -13,10 +13,10 @@ class SectionArrangement {
   initializeSectionAddButtons = () => {
     this.rightAdd = document.createElement('button');
     this.rightAdd.innerHTML = '<i class="icon-plus dead-center" />';
-    this.rightAdd.dataset.direction = 'right';
+    this.rightAdd.setAttribute('data-direction', 'right');
     this.bottomAdd = document.createElement('button');
     this.bottomAdd.innerHTML = '<i class="icon-plus dead-center" />';
-    this.bottomAdd.dataset.direction = 'bottom';
+    this.bottomAdd.setAttribute('data-direction', 'bottom');
 
     this.rightAdd.setAttribute('class', 'editing-ui section-manipulator section-add');
     this.bottomAdd.setAttribute('class', 'editing-ui section-manipulator section-add');
@@ -33,42 +33,42 @@ class SectionArrangement {
   initializeArrangementButtons = () => {
     this.left = document.createElement('button');
     this.left.innerHTML = '<i class="icon-angle-left dead-center" />';
-    this.left.dataset.direction = 'left';
+    this.left.setAttribute('data-direction', 'left');
     this.left.setAttribute('class', 'section-manipulator arranging-ui');
     this.right = document.createElement('div');
     this.right.innerHTML = '<i class="icon-angle-right dead-center" />';
-    this.right.dataset.direction = 'right';
+    this.right.setAttribute('data-direction', 'right');
     this.right.setAttribute('class', 'section-manipulator arranging-ui');
     this.up = document.createElement('div');
     this.up.innerHTML = '<i class="icon-angle-up dead-center" />';
-    this.up.dataset.direction = 'up';
+    this.up.setAttribute('data-direction', 'up');
     this.up.setAttribute('class', 'section-manipulator arranging-ui');
     this.down = document.createElement('div');
     this.down.innerHTML = '<i class="icon-angle-down dead-center" />';
-    this.down.dataset.direction = 'down';
+    this.down.setAttribute('data-direction', 'down');
     this.down.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.embedleft = document.createElement('div');
     this.embedleft.innerHTML = '<i class="icon-angle-down dead-center" />';
-    this.embedleft.dataset.direction = 'embedleft';
+    this.embedleft.setAttribute('data-direction', 'embedleft');
     this.embedleft.setAttribute('class', 'section-manipulator arranging-ui');
     this.embedright = document.createElement('div');
     this.embedright.innerHTML = '<i class="icon-angle-right dead-center" />';
-    this.embedright.dataset.direction = 'embedright';
+    this.embedright.setAttribute('data-direction', 'embedright');
     this.embedright.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.batchleft = document.createElement('div');
     this.batchleft.innerHTML = '<i class="icon-angle-double-left dead-center" />';
-    this.batchleft.dataset.direction = 'batchleft';
+    this.batchleft.setAttribute('data-direction', 'batchleft');
     this.batchleft.setAttribute('class', 'section-manipulator arranging-ui');
     this.batchright = document.createElement('div');
     this.batchright.innerHTML = '<i class="icon-angle-double-right dead-center" />';
-    this.batchright.dataset.direction = 'batchright';
+    this.batchright.setAttribute('data-direction', 'batchright');
     this.batchright.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.remove = document.createElement('div');
     this.remove.innerHTML = '<i class="icon-trash-o dead-center" />';
-    this.remove.dataset.direction = 'remove';
+    this.remove.setAttribute('data-direction', 'remove');
     this.remove.setAttribute('class', 'section-manipulator arranging-ui');
 
     this.arrangingButtons = this.getEnabledArrangingButtons();
@@ -151,7 +151,7 @@ class SectionArrangement {
 
     const content = templates.sectionTemplates.title;
 
-    if (event.currentTarget.dataset.direction === 'right') {
+    if (event.currentTarget.getAttribute('data-direction') === 'right') {
       let domAfter = this.section.dom;
       const h = this.section.state.h;
       if (this.section.state.isSub) {
@@ -165,7 +165,7 @@ class SectionArrangement {
       window.Reveal.navigateTo(h + 1, 0);
     }
 
-    if (event.currentTarget.dataset.direction === 'bottom') {
+    if (event.currentTarget.getAttribute('data-direction') === 'bottom') {
       const h = this.section.state.h;
       const v = this.section.state.v;
       if (this.section.state.isSub) {
@@ -202,7 +202,7 @@ class SectionArrangement {
     const isSub = this.section.state.isSub;
     const struct = this.editor.state.struct;
 
-    switch (event.currentTarget.dataset.direction) {
+    switch (event.currentTarget.getAttribute('data-direction')) {
       case 'left': {
         if (isSub) {
           const parentSection = this.section.dom.parentNode;
@@ -215,14 +215,14 @@ class SectionArrangement {
             parentSection.innerHTML = parentSection.querySelector('section').innerHTML;
           }
 
-          this.editor.reload({ toOverview: true, h, v: 0 });
+          this.editor.reload({ overview: true, h, v: 0 });
         } else {
           const previousSection = this.section.dom.previousElementSibling;
           const sectionHtml = this.section.dom.outerHTML;
           this.section.dom.parentNode.removeChild(this.section.dom);
           previousSection.insertAdjacentHTML('beforeBegin', sectionHtml);
 
-          this.editor.reload({ toOverview: true, h: h - 1, v: 0 });
+          this.editor.reload({ overview: true, h: h - 1, v: 0 });
         }
         break;
       }
@@ -237,14 +237,14 @@ class SectionArrangement {
             parentSection.innerHTML = parentSection.querySelector('section').innerHTML;
           }
 
-          this.editor.reload({ toOverview: true, h: h + 1, v: 0 });
+          this.editor.reload({ overview: true, h: h + 1, v: 0 });
         } else {
           const nextSection = this.section.dom.nextElementSibling;
           const sectionHtml = this.section.dom.outerHTML;
           this.section.dom.parentNode.removeChild(this.section.dom);
           nextSection.insertAdjacentHTML('afterEnd', sectionHtml);
 
-          this.editor.reload({ toOverview: true, h: h + 1, v: 0 });
+          this.editor.reload({ overview: true, h: h + 1, v: 0 });
         }
         break;
       }
@@ -272,15 +272,17 @@ class SectionArrangement {
 
         if (isSub) {
           if (parentSection.querySelectorAll('section').length === 1) {
-            Object.keys(parentSection.querySelector('section').dataset).forEach((key) => {
-              parentSection.dataset[key] = parentSection.querySelector('section').dataset[key];
+            const sdom = parentSection.querySelector('section');
+            const dataStarAttributes = _.filter(sdom.attributes, at => _.startsWith(at, 'data-background'));
+            dataStarAttributes.forEach((key) => {
+              sdom.setAttribute(key, sdom.querySelector('section').getAttribute(key));
             });
             parentSection.innerHTML = parentSection.querySelector('section').innerHTML;
           }
         }
 
         this.editor.reload({
-          toOverview: true,
+          overview: true,
           h: h - 1,
           v: struct[h - 1] === true ? 1 : (struct[h - 1].count),
         });
@@ -310,15 +312,17 @@ class SectionArrangement {
 
         if (isSub) {
           if (parentSection.querySelectorAll('section').length === 1) {
-            Object.keys(parentSection.querySelector('section').dataset).forEach((key) => {
-              parentSection.dataset[key] = parentSection.querySelector('section').dataset[key];
+            const sdom = parentSection.querySelector('section');
+            const dataStarAttributes = _.filter(sdom.attributes, at => _.startsWith(at, 'data-background'));
+            dataStarAttributes.forEach((key) => {
+              sdom.setAttribute(key, sdom.querySelector('section').getAttribute(key));
             });
             parentSection.innerHTML = parentSection.querySelector('section').innerHTML;
           }
         }
 
         this.editor.reload({
-          toOverview: true,
+          overview: true,
           h: h + 1,
           v: struct[h + 1] === true ? 1 : (struct[h + 1].count),
         });
@@ -329,7 +333,7 @@ class SectionArrangement {
         const sectionHtml = this.section.dom.outerHTML;
         this.section.dom.parentNode.removeChild(this.section.dom);
         previousSection.insertAdjacentHTML('beforeBegin', sectionHtml);
-        this.editor.reload({ toOverview: true, h, v: v - 1 });
+        this.editor.reload({ overview: true, h, v: v - 1 });
         break;
       }
       case 'down': {
@@ -337,7 +341,7 @@ class SectionArrangement {
         const sectionHtml = this.section.dom.outerHTML;
         this.section.dom.parentNode.removeChild(this.section.dom);
         nextSection.insertAdjacentHTML('afterEnd', sectionHtml);
-        this.editor.reload({ toOverview: true, h, v: v + 1 });
+        this.editor.reload({ overview: true, h, v: v + 1 });
         break;
       }
       case 'batchleft': {
@@ -350,7 +354,7 @@ class SectionArrangement {
         tobemoved.parentNode.removeChild(tobemoved);
         dombefore.insertAdjacentHTML('beforeBegin', sectionHtml);
 
-        this.editor.reload({ toOverview: true, h: h - 1, v: 0 });
+        this.editor.reload({ overview: true, h: h - 1, v: 0 });
         break;
       }
       case 'batchright': {
@@ -363,11 +367,11 @@ class SectionArrangement {
         tobemoved.parentNode.removeChild(tobemoved);
         domafter.insertAdjacentHTML('afterend', sectionHtml);
 
-        this.editor.reload({ toOverview: true, h: h + 1, v: 0 });
+        this.editor.reload({ overview: true, h: h + 1, v: 0 });
         break;
       }
 
-      case 'remove' : {
+      case 'remove': {
         const parentNode = this.section.dom.parentNode;
         this.section.dom.parentNode.removeChild(this.section.dom);
 
@@ -376,9 +380,9 @@ class SectionArrangement {
             const insideSection = parentNode.querySelector('section');
             parentNode.innerHTML = insideSection.innerHTML;
           }
-          this.editor.reload({ toOverview: true, h, v: Math.max(v - 1, 0) });
+          this.editor.reload({ overview: true, h, v: Math.max(v - 1, 0) });
         } else {
-          this.editor.reload({ toOverview: true, h: h - 1, v: 0 });
+          this.editor.reload({ overview: true, h: h - 1, v: 0 });
         }
 
         break;

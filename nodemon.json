@@ -5,7 +5,7 @@
     ".git"
   ],
   "verbose": true,
-  "exec": "npm run bb-build && node ./server_prod",
+  "exec": "babel-node ./server",
   "watch": [
     "db/",
     "config/",

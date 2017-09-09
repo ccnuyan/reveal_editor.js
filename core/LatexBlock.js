@@ -10,8 +10,8 @@ class LatexBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
 
-    this.katexDsplayDom = this.blockContent.dom.querySelector('div.sl-katex-display');
-    this.katexRawDom = this.blockContent.dom.querySelector('div.sl-katex-raw');
+    this.katexDsplayDom = this.blockContent.dom.querySelector('div.sc-katex-display');
+    this.katexRawDom = this.blockContent.dom.querySelector('div.sc-katex-raw');
 
     this.load({});
   }
@@ -40,7 +40,6 @@ class LatexBlock extends Block {
   }
 
   toManipulate() {
-    super.toManipulate();
     this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
       resize: {
         key: 'resize',
@@ -60,7 +59,6 @@ class LatexBlock extends Block {
   toEdit() {
     super.toEdit();
     _u.clearUserSelection();
-    this.editor.dom.setAttribute('draggable', false);
     const originalTex = this.blockContent.dom.querySelector('span.katex>span.katex-mathml>math>semantics>annotation').innerHTML;
 
     if (!this.editor.latexEditor) {
@@ -68,6 +66,7 @@ class LatexBlock extends Block {
     }
     this.editor.latexEditor.load({ latex: originalTex }, ({ input }) => {
       this.load({ latex: input });
+      this.toManipulate();
     });
   }
 

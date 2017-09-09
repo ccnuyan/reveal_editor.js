@@ -16,7 +16,7 @@ class ZIndexOptions extends Component {
   }
 
   changeZIndex = (event) => {
-    const dir = event.currentTarget.dataset.changeDirection;
+    const dir = event.currentTarget.getAttribute('data-change-direction');
     let index = 0;
     this.props.selectedBlocks.forEach((block) => {
       let zIndex = block.zIndex;

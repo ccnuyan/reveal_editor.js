@@ -56,10 +56,20 @@ class ColorOptions extends Component {
     const selectedBlock = this.props.selectedBlocks[0];
     return (
       <div className="color-option">
-        <div className="color-square"
-          style={ { backgroundColor: selectedBlock[this.props.blockProp], display: 'inherit!important' } }
+        <div className="color-square" style={ {
+          display: 'inherit!important',
+          background: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==")', // eslint-disbale-line
+        } }
           onTouchTap={ this.handleClick }
-        ></div>
+        >
+          <div className="color" style={ {
+            borderRadius: 'inherit',
+            width: '100%',
+            height: '100%',
+            backgroundColor: selectedBlock[this.props.blockProp],
+          } }
+          ></div>
+        </div>
         { this.state.displayColorPicker ?
           <div style={ this.styles.popover }>
             <div style={ this.styles.cover } onTouchTap={ this.handleClose }/>

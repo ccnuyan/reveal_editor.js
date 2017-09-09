@@ -25,7 +25,7 @@ class FontSizeOptions extends Component {
 
   changeFontSize = (event) => {
     const selectedBlock = this.props.selectedBlocks[0];
-    const dir = event.currentTarget.dataset.changeDirection;
+    const dir = event.currentTarget.getAttribute('data-change-direction');
     const per = new Percentage(selectedBlock.fontSize);
     let newPer = '100%';
     switch (dir) {

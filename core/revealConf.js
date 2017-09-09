@@ -1,17 +1,18 @@
 import _ from 'lodash';
 
 const baseConf = {
+  embedded: true,
+  slideNumber: true,
   controls: true,
-  progress: true,
-  history: true,
+  progress: false,
+  history: false,
   center: false,
   width: 960,
   height: 700,
+  touch: false,
   margin: 0.1,
   transition: 'slide',
   fragments: false,
-  postMessage: true,
-  postMessageEvents: true,
 };
 
 export default {

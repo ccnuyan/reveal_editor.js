@@ -18,18 +18,17 @@ class BlockContent extends Elements {
 
     _u.on(this.dom, 'click', (event) => {
       // here is editor state
-
       event.stopPropagation();
 
       if (window.Reveal.isOverview()) {
         return;
       }
 
-      if (this.editor.state.mode === 'previewing') {
+      if (this.editor.state.status === 'previewing') {
         return;
       }
       // here is block state
-      if (this.block.state.mode === 'previewing') {
+      if (this.block.state.status === 'previewing') {
         this.section.blocks.forEach((block) => {
           if (block === this.block) {
             block.toManipulate();

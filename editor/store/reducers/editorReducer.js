@@ -18,12 +18,12 @@ export default (state = editorInit, action) => {
     }
 
     case actionTypes.SET_EDIT_MODE: {
-      state = state.set('mode', 'editing');
+      state = state.set('status', 'editing');
       return state;
     }
 
     case actionTypes.SET_PREVIEW_MODE: {
-      state = state.set('mode', 'previewing');
+      state = state.set('status', 'previewing');
       return state;
     }
 

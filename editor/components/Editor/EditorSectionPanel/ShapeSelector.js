@@ -61,7 +61,7 @@ class ShapeSelector extends Component {
   onSelectShape = (event) => {
     event.stopPropagation();
     window.RevealEditor.currentSection
-      .addSVGShape({ shape: event.currentTarget.dataset.shapeKey });
+      .addSVGShape({ shape: event.currentTarget.getAttribute('data-shape-key') });
     this.props.hideShapes();
   }
 }

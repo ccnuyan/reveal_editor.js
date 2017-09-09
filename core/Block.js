@@ -6,35 +6,12 @@ import Elements from './Elements';
 class Block extends Elements {
   anchorTypes = [];
   D2R = Math.PI / 180;
-  state = { mode: 'previewing', transform: 0 };
+  state = { status: 'previewing' };
 
   minsize = {
     width: 24,
     height: 24,
   };
-
-  getLength = (len) => {
-    return len ? Math.round(parseFloat(len)) : 0;
-  }
-
-  getColor = (color) => {
-    return color || 'transparent';
-  }
-
-  getFontSize = (fs) => {
-    return fs || '100%';
-  }
-
-  getBorderStyle = (bs) => {
-    return bs || 'none';
-  }
-
-  getZIndex = (zi) => {
-    if (!zi || zi === 'auto') {
-      return 0;
-    }
-    return parseInt(zi);
-  }
 
   constructor({ parent, el }) {
     super({ parent, el });
@@ -42,9 +19,9 @@ class Block extends Elements {
     this.editor = parent.editor;
     this.section = this.parent;
 
-    this.state.blockType = this.dom.dataset.blockType;
+    this.state.blockType = this.dom.getAttribute('data-block-type');
 
-    const contentDom = this.dom.querySelector('div.sl-block>div.sl-block-content');
+    const contentDom = this.dom.querySelector('div.sc-block>div.sc-block-content');
 
     this.blockContent = new BlockContent({
       parent: this,
@@ -53,7 +30,7 @@ class Block extends Elements {
   }
 
   toEdit() {
-    if (this.state.mode === 'editing') return;
+    if (this.state.status === 'editing') return;
 
     this.editor.services.undoredo.enqueue();
 
@@ -68,18 +45,14 @@ class Block extends Elements {
 
   // when selected;
   toManipulate() {
-    if (this.state.mode === 'manipulating') return;
+    if (this.state.status === 'manipulating') return;
+
+    this.dom.setAttribute('sc-block-status', 'manipulating');
 
     this.editor.services.undoredo.enqueue();
 
-    this.state.mode = 'manipulating';
+    this.state.status = 'manipulating';
     // set ddmrr in inherit classes
-
-    this.dom.style.userSelect = 'none';
-    this.dom.style.mozUserSelect = 'none';
-    this.dom.style.webkitUserSelect = 'none';
-    this.dom.style.msUserSelect = 'none';
-
 
     const currentRect = this.dom.getBoundingClientRect();
     this.section.axis.activate(
@@ -138,9 +111,33 @@ class Block extends Elements {
     this.editor.debouncedEventEmit();
   }
 
+  getLength = (len) => {
+    return len ? Math.round(parseFloat(len)) : 0;
+  };
+
+  getColor = (color) => {
+    return color || 'transparent';
+  };
+
+  getFontSize = (fs) => {
+    return fs || '100%';
+  };
+
+  getBorderStyle = (bs) => {
+    return bs || 'none';
+  };
+
+  getZIndex = (zi) => {
+    if (!zi || zi === 'auto') {
+      return 0;
+    }
+    return parseInt(zi);
+  };
+
   toPreview() {
-    if (this.state.mode === 'previewing') return;
-    this.state.mode = 'previewing';
+    this.dom.setAttribute('sc-block-status', 'previewing');
+    if (this.state.status === 'previewing') return;
+    this.state.status = 'previewing';
     if (this.ddmrr) {
       this.ddmrr.release();
       this.ddmrr = null;

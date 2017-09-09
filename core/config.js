@@ -39,7 +39,6 @@ const styles = {
     fontSize: '1em',
     width: '100%',
     height: '100%',
-    userSelect: 'none',
     border: '2px solid rgba(128,128,128,0.3)',
   },
   textBlock: {
@@ -87,19 +86,19 @@ const styles = {
 
 const classnames = {
   editingUI: 'editing-ui',
-  block: 'sl-block',
-  transform: 'sl-block-transform',
-  content: 'sl-block-content',
+  block: 'sc-block',
+  transform: 'sc-block-transform',
+  content: 'sc-block-content',
 };
 
 const selectors = {
   reveal: '.reveal',
   slides: '.slides',
-  block: '.sl-block',
-  transform: '.sl-block-transform',
-  content: '.sl-block-content',
-  textBlocks: '.sl-block[data-block-type=\'text\']',
-  imageBlocks: '.sl-block[data-block-type=\'image\']',
+  block: '.sc-block',
+  transform: '.sc-block-transform',
+  content: '.sc-block-content',
+  textBlocks: '.sc-block[data-block-type=\'text\']',
+  imageBlocks: '.sc-block[data-block-type=\'image\']',
 };
 
 export default {

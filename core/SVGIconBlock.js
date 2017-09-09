@@ -39,7 +39,6 @@ class SVGIconBlock extends Block {
   }
 
   toManipulate() {
-    super.toManipulate();
     this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
       resize: {
         key: 'resize',
@@ -48,6 +47,7 @@ class SVGIconBlock extends Block {
         anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
       },
     });
+    super.toManipulate();
   }
 }
 
