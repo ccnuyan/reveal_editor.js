@@ -88,9 +88,9 @@ class Editor {
     if (overview) { state.overview = overview; }
 
     if (html) {
-      this.slidesDom.innerHTML = html;
+      this.slidesDom.outerHTML = html;
     } else {
-      this.slidesDom.innerHTML = this.services.snapshot.getContent().content;
+      this.slidesDom.outerHTML = this.services.snapshot.getContent().content;
     }
 
     window.Reveal.setState(state);
