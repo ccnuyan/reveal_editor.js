@@ -1,6 +1,9 @@
+import { getHeaders } from './sc_util';
+
 class Snapshot {
   constructor(editor) {
     this.editor = editor;
+    this.justSaved = {};
   }
 
   rules = {
@@ -54,7 +57,36 @@ class Snapshot {
     });
   };
 
-  getSnapshot = () => {
+  saveWork = () => {
+    const content = this.getContent();
+    if (window.sc_mode.anonymous) {
+      window.localStorage.setItem('snapshot_anonymous', content.content);
+    } else {
+      const payload = {
+        method: 'PUT',
+        headers: getHeaders(),
+
+      };
+      payload.body = JSON.stringify({
+        work_id: window.sc_mode.work_id,
+        ...content,
+      });
+
+      if (!this.justSaved.content || this.justSaved.content !== content.content) {
+        fetch('/api/works', payload)
+        .then(res => res.json())
+        .then((ret) => {
+          this.justSaved = this.getContent();
+          return console.log(ret);
+        })
+        .catch((error) => {
+          return console.log(error);
+        });
+      }
+    }
+  }
+
+  getContent = () => {
     const cwp = this.editor.reveal.cloneNode(true);
     const slides = cwp.querySelector('div.slides');
 
@@ -72,7 +104,7 @@ class Snapshot {
 
     Array.prototype.forEach.call(sections, (section) => {
       Array.prototype.forEach.call(section.querySelectorAll('section>div:not(.sc-block)'), (el) => {
-        if (el.parentNode === section)section.removeChild(el);
+        if (el.parentNode === section) section.removeChild(el);
       });
       const cavs = section.querySelector('canvas');
       if (cavs) {
@@ -86,7 +118,7 @@ class Snapshot {
     });
     Array.prototype.forEach.call(blocks, (block) => {
       Array.prototype.forEach.call(block.querySelectorAll('div.sc-block>div:not(.sc-block-content)'), (el) => {
-        if (el.parentNode === block)block.removeChild(el);
+        if (el.parentNode === block) block.removeChild(el);
       });
       this.removeClassNotExistedInArray(block, this.rules.block.classesAllowed);
     });
@@ -99,7 +131,12 @@ class Snapshot {
       this.removeAttrNotExistedInArray(block, this.rules.block.attributesAllowed);
     });
 
-    return slides.innerHTML;
+    const firstPage = slides.querySelector('section');
+    const embed = firstPage.querySelector('section');
+    return {
+      content: slides.outerHTML,
+      snapshot: embed ? embed.outerHTML : firstPage.outerHTML,
+    };
   };
 }
 

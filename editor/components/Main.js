@@ -18,24 +18,36 @@ class Main extends Component {
     set_selected_blocks: PropTypes.func.isRequired,
   }
 
-  componentDidMount() {
-    if (window.RevealEditor.state.initialized) {
-      const editor = window.RevealEditor.getState();
-      this.props.set_editor(editor);
-    } else {
-      window.RevealEditor.emitter.on('editorInitialized', (event) => {
-        this.props.set_editor(event.editor);
-      });
-    }
+  addEventListeners = () => {
     window.RevealEditor.emitter.on('editorCurrentBlocksChanged', (event) => {
       this.props.set_selected_blocks(event.selectedBlocks);
-    });
-    window.RevealEditor.emitter.on('editorRequestEditImage', (event) => {
-      console.log(event);
     });
     window.RevealEditor.emitter.on('editorCurrentSlideChanged', (event) => {
       this.props.set_current_section(event.currentSection);
     });
+
+    window.RevealEditor.emitter.on('editorRequestEditImage', (event) => {
+      console.log(event);
+    });
+  }
+
+  componentDidMount() {
+    if (window.RevealEditor) {
+      console.log('window.RevealEditor true');
+      if (window.RevealEditor.state.initialized) {
+        console.log('window.RevealEditor initialized');
+        const editor = window.RevealEditor.getState();
+        this.props.set_editor(editor);
+        this.addEventListeners();
+      } else {
+        window.RevealEditor.emitter.on('editorInitialized', (event) => {
+          this.props.set_editor(event.editor);
+          this.addEventListeners();
+        });
+      }
+    } else {
+      console.log('window.RevealEditor false');
+    }
   }
 
   render =() => {

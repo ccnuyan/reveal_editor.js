@@ -11,27 +11,28 @@ import Emitter from './Emitter';
 // this.reveal should be the reveal element;
 
 class Editor {
-  constructor({ reveal, initialHTML }) {
+  constructor({ reveal }) {
     this.dom = reveal;
     this.reveal = reveal;
     this.services = services(this);
-    this.state = {};
+    this.state = {
+      initialized: false,
+    };
 
     this.emitter = new Emitter();
-    this.reveal.innerHTML = initialHTML;
-
-    this.initializeSections();
   }
 
-  afterInstanciated() {
-    Reveal.addEventListener('ready', () => {
+  afterInstanciated(html) {
+    this.reveal.innerHTML = html;
+    this.initializeSections();
+
+    window.Reveal.addEventListener('ready', () => {
       this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
       this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
       this.reveal.appendChild(this.selectRect);
       this.linkDomEvents();
 
       this.state.status = 'editing';
-      this.state.initialized = true;
       this.state.theme = this.services.theme.loadTheme(this.slidesDom.getAttribute('data-theme'));
 
       this.sections.forEach((section) => {
@@ -41,9 +42,14 @@ class Editor {
         }
       });
 
+      this.state.initialized = true;
       this.emitter.emit('editorInitialized', {
         editor: this.getState(),
       });
+
+      setInterval(() => {
+        this.services.snapshot.saveWork();
+      }, 5000);
 
       setTimeout(() => {
         const spinner = document.querySelector('div.spinner-container');
@@ -53,9 +59,6 @@ class Editor {
         if (wrapper) wrapper.style.display = 'block';
       }, 2000);
     });
-
-    window.Reveal.initialize(revealConf.editingConf);
-    this.sections.forEach(section => section.afterInstanciated());
 
     window.Reveal.addEventListener('slidechanged', (event) => {
       _.some([...this.sections], (section) => {
@@ -73,6 +76,9 @@ class Editor {
         },
       });
     });
+
+    window.Reveal.initialize(revealConf.editingConf);
+    this.sections.forEach(section => section.afterInstanciated());
   }
 
   reload({ html, overview, h, v }) {
@@ -84,7 +90,7 @@ class Editor {
     if (html) {
       this.slidesDom.innerHTML = html;
     } else {
-      this.slidesDom.innerHTML = this.services.snapshot.getSnapshot();
+      this.slidesDom.innerHTML = this.services.snapshot.getContent().content;
     }
 
     window.Reveal.setState(state);

@@ -18,7 +18,7 @@ class UndoRedo {
   }
 
   enqueue() {
-    const innerHtml = this.editor.services.snapshot.getSnapshot();
+    const innerHtml = this.editor.services.snapshot.getContent().content;
 
     if (innerHtml === this.queue[this.pointer - 1]) {
       return;
@@ -34,11 +34,12 @@ class UndoRedo {
       return false;
     }
     if (this.queue.length === this.pointer) {
-      const innerHtml = this.editor.services.snapshot.getSnapshot();
+      const innerHtml = this.editor.services.snapshot.getContent().content;
       this.queue.push(innerHtml);
     }
     this.pointer -= 1;
     this.editor.reload({ html: this.queue[this.pointer] });
+
     return true;
   }
 
