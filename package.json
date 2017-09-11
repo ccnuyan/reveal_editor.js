@@ -56,6 +56,7 @@
     "express-delay": "^0.2.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
+    "fine-uploader": "^5.15.0",
     "html-loader": "^0.5.1",
     "humps": "^2.0.1",
     "immutable": "^3.8.1",
@@ -132,7 +133,9 @@
       "printMessage": true,
       "CKEDITOR": true,
       "Reveal": true,
-      "RevealEditor": true
+      "RevealEditor": true,
+      "Qiniu": true,
+      "plupload": true
     },
     "rules": {
       "camelcase": 0,

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import actions from '../../../store/actions';
 
+import './Manipulations.scss';
+
 const rawHTML =
 `<!doctype html>
 <html>
@@ -17,9 +19,7 @@ const rawHTML =
   </head>
   <body>
     <div class="reveal">
-      <div class="slides">
         __REVEAL__
-      </div>
     </div>
     <script type="text/javascript">
       __SCRIPTS__
@@ -33,9 +33,6 @@ const rawHTML =
 class Manipulations extends Component {
   exportRequiredStylesheets = ['normalize', 'katex', 'reveal', 'theme', 'theme_override'];
   exportRequiredScripts = ['head', 'html5shiv', 'reveal'];
-  static propTypes = {
-    set_preview: PropTypes.func.isRequired,
-  }
 
   undo = (event) => {
     event.preventDefault();
@@ -54,6 +51,13 @@ class Manipulations extends Component {
 
   arrange = () => {
     window.RevealEditor.toArrange();
+  }
+
+  instantSave = () => {
+    const ct = window.RevealEditor.services.snapshot.getContent();
+    if (ct.content !== this.props.editor.instant_save_content) {
+      this.props.instant_save(ct);
+    }
   }
 
   export = async () => {
@@ -102,6 +106,7 @@ class Manipulations extends Component {
   }
 
   render = () => {
+    const { instant_save_busy, instant_save_error } = this.props;
     return (
       <div className="editor_manipulations">
         <button onTouchTap={ this.preview } className="editor-button">
@@ -113,29 +118,48 @@ class Manipulations extends Component {
         <button onTouchTap={ this.redo } className="editor-button">
           <i className="icon-level-down"></i>
         </button>
-        <button onTouchTap={ this.arrange } className="editor-button">
+        <button onTouchTap={ this.arrange } className={ 'editor-button' }>
           <i className="icon-grid"></i>
         </button>
-        {/* <button className="editor-button">
+        <button onTouchTap={ this.instantSave }
+        className={ `editor-button${instant_save_busy ? ' busy' : ''}${instant_save_error ? ' error' : ''}` }
+        >
           <i className="icon-save"></i>
-        </button> */}
+        </button>
         <button onTouchTap={ this.export } className="editor-button">
           <i className="icon-download"></i>
+        </button>
+
+        <button onTouchTap = { () => window.location.replace('/') }
+        className="editor-button"
+        >
+          <i className="icon-home"></i>
         </button>
       </div>
     );
   }
 }
 
+Manipulations.propTypes = {
+  set_preview: PropTypes.func.isRequired,
+  instant_save: PropTypes.func.isRequired,
+  editor: PropTypes.object.isRequired,
+  instant_save_busy: PropTypes.bool.isRequired,
+  instant_save_error: PropTypes.bool.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     editor: state.editor.toJSON(),
+    instant_save_busy: state.editor.toJSON().instant_save_busy,
+    instant_save_error: state.editor.toJSON().instant_save_error,
   };
 };
 
 const mapActionsToProps = (dispacher) => {
   return {
     set_preview: actions.set_preview(dispacher),
+    instant_save: actions.instant_save(dispacher),
   };
 };
 

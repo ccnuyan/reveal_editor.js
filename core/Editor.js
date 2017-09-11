@@ -47,16 +47,11 @@ class Editor {
         editor: this.getState(),
       });
 
-      setInterval(() => {
-        this.services.snapshot.saveWork();
-      }, 5000);
-
       setTimeout(() => {
         const spinner = document.querySelector('div.spinner-container');
-        if (spinner) spinner.parentNode.removeChild(spinner);
-
+        spinner.parentNode.removeChild(spinner);
         const wrapper = document.querySelector('div.wrapper');
-        if (wrapper) wrapper.style.display = 'block';
+        wrapper.style.opacity = 1;
       }, 2000);
     });
 
@@ -88,9 +83,9 @@ class Editor {
     if (overview) { state.overview = overview; }
 
     if (html) {
-      this.slidesDom.outerHTML = html;
+      this.slidesDom.innerHTML = html;
     } else {
-      this.slidesDom.outerHTML = this.services.snapshot.getContent().content;
+      this.slidesDom.innerHTML = this.services.snapshot.getContent().contentInner;
     }
 
     window.Reveal.setState(state);

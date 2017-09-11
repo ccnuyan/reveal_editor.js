@@ -8,87 +8,30 @@ import ShapeSelector from './ShapeSelector';
 
 import PasteOption from '../Options/PasteOption';
 import OptionContainer from '../Options/OptionContainer';
+import actions from '../../../store/actions';
 
 
 /* eslint-disable max-len */
 class Elements extends Component {
-
-  static propTypes = {
-    editor: PropTypes.object.isRequired,
-  }
-
   state ={
     showIcons: false,
     showShapes: false,
   }
 
-  render = () => {
-    return (
-      <div className={ 'editor_elements' }>
-        <div className="panel_title">
-          Theme
-        </div>
-        <BackgroundColorPicker />
-        {
-          this.props.editor.clipboard ?
-            <OptionContainer label="Paste" isMain={ true }><PasteOption/></OptionContainer> : ''
-        }
-        <div className="panel_title">
-          Add
-        </div>
-        <div className="section-elements">
-          <div onTouchTap={ this.onAddNewText } className={ 'section-element-each' }>
-            <div>
-              <i className="icon-font"></i>
-            </div>
-            <span>TEXT</span>
-          </div>
-          <div onTouchTap={ this.onAddNewImage } className={ 'section-element-each' }>
-            <div>
-              <i className="icon-image"></i>
-            </div>
-            <span>PICTURES</span>
-          </div>
-          <div onTouchTap={ this.onAddSVGShape } className={ 'section-element-each' }>
-            <div>
-              <i className="icon-document-landscape"></i>
-            </div>
-            <span>SHAPES</span>
-          </div>
-          <div onTouchTap={ this.onAddSVGIcon } className={ 'section-element-each' }>
-            <div>
-              <i className="icon-smile-o"></i>
-            </div>
-            <span>ICONS</span>
-          </div>
-          <div onTouchTap={ this.onAddLatex } className={ 'section-element-each' }>
-            <div>
-              <i className="icon-superscript"></i>
-            </div>
-            <span>LATEX</span>
-          </div>
-        </div>
-        <input onChange={ this.onSelectImage } accept="image/png, image/jpeg" ref={ c => this.imageFileInput = c } type="file" name="file" id="image_file_select" className="inputfile" style={ { display: 'none' } }/>
-        <div onTouchTap={ this.hideShapes } className={ `svg-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
-          <ShapeSelector hideShapes={ this.hideShapes } />
-        </div>
-        <div onTouchTap={ this.hideIcons } className={ `svg-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
-          <IconSelector hideIcons={ this.hideIcons } />
-        </div>
-      </div>
-    );
+  componentDidMount() {
+    this.props.initializeQiniu(this.selectImage);
   }
 
   onSelectImage = () => {
-    const reader = new FileReader();
-    // const ent = e || window.event;
-    const files = this.imageFileInput.files;
-    reader.onload = () => {
-      const dataURL = reader.result;
-      window.RevealEditor.currentSection.addImage({ imageUrl: dataURL });
-    };
+    // const reader = new FileReader();
+    // // const ent = e || window.event;
+    // const files = this.imageFileInput.files;
+    // reader.onload = () => {
+    //   const dataURL = reader.result;
+    //   window.RevealEditor.currentSection.addImage({ imageUrl: dataURL });
+    // };
 
-    reader.readAsDataURL(files[0]);
+    // reader.readAsDataURL(files[0]);
   }
 
   onAddNewText = (event) => {
@@ -98,7 +41,7 @@ class Elements extends Component {
 
   onAddNewImage = (event) => {
     event.preventDefault();
-    this.imageFileInput.click();
+    // this.imageFileInput.click();
   }
 
   onAddSVGShape = (event) => {
@@ -127,7 +70,68 @@ class Elements extends Component {
   onTest = (event) => {
     event.preventDefault();
   }
+
+  render = () => {
+    return (
+      <div className={ 'editor_elements' }>
+        <div className="panel_title">
+          Theme
+        </div>
+        <BackgroundColorPicker />
+        {
+          this.props.editor.clipboard ?
+            <OptionContainer label="Paste" isMain={ true }><PasteOption/></OptionContainer> : ''
+        }
+        <div className="panel_title">
+          Add
+        </div>
+        <div className="section-elements">
+          <div onTouchTap={ this.onAddNewText } className={ 'section-element-each' }>
+            <div>
+              <i className="icon-font"></i>
+            </div>
+            <span>TEXT</span>
+          </div>
+          <div ref={ e => this.selectImage = e } onTouchTap={ this.onAddNewImage } className={ 'section-element-each' }>
+            <div>
+              <i className="icon-image"></i>
+            </div>
+            <span>PICTURES</span>
+          </div>
+          <div onTouchTap={ this.onAddSVGShape } className={ 'section-element-each' }>
+            <div>
+              <i className="icon-document-landscape"></i>
+            </div>
+            <span>SHAPES</span>
+          </div>
+          <div onTouchTap={ this.onAddSVGIcon } className={ 'section-element-each' }>
+            <div>
+              <i className="icon-smile-o"></i>
+            </div>
+            <span>ICONS</span>
+          </div>
+          <div onTouchTap={ this.onAddLatex } className={ 'section-element-each' }>
+            <div>
+              <i className="icon-superscript"></i>
+            </div>
+            <span>LATEX</span>
+          </div>
+        </div>
+        <div onTouchTap={ this.hideShapes } className={ `svg-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
+          <ShapeSelector hideShapes={ this.hideShapes } />
+        </div>
+        <div onTouchTap={ this.hideIcons } className={ `svg-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
+          <IconSelector hideIcons={ this.hideIcons } />
+        </div>
+      </div>
+    );
+  }
 }
+
+Elements.propTypes = {
+  editor: PropTypes.object.isRequired,
+  initializeQiniu: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -135,4 +139,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Elements);
+const mapActionsToProps = (dispacher) => {
+  return {
+    initializeQiniu: actions.initialize(dispacher),
+  };
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(Elements);

@@ -3,7 +3,6 @@ import templates from './templates';
 import { getHeaders, getParameterByName } from './services/sc_util';
 import './css/editor.scss';
 
-
 (() => {
   const action = getParameterByName('action');
 
@@ -25,7 +24,7 @@ import './css/editor.scss';
   };
 
   const authenticatedModeRun = (html) => {
-    window.sc_mode.anonymous = true;
+    window.sc_mode.anonymous = false;
     run(html);
   };
 

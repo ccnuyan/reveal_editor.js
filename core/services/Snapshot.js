@@ -58,31 +58,30 @@ class Snapshot {
   };
 
   saveWork = () => {
-    const content = this.getContent();
+    const ct = this.getContent();
+
     if (window.sc_mode.anonymous) {
-      window.localStorage.setItem('snapshot_anonymous', content.content);
-    } else {
+      window.localStorage.setItem('snapshot_anonymous', ct.content);
+    } else if (ct.content && (this.justSaved.content !== ct.content)) {
       const payload = {
         method: 'PUT',
         headers: getHeaders(),
-
       };
+
       payload.body = JSON.stringify({
         work_id: window.sc_mode.work_id,
-        ...content,
+        content: ct.content,
+        snapshot: ct.snapshot,
       });
-
-      if (!this.justSaved.content || this.justSaved.content !== content.content) {
-        fetch('/api/works', payload)
+      fetch('/api/works', payload)
         .then(res => res.json())
         .then((ret) => {
-          this.justSaved = this.getContent();
+          this.justSaved = ct;
           return console.log(ret);
         })
         .catch((error) => {
           return console.log(error);
         });
-      }
     }
   }
 
@@ -135,6 +134,7 @@ class Snapshot {
     const embed = firstPage.querySelector('section');
     return {
       content: slides.outerHTML,
+      contentInner: slides.innerHTML,
       snapshot: embed ? embed.outerHTML : firstPage.outerHTML,
     };
   };

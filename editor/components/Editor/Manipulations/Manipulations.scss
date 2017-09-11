@@ -1,0 +1,30 @@
+.editor_manipulations, .previewer_panel{
+    position: absolute;
+    padding: 3px 0;
+    height:100%;
+}
+
+.editor_manipulations{
+    width:60px;
+    background-color: #333;
+    left:0;
+}
+
+.previewer_panel{
+    background-color: transparent;
+    width:60px;
+    left:0;
+}
+
+.editor_manipulations>*, .previewer_panel>*{
+    margin:3px 6px;
+    width:48px;
+    height: 48px;
+}
+
+.editor_manipulations>*.busy{
+    background: blue,
+}
+.editor_manipulations>*.error{
+    background: red,
+}
