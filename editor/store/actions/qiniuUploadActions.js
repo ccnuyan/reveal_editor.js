@@ -1,6 +1,8 @@
 import config from '../../../config';
 import actions from './uploadActions';
 
+import { getHeaders } from '../../../sc_util';
+
 const getToken = () => {
   return window.localStorage.getItem('id_token');
 };
@@ -9,9 +11,9 @@ const requestToken = (filename) => {
   const request = new XMLHttpRequest();
 
   request.open('POST', `${config.serviceBase}/api/files/`, false); // `false` makes the request synchronous
-  request.setRequestHeader('Accept', 'application/json');
-  request.setRequestHeader('Authorization', `Bearer ${getToken()}`);
-  request.setRequestHeader('Content-Type', 'application/json');
+  request.setRequestHeader('accept', 'application/json');
+  request.setRequestHeader('authorization', `bearer ${getToken()}`);
+  request.setRequestHeader('content-Type', 'application/json');
 
   request.send(JSON.stringify({ filename }));
 
@@ -19,15 +21,26 @@ const requestToken = (filename) => {
 };
 
 // this method is only useful for dev
-const requestCreate = (qiniu_ret) => {
+const requestUpdateFileStatus = (qiniu_ret) => {
   const request = new XMLHttpRequest();
 
-  request.open('POST', `${config.serviceBase}/api/files/`, false); // `false` makes the request synchronous
-  request.setRequestHeader('Accept', 'application/json');
-  request.setRequestHeader('Authorization', `Bearer ${getToken()}`);
-  request.setRequestHeader('Content-Type', 'application/json');
+  request.open('PUT', `${config.serviceBase}/api/files/upload_callback`, false); // `false` makes the request synchronous
+  request.setRequestHeader('accept', 'application/json');
+  request.setRequestHeader('authorization', `bearer ${getToken()}`);
+  request.setRequestHeader('content-Type', 'application/json');
 
   request.send(JSON.stringify(qiniu_ret));
+
+  return request;
+};
+
+// this method is only useful for dev
+const requireFile = (id) => {
+  const request = new XMLHttpRequest();
+
+  request.open('GET', `${config.serviceBase}/api/files?file_id=${id}`, false); // `false` makes the request synchronous
+  request.setRequestHeader('accept', 'application/json');
+  request.send();
 
   return request;
 };
@@ -36,7 +49,7 @@ const options = {
   runtimes: 'html5,flash,html4', // 上传模式,依次退化
   get_new_uptoken: true, // 设置上传文件的时候是否每次都重新获取新的 uptoken
   domain: config.qiniu_bucket, // bucket 域名，下载资源时用到，**必需**
-  max_file_size: '4mb', // 最大文件体积限制
+  max_file_size: '300kb', // 最大文件体积限制
   max_retries: 1, // 上传失败最大重试次数
   chunk_size: '4mb', // 分块上传时，每块的体积
   auto_start: true, // 选择文件后自动上传，若关闭需要自己绑定事件触发上传,
@@ -44,14 +57,11 @@ const options = {
     mime_types: [{
       title: 'Image files',
       extensions: 'jpg,gif,png',
-    }, {
-      title: 'Zip files',
-      extensions: 'zip',
     }],
-    prevent_duplicates: true,
+    prevent_duplicates: false,
   },
 };
-const initialize = dispatcher => (element, fileuploadCallback) => { // eslint-disable-line no-unused-vars
+const initialize = dispatcher => (element, fileUploadCallback) => { // eslint-disable-line no-unused-vars
   options.browse_button = element;
 
   options.uptoken_func = (file) => {
@@ -79,18 +89,22 @@ const initialize = dispatcher => (element, fileuploadCallback) => { // eslint-di
       actions.upload_progress(dispatcher)(file);
     },
     FileUploaded(up, file, info) {
+      const qiniu_ret = JSON.parse(info.response);
       if (config.mode === 'development') {
-        const qiniu_ret = JSON.parse(info);
-        const request = requestCreate(file.parent, qiniu_ret);
-        if (request.status === 201) {
-          const ret = JSON.parse(request.responseText);
-          ret.uploadId = file.id;
-          actions.upload_uploaded(dispatcher)(ret);
+        const request = requestUpdateFileStatus(qiniu_ret);
+        if (request.status === 200) {
+          const fileInfo = JSON.parse(requireFile(qiniu_ret.key).responseText);
+          actions.upload_done(dispatcher)(fileInfo);
+          if (fileUploadCallback) {
+            fileUploadCallback(fileInfo);
+          }
         }
       } else {
-        const ret = JSON.parse(info);
-        ret.uploadId = file.id;
-        actions.upload_uploaded(dispatcher)(ret);
+        const fileInfo = JSON.parse(requireFile(qiniu_ret.key).responseText);
+        actions.upload_done(dispatcher)(fileInfo);
+        if (fileUploadCallback) {
+          fileUploadCallback(fileInfo);
+        }
       }
     },
     Error(up, err, errTip) { // eslint-disable-line no-unused-vars

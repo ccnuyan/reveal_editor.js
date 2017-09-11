@@ -1,21 +1,5 @@
 import actionTypes from '../actionTypes';
-
-const key = 'id_token';
-
-const getLocalToken = () => {
-  return window.localStorage.getItem(key);
-};
-
-const getHeaders = () => {
-  const headers = new Headers();
-  headers.append('content-type', 'application/json');
-  headers.append('accept', 'application/json');
-  const token = getLocalToken();
-  if (token) {
-    headers.append('authorization', `bearer ${token}`);
-  }
-  return headers;
-};
+import { getHeaders } from '../../../sc_util';
 
 // funtions below are actions
 

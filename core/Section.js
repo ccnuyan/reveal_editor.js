@@ -81,19 +81,28 @@ class Section extends Elements {
     this.editor.reload({});
   }
 
-  addImage({ imageUrl }) {
+  addImage({ file_id }) {
     if (this.editor.isOverview()) return;
     this.editor.services.undoredo.enqueue();
 
     const blockContainer = document.createElement('div');
     blockContainer.innerHTML = blocks.image;
-    if (imageUrl) {
-      blockContainer.querySelector('img').setAttribute('src', imageUrl);
-    }
-    const blockDom = blockContainer.childNodes[0];
-    this.dom.appendChild(blockDom);
+    if (file_id) {
+      fetch(`/api/files/access?file_id=${file_id}`)
+      .then(res => res.json())
+      .then((ret) => {
+        const blockDom = blockContainer.childNodes[0];
+        blockDom.setAttribute('data-file-id', file_id);
+        blockContainer.querySelector('img').setAttribute('src', ret.access_url);
 
-    this.editor.reload({});
+        this.dom.appendChild(blockDom);
+
+        this.editor.reload({});
+        return true;
+      }).catch((err) => {
+        // todo: handle the exception
+      });
+    }
   }
 
   addSVGShape = ({ shape }) => {

@@ -19,29 +19,17 @@ class Elements extends Component {
   }
 
   componentDidMount() {
-    this.props.initializeQiniu(this.selectImage);
+    this.props.initializeQiniu(this.selectImage, this.onImageUploaded);
   }
 
-  onSelectImage = () => {
-    // const reader = new FileReader();
-    // // const ent = e || window.event;
-    // const files = this.imageFileInput.files;
-    // reader.onload = () => {
-    //   const dataURL = reader.result;
-    //   window.RevealEditor.currentSection.addImage({ imageUrl: dataURL });
-    // };
-
-    // reader.readAsDataURL(files[0]);
+  onImageUploaded = (imageFile) => {
+    console.log(imageFile);
+    window.RevealEditor.currentSection.addImage({ file_id: imageFile.id });
   }
 
   onAddNewText = (event) => {
     event.preventDefault();
     window.RevealEditor.currentSection.addText();
-  }
-
-  onAddNewImage = (event) => {
-    event.preventDefault();
-    // this.imageFileInput.click();
   }
 
   onAddSVGShape = (event) => {

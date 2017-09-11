@@ -51,7 +51,6 @@ class ImageBlock extends Block {
   }
 
   toManipulate() {
-    super.toManipulate();
     this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
       resize: {
         key: 'resize',
@@ -60,15 +59,7 @@ class ImageBlock extends Block {
         anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
       },
     });
-  }
-
-  toEdit() {
-    super.toEdit();
-    this.editor.emitter.emit('editorRequestEditImage', {
-      currentSection: this.editor.currentSection,
-      block: this,
-      state: this.getState(),
-    });
+    super.toManipulate();
   }
 }
 
