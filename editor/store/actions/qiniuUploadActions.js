@@ -1,7 +1,7 @@
 import config from '../../../config';
 import actions from './uploadActions';
 
-import { getHeaders } from '../../../sc_util';
+// import { getHeaders } from '../../../sc_util';
 
 const getToken = () => {
   return window.localStorage.getItem('id_token');
@@ -24,7 +24,7 @@ const requestToken = (filename) => {
 const requestUpdateFileStatus = (qiniu_ret) => {
   const request = new XMLHttpRequest();
 
-  request.open('PUT', `${config.serviceBase}/api/files/upload_callback`, false); // `false` makes the request synchronous
+  request.open('POST', `${config.serviceBase}/api/files/upload_callback`, false); // `false` makes the request synchronous
   request.setRequestHeader('accept', 'application/json');
   request.setRequestHeader('authorization', `bearer ${getToken()}`);
   request.setRequestHeader('content-Type', 'application/json');

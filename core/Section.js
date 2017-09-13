@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 
-import config from './config';
+import config from '../config';
 import Elements from './Elements';
 import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
@@ -88,20 +88,14 @@ class Section extends Elements {
     const blockContainer = document.createElement('div');
     blockContainer.innerHTML = blocks.image;
     if (file_id) {
-      fetch(`/api/files/access?file_id=${file_id}`)
-      .then(res => res.json())
-      .then((ret) => {
-        const blockDom = blockContainer.childNodes[0];
-        blockDom.setAttribute('data-file-id', file_id);
-        blockContainer.querySelector('img').setAttribute('src', ret.access_url);
+      const blockDom = blockContainer.childNodes[0];
+      blockDom.setAttribute('data-file-id', file_id);
+      blockContainer.querySelector('img')
+        .setAttribute('data-src', `http://${config.qiniu_bucket}/${file_id}`);
 
-        this.dom.appendChild(blockDom);
+      this.dom.appendChild(blockDom);
 
-        this.editor.reload({});
-        return true;
-      }).catch((err) => {
-        // todo: handle the exception
-      });
+      this.editor.reload({});
     }
   }
 
@@ -131,8 +125,8 @@ class Section extends Elements {
     }).then((text) => {
       const blockContainer = document.createElement('div');
       blockContainer.innerHTML = blocks.icon;
-      blockContainer.querySelector(`div.${config.classnames.content}`).innerHTML = text;
-      blockContainer.querySelector(`div.${config.classnames.content}>svg`).setAttribute('fill', 'rgba(192,192,192,1)');
+      blockContainer.querySelector('div.sc-block-content').innerHTML = text;
+      blockContainer.querySelector('div.sc-block-content>svg').setAttribute('fill', 'rgba(192,192,192,1)');
 
       const blockDom = blockContainer.childNodes[0];
       this.dom.appendChild(blockDom);
@@ -150,8 +144,8 @@ class Section extends Elements {
 
     const blockContainer = document.createElement('div');
     blockContainer.innerHTML = blocks.katex;
-    blockContainer.querySelector(`div.${config.classnames.content}`).innerHTML = `
-    <div class="sc-katex-display"></div>
+    blockContainer.querySelector('div.sc-block-content')
+      .innerHTML = `<div class="sc-katex-display"></div>
     <div style="display:none" class="sc-katex-raw">${latex}</div>`;
 
     const blockDom = blockContainer.childNodes[0];

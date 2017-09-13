@@ -12,8 +12,7 @@ const sectionTemplates = {
 };
 
 const imageTamplates = {
-  initial: `
-    <div class="sc-block-content"><img src="" alt=""/></div>`,
+  initial: '<div class="sc-block-content"><img src="" alt=""/></div>',
 };
 
 export default {

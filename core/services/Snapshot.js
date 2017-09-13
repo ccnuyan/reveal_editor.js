@@ -132,6 +132,7 @@ class Snapshot {
 
     const firstPage = slides.querySelector('section');
     const embed = firstPage.querySelector('section');
+
     return {
       content: slides.outerHTML,
       contentInner: slides.innerHTML,
