@@ -1,4 +1,4 @@
-import { getHeaders } from '../../sc_util';
+import { getHeaders } from '../../sc_utils';
 
 class Snapshot {
   constructor(editor) {

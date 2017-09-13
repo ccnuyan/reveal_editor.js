@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import reactCSS from 'reactcss';
 import { BlockPicker } from 'react-color';
-
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 class ThemeAndBackgroundColorPicker extends Component {
-
-  static propTypes = {
-    label: PropTypes.string,
-    isMain: PropTypes.bool,
-    editor: PropTypes.object.isRequired,
-    currentSection: PropTypes.object.isRequired,
-    set_current_section: PropTypes.func.isRequired,
-    set_editor: PropTypes.func.isRequired,
-  }
 
   state = {
     displayColorPicker: false,
@@ -32,7 +21,7 @@ class ThemeAndBackgroundColorPicker extends Component {
   switchTheme = (event) => {
     window.RevealEditor.services.theme.loadTheme(event.currentTarget.dataset.theme);
     this.props.editor.theme = event.currentTarget.getAttribute('data-theme');
-    this.props.set_editor(this.props.editor);
+    this.props.editor_set_editor(this.props.editor);
   }
 
   handleChangeBackground = (color) => {
@@ -40,7 +29,7 @@ class ThemeAndBackgroundColorPicker extends Component {
     const hex = color.hex;
     currentSection.backgroundColor = hex;
     window.RevealEditor.currentSection.setState({ backgroundColor: hex });
-    this.props.set_current_section(currentSection);
+    this.props.editor_set_current_section(currentSection);
   };
 
   handleChangeBackgroundToAll = () => {
@@ -77,7 +66,7 @@ class ThemeAndBackgroundColorPicker extends Component {
         <div className='background-color-picker'>
           <div className="section-background-square"
           style={ {
-            background: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==")', // eslint-disbale-line
+            background: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==")', // eslint-disable-line
           } }
           onTouchTap={ this.handleOpen }
           >
@@ -105,6 +94,15 @@ class ThemeAndBackgroundColorPicker extends Component {
   }
 }
 
+ThemeAndBackgroundColorPicker.propTypes = {
+  label: PropTypes.string,
+  isMain: PropTypes.bool,
+  editor: PropTypes.object.isRequired,
+  currentSection: PropTypes.object.isRequired,
+  editor_set_current_section: PropTypes.func.isRequired,
+  editor_set_editor: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     currentSection: state.editor.toJSON().currentSection,
@@ -112,11 +110,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_current_section: actions.set_current_section(dispacher),
-    set_editor: actions.set_editor(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(ThemeAndBackgroundColorPicker);
+export default create(ThemeAndBackgroundColorPicker, mapStateToProps);

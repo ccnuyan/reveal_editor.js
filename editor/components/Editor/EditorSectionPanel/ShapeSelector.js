@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import create from '../../creator';
 
 const shapes = {
   square: `
@@ -72,4 +72,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ShapeSelector);
+export default create(ShapeSelector, mapStateToProps);

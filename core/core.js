@@ -1,6 +1,6 @@
 import Editor from './Editor';
 import templates from './templates';
-import { getHeaders, getParameterByName } from '../sc_util';
+import { getHeaders, getParameterByName } from '../sc_utils';
 import './css/editor.scss';
 
 (() => {

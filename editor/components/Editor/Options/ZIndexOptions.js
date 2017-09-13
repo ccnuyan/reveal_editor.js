@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 /* eslint-disable no-param-reassign, radix */
 
 class ZIndexOptions extends Component {
-  static propTypes = {
-    isMain: PropTypes.bool,
-    label: PropTypes.string,
-    blockProp: PropTypes.string,
-    selectedBlocks: PropTypes.array.isRequired,
-    set_selected_blocks: PropTypes.func.isRequired,
-  }
 
   changeZIndex = (event) => {
     const dir = event.currentTarget.getAttribute('data-change-direction');
@@ -40,7 +32,7 @@ class ZIndexOptions extends Component {
       window.RevealEditor.currentSection.getSelectedBlocks()[index].setState(params);
       index += 1;
     });
-    this.props.set_selected_blocks(window.RevealEditor.currentSection.getState().selectedBlocks);
+    this.props.editor_set_selected_blocks(window.RevealEditor.currentSection.getState().selectedBlocks);
   }
 
   render = () => {
@@ -59,16 +51,18 @@ class ZIndexOptions extends Component {
   }
 }
 
+ZIndexOptions.propTypes = {
+  isMain: PropTypes.bool,
+  label: PropTypes.string,
+  blockProp: PropTypes.string,
+  selectedBlocks: PropTypes.array.isRequired,
+  editor_set_selected_blocks: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     selectedBlocks: state.editor.toJSON().currentSection.selectedBlocks,
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_selected_blocks: actions.set_selected_blocks(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(ZIndexOptions);
+export default create(ZIndexOptions, mapStateToProps);

@@ -1,23 +1,18 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Editor from './Editor/Editor';
 import Previewer from './Editor/Manipulations/Previewer';
-
-import actions from '../store/actions';
-
+import create from './creator';
 
 class Main extends Component {
-
   addEventListeners = () => {
     window.RevealEditor.emitter.on('editorCurrentBlocksChanged', (event) => {
-      this.props.set_selected_blocks(event.selectedBlocks);
+      this.props.editor_set_selected_blocks(event.selectedBlocks);
     });
     window.RevealEditor.emitter.on('editorCurrentSlideChanged', (event) => {
-      this.props.set_current_section(event.currentSection);
+      this.props.editor_set_current_section(event.currentSection);
     });
-
     // window.RevealEditor.emitter.on('editorRequestEditImage', (event) => {
     //   console.log(event);
     // });
@@ -25,7 +20,7 @@ class Main extends Component {
     setInterval(() => {
       const ct = window.RevealEditor.services.snapshot.getContent();
       if (ct.content !== this.props.editor.instant_save_content) {
-        this.props.instant_save(ct);
+        this.props.editor_instant_save(ct);
       }
     }, 5000);
   }
@@ -33,17 +28,17 @@ class Main extends Component {
   componentDidMount() {
     if (window.RevealEditor.state.initialized) {
       const editor = window.RevealEditor.getState();
-      this.props.set_editor(editor);
+      this.props.editor_set_editor(editor);
       this.addEventListeners();
     } else {
       window.RevealEditor.emitter.on('editorInitialized', (event) => {
-        this.props.set_editor(event.editor);
+        this.props.editor_set_editor(event.editor);
         this.addEventListeners();
       });
     }
   }
 
-  render =() => {
+  render = () => {
     if (this.props.editor.status === 'editing' && this.props.editor.initialized) {
       return (<Editor></Editor>);
     }
@@ -67,20 +62,11 @@ const mapStateToProps = (state) => {
 Main.propTypes = {
   editor: PropTypes.object.isRequired,
   currentSection: PropTypes.object.isRequired,
-  set_editor: PropTypes.func.isRequired,
-  set_current_section: PropTypes.func.isRequired,
-  set_selected_blocks: PropTypes.func.isRequired,
-  instant_save: PropTypes.func.isRequired,
-};
-
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_editor: actions.set_editor(dispacher),
-    set_current_section: actions.set_current_section(dispacher),
-    set_selected_blocks: actions.set_selected_blocks(dispacher),
-    instant_save: actions.instant_save(dispacher),
-  };
+  editor_set_editor: PropTypes.func.isRequired,
+  editor_set_current_section: PropTypes.func.isRequired,
+  editor_set_selected_blocks: PropTypes.func.isRequired,
+  editor_instant_save: PropTypes.func.isRequired,
 };
 
 
-export default connect(mapStateToProps, mapActionsToProps)(Main);
+export default create(Main, mapStateToProps);

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import BackgroundColorPicker from './BackgroundColorPicker';
 import IconSelector from './IconSelector';
 import ShapeSelector from './ShapeSelector';
-
 import PasteOption from '../Options/PasteOption';
 import OptionContainer from '../Options/OptionContainer';
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 
 /* eslint-disable max-len */
@@ -18,9 +16,9 @@ class Elements extends Component {
     showShapes: false,
   }
 
-  componentDidMount() {
-    this.props.initializeQiniu(this.selectImage, this.onImageUploaded);
-  }
+  // componentDidMount() {
+  //   this.props.files_initialize(this.selectImage, this.onImageUploaded);
+  // }
 
   onImageUploaded = (imageFile) => {
     console.log(imageFile);
@@ -118,7 +116,7 @@ class Elements extends Component {
 
 Elements.propTypes = {
   editor: PropTypes.object.isRequired,
-  initializeQiniu: PropTypes.func.isRequired,
+  files_initialize: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -127,10 +125,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    initializeQiniu: actions.initialize(dispacher),
-  };
-};
 
-export default connect(mapStateToProps, mapActionsToProps)(Elements);
+export default create(Elements, mapStateToProps);

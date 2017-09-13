@@ -1,5 +1,6 @@
 import actionTypes from '../actionTypes';
-import { getHeaders } from '../../../sc_util';
+import { getHeaders } from '../../sc_utils';
+import fill from './messagesMW';
 
 // funtions below are actions
 
@@ -33,7 +34,7 @@ const set_current_block = dispatch => (selectedBlock) => {
 };
 
 const instant_save = dispatch => ({ content, snapshot }) => {
-  dispatch({ type: actionTypes.INSTANT_SAVE_START });
+  dispatch(fill({ type: actionTypes.INSTANT_SAVE_START }));
   const payload = {
     method: 'PUT',
     headers: getHeaders(),
@@ -48,11 +49,11 @@ const instant_save = dispatch => ({ content, snapshot }) => {
   fetch('/api/works', payload)
     .then(res => res.json())
     .then((ret) => {
-      dispatch({ type: actionTypes.INSTANT_SAVE_END, payload: ret });
+      dispatch(fill({ type: actionTypes.INSTANT_SAVE_END, payload: ret }));
       return true;
     })
     .catch(() => {
-      dispatch({ type: actionTypes.INSTANT_SAVE_ERROR });
+      dispatch(fill({ type: actionTypes.INSTANT_SAVE_ERROR }));
       return false;
     });
 };

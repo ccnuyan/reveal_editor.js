@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
-import actions from '../../../store/actions';
+
+import create from '../../creator';
 
 import './Manipulations.scss';
 
@@ -46,7 +46,7 @@ class Manipulations extends Component {
 
   preview = () => {
     window.RevealEditor.toPreview();
-    this.props.set_preview();
+    this.props.editor_set_preview();
   }
 
   arrange = () => {
@@ -56,7 +56,7 @@ class Manipulations extends Component {
   instantSave = () => {
     const ct = window.RevealEditor.services.snapshot.getContent();
     if (ct.content !== this.props.editor.instant_save_content) {
-      this.props.instant_save(ct);
+      this.props.editor_instant_save(ct);
     }
   }
 
@@ -106,7 +106,10 @@ class Manipulations extends Component {
   }
 
   render = () => {
-    const { instant_save_busy, instant_save_error } = this.props;
+    // const { instant_save_busy, instant_save_error } = this.props;
+    const instant_save_busy = false;
+    const instant_save_error = false;
+
     return (
       <div className="editor_manipulations">
         <button onTouchTap={ this.preview } className="editor-button">
@@ -141,26 +144,19 @@ class Manipulations extends Component {
 }
 
 Manipulations.propTypes = {
-  set_preview: PropTypes.func.isRequired,
-  instant_save: PropTypes.func.isRequired,
+  editor_set_preview: PropTypes.func.isRequired,
+  editor_instant_save: PropTypes.func.isRequired,
   editor: PropTypes.object.isRequired,
-  instant_save_busy: PropTypes.bool.isRequired,
-  instant_save_error: PropTypes.bool.isRequired,
+  // instant_save_busy: PropTypes.bool.isRequired,
+  // instant_save_error: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     editor: state.editor.toJSON(),
-    instant_save_busy: state.editor.toJSON().instant_save_busy,
-    instant_save_error: state.editor.toJSON().instant_save_error,
+    instant_save_busy: state.asyncStatus.toJSON().EDITOR_INSTANT_SAVE_BUSY,
+    instant_save_error: state.asyncStatus.toJSON().EDITOR_INSTANT_SAVE_ERROR,
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_preview: actions.set_preview(dispacher),
-    instant_save: actions.instant_save(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Manipulations);
+export default create(Manipulations, mapStateToProps);

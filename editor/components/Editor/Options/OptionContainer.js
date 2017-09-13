@@ -2,13 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class OptionsContainer extends Component {
-  static propTypes = {
-    children: PropTypes.object.isRequired,
-    isMain: PropTypes.bool.isRequired,
-    label: PropTypes.string.isRequired,
-  }
-
-  render() {
+  render = () => {
     return (
       <div className="block-option">
         {this.props.isMain ?
@@ -19,5 +13,11 @@ class OptionsContainer extends Component {
     );
   }
 }
+
+OptionsContainer.propTypes = {
+  children: PropTypes.object.isRequired,
+  isMain: PropTypes.bool.isRequired,
+  label: PropTypes.string.isRequired,
+};
 
 export default OptionsContainer;

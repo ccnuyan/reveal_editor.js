@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 /* eslint-disable no-param-reassign, radix */
 
-class RemoveOptions extends Component {
-  static propTypes = {
-    isMain: PropTypes.bool,
-    label: PropTypes.string,
-    editor: PropTypes.object.isRequired,
-    selectedBlocks: PropTypes.array.isRequired,
-    set_editor: PropTypes.func.isRequired,
-    set_selected_blocks: PropTypes.func.isRequired,
-  }
-
+class EditOptions extends Component {
   onRemove = () => {
     window.RevealEditor.currentSection.removeSelectedBlocks();
-    this.props.set_selected_blocks(window.RevealEditor.currentSection.getSelectedBlockStates());
+    this.props.editor_set_selected_blocks(window.RevealEditor.currentSection.getSelectedBlockStates());
   }
 
   onCopy = () => {
@@ -27,7 +17,7 @@ class RemoveOptions extends Component {
       ...this.props.editor,
       clipboard: html,
     };
-    this.props.set_editor(newEditor);
+    this.props.editor_set_editor(newEditor);
   }
 
   render = () => {
@@ -51,11 +41,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_selected_blocks: actions.set_selected_blocks(dispacher),
-    set_editor: actions.set_editor(dispacher),
-  };
+EditOptions.propTypes = {
+  isMain: PropTypes.bool,
+  label: PropTypes.string,
+  editor: PropTypes.object.isRequired,
+  selectedBlocks: PropTypes.array.isRequired,
+  editor_set_editor: PropTypes.func.isRequired,
+  editor_set_selected_blocks: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(RemoveOptions);
+export default create(EditOptions, mapStateToProps);

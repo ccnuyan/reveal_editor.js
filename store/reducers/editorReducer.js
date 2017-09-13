@@ -6,8 +6,6 @@ const editorInit = fromJS({
   currentSection: {
     selectedBlocks: [],
   },
-  instant_save_busy: false,
-  instant_save_error: false,
   instant_save_content: '',
   instant_save_snapshot: '',
 });

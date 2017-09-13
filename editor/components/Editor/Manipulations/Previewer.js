@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 class Previewer extends Component {
-
-  static propTypes = {
-    set_edit: PropTypes.func.isRequired,
-  }
-
   toEdit = () => {
     window.RevealEditor.toEdit();
-    this.props.set_edit();
+    this.props.editor_set_edit();
   }
 
   render =() => {
@@ -31,11 +25,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_edit: actions.set_edit(dispacher),
-  };
+Previewer.propTypes = {
+  editor_set_edit: PropTypes.func.isRequired,
 };
 
-
-export default connect(mapStateToProps, mapActionsToProps)(Previewer);
+export default create(Previewer, mapStateToProps);
