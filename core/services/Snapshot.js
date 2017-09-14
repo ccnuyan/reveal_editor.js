@@ -57,42 +57,63 @@ class Snapshot {
     });
   };
 
-  saveWork = () => {
-    const ct = this.getContent();
-
-    if (window.sc_mode.anonymous) {
-      window.localStorage.setItem('snapshot_anonymous', ct.content);
-    } else if (ct.content && (this.justSaved.content !== ct.content)) {
-      const payload = {
-        method: 'PUT',
-        headers: getHeaders(),
-      };
-
-      payload.body = JSON.stringify({
-        work_id: window.sc_mode.work_id,
-        content: ct.content,
-        snapshot: ct.snapshot,
-      });
-      fetch('/api/works', payload)
-        .then(res => res.json())
-        .then((ret) => {
-          this.justSaved = ret;
-          return true;
-        })
-        .catch((err) => {
-          console.log(err); // eslint-disable-line
-          return false;
-        });
-    }
-  }
-
   getSnapshot = () => {
-    const cwp = this.editor.reveal.cloneNode(true);
-    const firstColumn = cwp.querySelector('section');
+    const firstColumn = this.editor.reveal.querySelector('section');
     const embed = firstColumn.querySelector('section');
 
     const firstSection = embed || firstColumn;
-    const style = getComputedStyle(firstSection);
+
+    const container = document.createElement('div');
+    const section = document.createElement('section');
+    container.appendChild(section);
+
+    const sectionAttributes = ['data-background-color'];
+    sectionAttributes.forEach((st) => {
+      section.setAttribute(st, firstSection.getAttribute(st));
+    });
+
+    const getClonedBlock = (block, additionalStyles) => {
+      const clonedBlock = block.cloneNode(true);
+
+      Array.prototype.forEach.call(clonedBlock.children, (cd) => {
+        clonedBlock.removeChild(cd);
+      });
+
+      if (additionalStyles) {
+        const computedBlockStyle = getComputedStyle(block);
+        additionalStyles.forEach((st) => {
+          clonedBlock.style[st] = computedBlockStyle[st];
+        });
+      }
+
+      clonedBlock.appendChild(block.querySelector('div.sc-block-content').cloneNode(true));
+
+      return clonedBlock;
+    };
+
+    Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=text]'), (block) => {
+      section.appendChild(getClonedBlock(block, ['color', 'width', 'height', 'backgroundColor']));
+    });
+
+    Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=latex]'), (block) => {
+      section.appendChild(getClonedBlock(block, ['color', 'width', 'height', 'backgroundColor']));
+    });
+
+    Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=image]'), (block) => {
+      section.appendChild(getClonedBlock(block, ['width', 'height']));
+    });
+
+    Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=icon]'), (block) => {
+      section.appendChild(getClonedBlock(block));
+    });
+
+    Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=shape]'), (block) => {
+      section.appendChild(getClonedBlock(block));
+    });
+
+    console.log(container);
+
+    return container.innerHTML;
   }
 
   getContent = () => {
@@ -140,13 +161,9 @@ class Snapshot {
       this.removeAttrNotExistedInArray(block, this.rules.block.attributesAllowed);
     });
 
-    const firstPage = slides.querySelector('section');
-    const embed = firstPage.querySelector('section');
-
     return {
       content: slides.outerHTML,
       contentInner: slides.innerHTML,
-      snapshot: embed ? embed.outerHTML : firstPage.outerHTML,
     };
   };
 }

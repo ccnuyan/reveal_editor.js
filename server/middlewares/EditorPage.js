@@ -25,7 +25,6 @@ class EditorPage extends Component {
           }
           <link id={ 'css_core' } rel="stylesheet" href={ assets.core.css }/>
           <link id={ 'css_editor' } rel="stylesheet" href={ assets.editor.css }/>
-          <link id={ 'css_theme' } rel="stylesheet" href="https://cdn.bootcss.com/reveal.js/3.5.0/css/theme/white.css"/>
           <link id={ 'css_theme_override' } rel="stylesheet"/>
           <style type="text/css">__STYLE__</style>
         </head>

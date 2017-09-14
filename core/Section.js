@@ -88,11 +88,11 @@ class Section extends Elements {
     const blockContainer = document.createElement('div');
     blockContainer.innerHTML = blocks.image;
     if (etag) {
-      const blockDom = blockContainer.childNodes[0];
-      blockDom.setAttribute('data-file', etag);
-      blockContainer.querySelector('img')
-        .setAttribute('src', `http://${config.qiniu_bucket}/${etag}`);
+      const img = blockContainer.querySelector('img');
+      img.setAttribute('data-file-etag', etag);
+      img.setAttribute('src', `http://${config.qiniu_bucket}/${etag}`);
 
+      const blockDom = blockContainer.childNodes[0];
       this.dom.appendChild(blockDom);
 
       this.editor.reload({});

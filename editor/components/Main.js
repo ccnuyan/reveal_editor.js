@@ -20,7 +20,10 @@ class Main extends Component {
     setInterval(() => {
       const ct = window.RevealEditor.services.snapshot.getContent();
       if (ct.content !== this.props.editor.instant_save_content) {
-        this.props.editor_instant_save(ct);
+        this.props.editor_instant_save({
+          content: ct.content,
+          snapshot: window.RevealEditor.services.snapshot.getSnapshot(),
+        });
       }
     }, 5000);
   }

@@ -1,4 +1,4 @@
-import { getHeaders } from '../../sc_utils';
+// import { getHeaders } from '../../sc_utils';
 
 class ThemeService {
   constructor(editor) {
