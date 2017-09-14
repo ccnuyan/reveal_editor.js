@@ -76,13 +76,23 @@ class Snapshot {
       fetch('/api/works', payload)
         .then(res => res.json())
         .then((ret) => {
-          this.justSaved = ct;
-          return console.log(ret);
+          this.justSaved = ret;
+          return true;
         })
-        .catch((error) => {
-          return console.log(error);
+        .catch((err) => {
+          console.log(err); // eslint-disable-line
+          return false;
         });
     }
+  }
+
+  getSnapshot = () => {
+    const cwp = this.editor.reveal.cloneNode(true);
+    const firstColumn = cwp.querySelector('section');
+    const embed = firstColumn.querySelector('section');
+
+    const firstSection = embed || firstColumn;
+    const style = getComputedStyle(firstSection);
   }
 
   getContent = () => {

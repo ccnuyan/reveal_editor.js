@@ -3,26 +3,21 @@ import PropTypes from 'prop-types';
 
 import BackgroundColorPicker from './BackgroundColorPicker';
 import IconSelector from './IconSelector';
+import FileSelector from './FileSelector';
 import ShapeSelector from './ShapeSelector';
 import PasteOption from '../Options/PasteOption';
 import OptionContainer from '../Options/OptionContainer';
 import create from '../../creator';
 
+import './EditorSectionPanel.scss';
+
 
 /* eslint-disable max-len */
-class Elements extends Component {
+class EditorSectionPanel extends Component {
   state ={
     showIcons: false,
     showShapes: false,
-  }
-
-  // componentDidMount() {
-  //   this.props.files_initialize(this.selectImage, this.onImageUploaded);
-  // }
-
-  onImageUploaded = (imageFile) => {
-    console.log(imageFile);
-    window.RevealEditor.currentSection.addImage({ file_id: imageFile.id });
+    showFiles: false,
   }
 
   onAddNewText = (event) => {
@@ -40,12 +35,21 @@ class Elements extends Component {
     this.setState({ showIcons: true });
   }
 
+  onAddNewFile = () => {
+    this.setState({ showFiles: true });
+  }
+
+
   hideIcons = () => {
     this.setState({ showIcons: false });
   }
 
   hideShapes = () => {
     this.setState({ showShapes: false });
+  }
+
+  hideFiles = () => {
+    this.setState({ showFiles: false });
   }
 
   onAddLatex = (event) => {
@@ -78,7 +82,7 @@ class Elements extends Component {
             </div>
             <span>TEXT</span>
           </div>
-          <div ref={ e => this.selectImage = e } onTouchTap={ this.onAddNewImage } className={ 'section-element-each' }>
+          <div ref={ e => this.selectImage = e } onTouchTap={ this.onAddNewFile } className={ 'section-element-each' }>
             <div>
               <i className="icon-image"></i>
             </div>
@@ -103,18 +107,21 @@ class Elements extends Component {
             <span>LATEX</span>
           </div>
         </div>
-        <div onTouchTap={ this.hideShapes } className={ `svg-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
+        <div className={ `add-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
           <ShapeSelector hideShapes={ this.hideShapes } />
         </div>
-        <div onTouchTap={ this.hideIcons } className={ `svg-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
+        <div className={ `add-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
           <IconSelector hideIcons={ this.hideIcons } />
+        </div>
+        <div className={ `add-elements-panel${this.state.showFiles ? ' show-up' : ''}` }>
+          <FileSelector hideFiles={ this.hideFiles } />
         </div>
       </div>
     );
   }
 }
 
-Elements.propTypes = {
+EditorSectionPanel.propTypes = {
   editor: PropTypes.object.isRequired,
   files_initialize: PropTypes.func.isRequired,
 };
@@ -126,4 +133,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default create(Elements, mapStateToProps);
+export default create(EditorSectionPanel, mapStateToProps);

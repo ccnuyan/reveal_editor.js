@@ -8,6 +8,7 @@ import create from '../../creator';
 class RemoveOptions extends Component {
 
   onPaste = () => {
+    console.log(this.props.editor.clipboard);
     window.RevealEditor.currentSection.paste(this.props.editor.clipboard);
   }
 

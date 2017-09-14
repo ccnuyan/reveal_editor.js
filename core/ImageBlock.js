@@ -17,8 +17,8 @@ class ImageBlock extends Block {
     _u.on(this.image, 'load', () => {
       this.state.desiredWidth = this.image.width;
       this.state.desiredHeight = this.image.height;
-      this.dom.style.width = '420px';
-      this.dom.style.height = `${(420 * this.image.height) / this.image.width}px`;
+
+      this.dom.style.height = 'auto';
       this.image.style.display = 'block';
     });
   }

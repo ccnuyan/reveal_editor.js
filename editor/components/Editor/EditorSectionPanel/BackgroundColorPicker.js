@@ -5,7 +5,6 @@ import { BlockPicker } from 'react-color';
 import create from '../../creator';
 
 class ThemeAndBackgroundColorPicker extends Component {
-
   state = {
     displayColorPicker: false,
   }
@@ -17,12 +16,6 @@ class ThemeAndBackgroundColorPicker extends Component {
   handleClose = () => {
     this.setState({ displayColorPicker: false });
   };
-
-  switchTheme = (event) => {
-    window.RevealEditor.services.theme.loadTheme(event.currentTarget.dataset.theme);
-    this.props.editor.theme = event.currentTarget.getAttribute('data-theme');
-    this.props.editor_set_editor(this.props.editor);
-  }
 
   handleChangeBackground = (color) => {
     const currentSection = this.props.currentSection;

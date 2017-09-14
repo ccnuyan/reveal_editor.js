@@ -81,17 +81,17 @@ class Section extends Elements {
     this.editor.reload({});
   }
 
-  addImage({ file_id }) {
+  addImage({ etag }) {
     if (this.editor.isOverview()) return;
     this.editor.services.undoredo.enqueue();
 
     const blockContainer = document.createElement('div');
     blockContainer.innerHTML = blocks.image;
-    if (file_id) {
+    if (etag) {
       const blockDom = blockContainer.childNodes[0];
-      blockDom.setAttribute('data-file-id', file_id);
+      blockDom.setAttribute('data-file', etag);
       blockContainer.querySelector('img')
-        .setAttribute('data-src', `http://${config.qiniu_bucket}/${file_id}`);
+        .setAttribute('src', `http://${config.qiniu_bucket}/${etag}`);
 
       this.dom.appendChild(blockDom);
 

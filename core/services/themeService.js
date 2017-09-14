@@ -1,4 +1,6 @@
-class themeService {
+import { getHeaders } from '../../sc_utils';
+
+class ThemeService {
   constructor(editor) {
     this.editor = editor;
     this.selectedBlocks = [];
@@ -54,4 +56,4 @@ class themeService {
   }
 }
 
-export default themeService;
+export default ThemeService;
