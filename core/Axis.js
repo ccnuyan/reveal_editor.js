@@ -1,21 +1,10 @@
 import _ from 'lodash';
-import _u from './util';
 import Elements from './Elements';
 
 class Axis extends Elements {
   constructor({ section }) {
-    const axis = _u.create('div', ['axis', 'editing-ui'], {
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      marginLeft: '-480px',
-      marginTop: '-350px',
-      display: 'true',
-      width: '960px',
-      height: '700px',
-      border: '1px solid rgba(128,128,128,0.2)',
-      zIndex: '-1',
-    });
+    const axis = document.createElement('div');
+    axis.setAttribute('class', 'axis', 'editing-ui');
 
     super({ parent: section, el: axis });
 

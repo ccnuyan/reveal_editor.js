@@ -2,15 +2,40 @@ div[contenteditable] {
     outline: 2px solid rgb(27, 173, 225);
 }
 
-.reveal .section-add{
+.reveal .axis {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -480px;
+    margin-top: -350px;
+    display: true;
+    width: 960px;
+    height: 700px;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    z-index: -1;
+}
+
+.reveal .drag-select-rect {
+    position: absolute;
+    z-index: 255;
+    pointer-events: none;
+    border: 1px solid rgb(27, 173, 225);
+    display: none;
+}
+
+.reveal * {
+    user-select: none;
+}
+
+.reveal .section-add {
     width: 48px;
     height: 48px;
     position: absolute;
     border-style: none;
 }
 
-.reveal .section-add:hover{
-    color:white;
+.reveal .section-add:hover {
+    color: white;
 }
 
 .reveal .section-add[data-direction='right'] {
@@ -25,20 +50,20 @@ div[contenteditable] {
     margin-left: -24px;
 }
 
-.reveal .arranging-ui{
+.reveal .arranging-ui {
     width: 160px;
     height: 160px;
     position: absolute;
     font-size: 120px;
-    padding:0;
+    padding: 0;
     border-style: none;
 }
 
-.reveal .arranging-ui:hover{
-    color:white;
+.reveal .arranging-ui:hover {
+    color: white;
 }
 
-.reveal .arranging-ui :active{
+.reveal .arranging-ui :active {
     opacity: 0.5;
 }
 
@@ -95,42 +120,40 @@ div[contenteditable] {
     bottom: 20px;
 }
 
-.reveal .section-manipulator{
+.reveal .section-manipulator {
     border-radius: 50%;
     background-color: lightgray;
 }
 
-.reveal .section-manipulator>svg{
+.reveal .section-manipulator>svg {
     z-index: -1;
-    fill:#333;
+    fill: #333;
 }
 
-.reveal .section-manipulator{
-    opacity:0.2;
+.reveal .section-manipulator {
+    opacity: 0.2;
     z-index: 255;
 }
 
-.reveal .section-manipulator>svg{
+.reveal .section-manipulator>svg {
     z-index: -1;
-    fill:white;
+    fill: white;
 }
 
-.reveal .section-manipulator:hover{
-    opacity:1;
+.reveal .section-manipulator:hover {
+    opacity: 1;
 }
 
 .reveal button.rotate-anchor {
     background: transparent;
-    color:lightgray;
-    font-size:24px;
+    color: lightgray;
+    font-size: 24px;
 }
 
 .reveal button.rotate-anchor:hover {
-    color:darkgray;
+    color: darkgray;
 }
-.reveal *{
-    user-select: none;
-}
-.reveal div.sc-block[sc-block-status=editing] *{
+
+.reveal div.sc-block[sc-block-status=editing] * {
     user-select: text;
 }

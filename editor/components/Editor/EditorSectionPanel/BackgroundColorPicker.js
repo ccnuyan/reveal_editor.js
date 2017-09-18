@@ -4,7 +4,9 @@ import reactCSS from 'reactcss';
 import { BlockPicker } from 'react-color';
 import create from '../../creator';
 
-class ThemeAndBackgroundColorPicker extends Component {
+import './BackgroundColorPicker.scss';
+
+class BackgroundColorPicker extends Component {
   state = {
     displayColorPicker: false,
   }
@@ -31,6 +33,19 @@ class ThemeAndBackgroundColorPicker extends Component {
     });
   };
 
+  handleResetAll = () => {
+    window.RevealEditor.sections.forEach((sec) => {
+      sec.setState({ action: 'RESET_BACKGROUND' });
+    });
+    const newSec = window.RevealEditor.currentSection.setState({ action: 'RESET_BACKGROUND' });
+    this.props.editor_set_current_section(newSec);
+  };
+
+  handleReset = () => {
+    const newSec = window.RevealEditor.currentSection.setState({ action: 'RESET_BACKGROUND' });
+    this.props.editor_set_current_section(newSec);
+  }
+
   styles = reactCSS({
     default: {
       popover: {
@@ -49,7 +64,7 @@ class ThemeAndBackgroundColorPicker extends Component {
   });
 
   getColors = () => {
-    return ['#b71c1c', '#880e4f', '#4a148c', '#311b92', '#1a237e', '#0d47a1', '#01579b', '#006064', '#004d40', '#1b5e20', '#33691e', '#827717', '#f57f17', '#ff6f00', '#e65100', '#bf360c', '#3e2723', '#263238', '#ffcdd2', '#f8bbd0', '#e1bee7', '#d1c4e9', '#c5cae9', '#bbdefb', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#c8e6c9', '#dcedc8', '#f0f4c3', '#fff9c4', '#ffecb3', '#ffe0b2', '#ffccbc', '#d7ccc8', '#cfd8dc', '#ffffff', '#eeeeee','#dddddd', '#333333', '#222222','#111111']; // eslint-disable-line
+    return ['#b71c1c', '#880e4f', '#4a148c', '#ffcdd2', '#f8bbd0', '#e1bee7', '#311b92', '#1a237e', '#0d47a1', '#d1c4e9', '#c5cae9', '#bbdefb', '#01579b', '#006064', '#004d40', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#1b5e20', '#33691e', '#827717', '#c8e6c9', '#dcedc8', '#f0f4c3', '#f57f17', '#ff6f00', '#e65100', '#fff9c4', '#ffecb3', '#ffe0b2', '#bf360c', '#3e2723', '#263238', '#ffccbc', '#d7ccc8', '#cfd8dc', '#333333', '#222222','#111111', '#ffffff', '#eeeeee','#dddddd']; // eslint-disable-line
   }
 
   render = () => {
@@ -64,22 +79,32 @@ class ThemeAndBackgroundColorPicker extends Component {
           onTouchTap={ this.handleOpen }
           >
             <div className="color" style={ {
-              borderRadius: 'inherit',
-              width: '100%',
-              height: '100%',
               backgroundColor: this.props.currentSection.backgroundColor,
             } }
             ></div>
           </div>
-          <button className={ 'apply-section-background-to-all editor-button' }
+          <div className="background-buttons">
+            <button className={ 'apply-section-background-to-all editor-button' }
               onTouchTap={ this.handleChangeBackgroundToAll }
-          >Apply to all</button>
+            >Apply to all
+            </button>
+            <button className={ 'apply-section-background-to-all editor-button' }
+              onTouchTap={ this.handleReset }
+            >Reset
+            </button>
+            <button className={ 'apply-section-background-to-all editor-button' }
+              onTouchTap={ this.handleResetAll }
+            >Reset All
+            </button>
+          </div>
         </div>
         <div>
           {this.state.displayColorPicker ?
             <div style={ this.styles.popover }>
               <div style={ this.styles.cover } onTouchTap={ this.handleClose } />
-              <BlockPicker colors={ colors } width={ 220 } color={ this.props.currentSection.backgroundColor } onChange={ this.handleChangeBackground } />
+              <BlockPicker colors={ colors } width={ 220 } color={ this.props.currentSection.backgroundColor }
+               onChange={ this.handleChangeBackground }
+              />
             </div> : null}
         </div>
       </div>
@@ -87,7 +112,7 @@ class ThemeAndBackgroundColorPicker extends Component {
   }
 }
 
-ThemeAndBackgroundColorPicker.propTypes = {
+BackgroundColorPicker.propTypes = {
   label: PropTypes.string,
   isMain: PropTypes.bool,
   editor: PropTypes.object.isRequired,
@@ -103,4 +128,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default create(ThemeAndBackgroundColorPicker, mapStateToProps);
+export default create(BackgroundColorPicker, mapStateToProps);

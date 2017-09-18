@@ -8,8 +8,9 @@ module.exports = {
     katex: '//cdn.bootcss.com/KaTeX/0.8.2/katex.min.css',
     icomoon: './static/icomoon/style.css',
     icomoon_editor: './static/icomoon_editor/style.css',
-    reveal: '//cdn.bootcss.com/reveal.js/3.5.0/css/reveal.min.css',
-    reveal_theme: 'https://cdn.bootcss.com/reveal.js/3.5.0/css/theme/white.css',
+    reveal: './static/reveal.css',
+    reveal_theme: './static/reveal_theme_white.css',
+    reveal_editor_override: './static/reveal_editor_override.css',
   },
   scripts: {
     head: '//cdn.bootcss.com/headjs/1.0.3/head.min.js',
@@ -17,6 +18,6 @@ module.exports = {
     classlist: '//cdn.bootcss.com/classlist/2014.01.31/classList.min.js',
     katex: '//cdn.bootcss.com/KaTeX/0.8.2/katex.min.js',
     ckeditor: '//cdn.bootcss.com/ckeditor/4.7.2/ckeditor.js',
-    reveal: '//cdn.bootcss.com/reveal.js/3.5.0/js/reveal.min.js',
+    reveal: './static/reveal.js',
   },
 };

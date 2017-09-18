@@ -9,3 +9,4 @@ I'm still woring on it.
 
 1. reset color, reset all background
 1. width add width 
+1. ddmrr min-size;

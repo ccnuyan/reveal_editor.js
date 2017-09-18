@@ -1,5 +1,3 @@
-import { getHeaders } from '../../sc_utils';
-
 class Snapshot {
   constructor(editor) {
     this.editor = editor;
@@ -73,11 +71,7 @@ class Snapshot {
     });
 
     const getClonedBlock = (block, additionalStyles) => {
-      const clonedBlock = block.cloneNode(true);
-
-      Array.prototype.forEach.call(clonedBlock.children, (cd) => {
-        clonedBlock.removeChild(cd);
-      });
+      const clonedBlock = block.cloneNode(false);
 
       if (additionalStyles) {
         const computedBlockStyle = getComputedStyle(block);
@@ -96,7 +90,7 @@ class Snapshot {
     });
 
     Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=latex]'), (block) => {
-      section.appendChild(getClonedBlock(block, ['color', 'width', 'height', 'backgroundColor']));
+      section.appendChild(getClonedBlock(block));
     });
 
     Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=image]'), (block) => {
@@ -110,8 +104,6 @@ class Snapshot {
     Array.prototype.forEach.call(firstSection.querySelectorAll('div.sc-block[data-block-type=shape]'), (block) => {
       section.appendChild(getClonedBlock(block));
     });
-
-    console.log(container);
 
     return container.innerHTML;
   }

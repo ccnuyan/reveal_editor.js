@@ -16,13 +16,6 @@ const baseConf = {
 };
 
 export default {
-  adConf: _.assign({
-    minScale: 0.3,
-    maxScale: 1.5,
-    autoSlide: 5000,
-    history: false,
-    loop: true,
-  }, baseConf),
   editingConf: _.assign({
     minScale: 1,
     maxScale: 1,
@@ -30,10 +23,5 @@ export default {
   presentationPreviewConf: _.assign({
     minScale: 0.3,
     maxScale: 1.5,
-  }, baseConf),
-  playConf: _.assign({
-    minScale: 0.3,
-    maxScale: 1.5,
-    dependencies: [],
   }, baseConf),
 };

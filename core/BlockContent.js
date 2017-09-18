@@ -12,11 +12,11 @@ class BlockContent extends Elements {
   }
 
   linkBlockContentEvents = () => {
-    _u.on(this.dom, 'dblclick', (event) => {
+    this.dom.addEventListener('dblclick', (event) => {
       event.stopPropagation();
     });
 
-    _u.on(this.dom, 'click', (event) => {
+    this.dom.addEventListener('click', (event) => {
       // here is editor state
       event.stopPropagation();
 

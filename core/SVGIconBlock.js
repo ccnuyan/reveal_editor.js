@@ -19,20 +19,27 @@ class SVGIconBlock extends Block {
 
   getState = () => {
     const style = getComputedStyle(this.draw);
+    const domStyle = getComputedStyle(this.dom);
     return {
       ...this.state,
       fill: this.getColor(style.fill),
+      zIndex: this.getZIndex(domStyle.zIndex),
     };
   }
 
   setState = (params) => {
-    if (params.fill) {
-      this.state.fill = params.fill;
-      this.draw.setAttribute('fill', this.state.fill);
-      Array.prototype.forEach.call(this.dom.querySelectorAll('svg>path'), (path) => {
-        path.removeAttribute('fill');
-      });
-    }
+    Object.keys(params).forEach((key) => {
+      if (key === 'fill') {
+        this.state.fill = params[key];
+        this.draw.setAttribute('fill', params[key]);
+        Array.prototype.forEach.call(this.dom.querySelectorAll('svg>path'), (path) => {
+          path.removeAttribute('fill');
+        });
+      } else {
+        console.log(params[key]);
+        this.dom.style[key] = params[key];
+      }
+    });
 
     this.ddmrr && this.ddmrr.relocateDom();
     return this.getState();

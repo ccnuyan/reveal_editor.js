@@ -94,26 +94,30 @@ class SVGShapeBlock extends Block {
 
   getState() {
     const style = getComputedStyle(this.svgShape);
+    const domStyle = getComputedStyle(this.dom);
     const state = {
       ...this.state,
       fill: this.getColor(style.fill),
       stroke: this.getColor(style.stroke),
       strokeWidth: this.getLength(style.strokeWidth),
+      zIndex: this.getZIndex(domStyle.zIndex),
     };
 
     return state;
   }
 
   setState(params) {
-    if (params.stroke) {
-      this.setStoke(params);
-    }
-    if (params.strokeWidth) {
-      this.setStrokeWidth(params);
-    }
-    if (params.fill) {
-      this.setFill(params);
-    }
+    Object.keys(params).forEach((key) => {
+      if (key === 'stroke') {
+        this.setStoke({ stroke: params.stroke });
+      } else if (key === 'strokeWidth') {
+        this.setStrokeWidth({ strokeWidth: params.strokeWidth });
+      } else if (key === 'fill') {
+        this.setFill({ fill: params.fill });
+      } else {
+        this.dom.style[key] = params[key];
+      }
+    });
 
     this.ddmrr && this.ddmrr.relocateDom();
     return this.getState();

@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import './CKEDITORPlugins';
-import _u from './util';
 import revealConf from './revealConf';
-import config from './config';
 import Section from './Section';
 import services from './services';
 import Emitter from './Emitter';
@@ -27,13 +25,16 @@ class Editor {
     this.initializeSections();
 
     window.Reveal.addEventListener('ready', () => {
-      this.slidesDom = _u.findChildren(this.reveal, '.slides')[0];
-      this.selectRect = _u.create('div', 'editing-ui', config.styles.dragSelectRect);
+      this.slidesDom = this.reveal.querySelector('.slides');
+
+      this.selectRect = document.createElement('div');
+      this.selectRect.setAttribute('class', 'editing-ui drag-select-rect');
       this.reveal.appendChild(this.selectRect);
+
       this.linkDomEvents();
 
       this.state.status = 'editing';
-      this.state.theme = this.services.theme.loadTheme(this.slidesDom.getAttribute('data-theme'));
+      // this.state.theme = this.services.theme.loadTheme(this.slidesDom.getAttribute('data-theme'));
 
       this.sections.forEach((section) => {
         const currentSectionDom = window.Reveal.getCurrentSlide();
@@ -148,10 +149,6 @@ class Editor {
       ...this.state,
       currentSection: this.currentSection.getState(),
     };
-  }
-
-  setState = ({ theme }) => {
-    this.state.theme = this.services.theme.loadTheme(theme);
   }
 
   linkDomEvents = () => {

@@ -121,28 +121,6 @@ div.section-element-each:hover{
     border: 2px solid white;
 }
 
-.background-color-picker{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top:20px;
-}
-
-.section-background-square{
-    width: 64px;
-    height: 64px;
-    border-width:2px;
-    border-style:solid;
-    border-color:white;
-    border-radius: 8px;
-}
-
-.apply-section-background-to-all{
-    width: 50%;
-    height: 36px;
-    align-self: center;
-}
-
 .block-option{
     // text-align: center;
 }

@@ -62,11 +62,19 @@ class Section extends Elements {
     return selectedBlocks;
   }
 
-  setState = ({ backgroundColor }) => {
+  setState = ({ backgroundColor, action }) => {
     if (backgroundColor) {
       this.dom.setAttribute('data-background-color', backgroundColor);
     }
+    if (action === 'RESET_BACKGROUND') {
+      this.dom.removeAttribute('data-background-color');
+    }
+
+    // here sync is the safe method
+    // this.editor.reload() may meet some bugs;
     window.Reveal.sync();
+
+    return this.getState();
   }
 
   addText = () => {
@@ -144,9 +152,8 @@ class Section extends Elements {
 
     const blockContainer = document.createElement('div');
     blockContainer.innerHTML = blocks.katex;
-    blockContainer.querySelector('div.sc-block-content')
-      .innerHTML = `<div class="sc-katex-display"></div>
-    <div style="display:none" class="sc-katex-raw">${latex}</div>`;
+    blockContainer.querySelector('div.sc-block-content').innerHTML
+      = `<div class="sc-katex-display"></div><div class="sc-katex-raw">${latex}</div>`;
 
     const blockDom = blockContainer.childNodes[0];
     this.dom.appendChild(blockDom);
