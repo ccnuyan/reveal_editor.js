@@ -41,6 +41,39 @@ module.exports = [{
     ],
   }),
 }, {
+  test: /\.css$/,
+  // https://webpack.js.org/plugins/extract-text-webpack-plugin/#components/sidebar/sidebar.jsx
+  use: ExtractTextPlugin.extract({
+    fallback: 'style-loader',
+    publicPath: './build/assets/',
+    use: [
+      {
+        loader: 'css-loader',
+        options: {
+          // CSS Loader https://github.com/webpack/css-loader
+          importLoaders: 1,
+          sourceMap: true,
+          // CSS Modules https://github.com/css-modules/css-modules
+          // modules: true,
+          modules: false,
+          localIdentName: '[name]-[local]-[hash:base64:5]',
+          // CSS Nano http://cssnano.co/options/
+          minimize: false,
+          discardComments: {
+            removeAll: true,
+          },
+        },
+      },
+      // postcss-loader should before sass-loader
+      {
+        loader: 'postcss-loader',
+        options: {
+          config: './webpack/postcss.config.js',
+        },
+      },
+    ],
+  }),
+}, {
   test: /\.md$/,
   use: [
     {

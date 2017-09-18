@@ -49,19 +49,8 @@
 			minScale: 0.2,
 			maxScale: 2.0,
 
-			// Display presentation control arrows
+			// Display controls in the bottom right corner
 			controls: true,
-
-			// Help the user learn the controls by providing hints, for example by
-			// bouncing the down arrow when they first encounter a vertical slide
-			controlsTutorial: true,
-
-			// Determines where controls appear, "edges" or "bottom-right"
-			controlsLayout: 'bottom-right',
-
-			// Visibility rule for backwards navigation arrows; "faded", "hidden"
-			// or "visible"
-			controlsBackArrows: 'faded',
 
 			// Display a presentation progress bar
 			progress: true,
@@ -117,16 +106,14 @@
 			showNotes: false,
 
 			// Global override for autolaying embedded media (video/audio/iframe)
-			// - null:   Media will only autoplay if data-autoplay is present
-			// - true:   All media will autoplay, regardless of individual setting
-			// - false:  No media will autoplay, regardless of individual setting
+			// - null: Media will only autoplay if data-autoplay is present
+			// - true: All media will autoplay, regardless of individual setting
+			// - false: No media will autoplay, regardless of individual setting
 			autoPlayMedia: null,
 
-			// Controls automatic progression to the next slide
-			// - 0:      Auto-sliding only happens if the data-autoslide HTML attribute
-			//           is present on the current slide or fragment
-			// - 1+:     All slides will progress automatically at the given interval
-			// - false:  No auto-sliding, even if data-autoslide is present
+			// Number of milliseconds between automatically proceeding to the
+			// next slide, disabled when set to 0, this value can be overwritten
+			// by using a data-autoslide attribute on your slides
 			autoSlide: 0,
 
 			// Stop auto-sliding after user input
@@ -219,10 +206,6 @@
 		currentSlide,
 
 		previousBackground,
-
-		// Remember which directions that the user has navigated towards
-		hasNavigatedRight = false,
-		hasNavigatedDown = false,
 
 		// Slides may hold a data-state attribute which we pick up and apply
 		// as a class to the body. This list contains the combined state of
@@ -525,20 +508,6 @@
 		// Prevent transitions while we're loading
 		dom.slides.classList.add( 'no-transition' );
 
-		if( isMobileDevice ) {
-			dom.wrapper.classList.add( 'no-hover' );
-		}
-		else {
-			dom.wrapper.classList.remove( 'no-hover' );
-		}
-
-		if( /iphone/gi.test( UA ) ) {
-			dom.wrapper.classList.add( 'ua-iphone' );
-		}
-		else {
-			dom.wrapper.classList.remove( 'ua-iphone' );
-		}
-
 		// Background element
 		dom.background = createSingletonNode( dom.wrapper, 'div', 'backgrounds', null );
 
@@ -547,11 +516,11 @@
 		dom.progressbar = dom.progress.querySelector( 'span' );
 
 		// Arrow controls
-		dom.controls = createSingletonNode( dom.wrapper, 'aside', 'controls',
-			'<button class="navigate-left" aria-label="previous slide"><div class="controls-arrow"></div></button>' +
-			'<button class="navigate-right" aria-label="next slide"><div class="controls-arrow"></div></button>' +
-			'<button class="navigate-up" aria-label="above slide"><div class="controls-arrow"></div></button>' +
-			'<button class="navigate-down" aria-label="below slide"><div class="controls-arrow"></div></button>' );
+		createSingletonNode( dom.wrapper, 'aside', 'controls',
+			'<button class="navigate-left" aria-label="previous slide"></button>' +
+			'<button class="navigate-right" aria-label="next slide"></button>' +
+			'<button class="navigate-up" aria-label="above slide"></button>' +
+			'<button class="navigate-down" aria-label="below slide"></button>' );
 
 		// Slide number
 		dom.slideNumber = createSingletonNode( dom.wrapper, 'div', 'slide-number', '' );
@@ -564,6 +533,9 @@
 		// Overlay graphic which is displayed during the paused mode
 		createSingletonNode( dom.wrapper, 'div', 'pause-overlay', null );
 
+		// Cache references to elements
+		dom.controls = document.querySelector( '.reveal .controls' );
+
 		dom.wrapper.setAttribute( 'role', 'application' );
 
 		// There can be multiple instances of controls throughout the page
@@ -573,10 +545,6 @@
 		dom.controlsDown = toArray( document.querySelectorAll( '.navigate-down' ) );
 		dom.controlsPrev = toArray( document.querySelectorAll( '.navigate-prev' ) );
 		dom.controlsNext = toArray( document.querySelectorAll( '.navigate-next' ) );
-
-		// The right and down arrows in the standard reveal.js controls
-		dom.controlsRightArrow = dom.controls.querySelector( '.navigate-right' );
-		dom.controlsDownArrow = dom.controls.querySelector( '.navigate-down' );
 
 		dom.statusDiv = createStatusDiv();
 	}
@@ -821,7 +789,7 @@
 
 		// If no node was found, create it now
 		var node = document.createElement( tagname );
-		node.className = classname;
+		node.classList.add( classname );
 		if( typeof innerHTML === 'string' ) {
 			node.innerHTML = innerHTML;
 		}
@@ -1033,9 +1001,6 @@
 		dom.controls.style.display = config.controls ? 'block' : 'none';
 		dom.progress.style.display = config.progress ? 'block' : 'none';
 
-		dom.controls.setAttribute( 'data-controls-layout', config.controlsLayout );
-		dom.controls.setAttribute( 'data-controls-back-arrows', config.controlsBackArrows );
-
 		if( config.shuffle ) {
 			shuffle();
 		}
@@ -1060,7 +1025,11 @@
 		}
 
 		if( config.showNotes ) {
+			dom.speakerNotes.classList.add( 'visible' );
 			dom.speakerNotes.setAttribute( 'data-layout', typeof config.showNotes === 'string' ? config.showNotes : 'inline' );
+		}
+		else {
+			dom.speakerNotes.classList.remove( 'visible' );
 		}
 
 		if( config.mouseWheel ) {
@@ -2494,7 +2463,6 @@
 		updateSlideNumber();
 		updateSlidesVisibility();
 		updateBackground( true );
-		updateNotesVisibility();
 		updateNotes();
 
 		formatEmbeddedContent();
@@ -2764,22 +2732,6 @@
 				}
 			}
 
-			// Flag if there are ANY vertical slides, anywhere in the deck
-			if( dom.wrapper.querySelectorAll( '.slides>section>section' ).length ) {
-				dom.wrapper.classList.add( 'has-vertical-slides' );
-			}
-			else {
-				dom.wrapper.classList.remove( 'has-vertical-slides' );
-			}
-
-			// Flag if there are ANY horizontal slides, anywhere in the deck
-			if( dom.wrapper.querySelectorAll( '.slides>section' ).length > 1 ) {
-				dom.wrapper.classList.add( 'has-horizontal-slides' );
-			}
-			else {
-				dom.wrapper.classList.remove( 'has-horizontal-slides' );
-			}
-
 		}
 
 	}
@@ -2794,36 +2746,9 @@
 
 		if( config.showNotes && dom.speakerNotes && currentSlide && !isPrintingPDF() ) {
 
-			dom.speakerNotes.innerHTML = getSlideNotes() || '<span class="notes-placeholder">No notes on this slide.</span>';
+			dom.speakerNotes.innerHTML = getSlideNotes() || '';
 
 		}
-
-	}
-
-	/**
-	 * Updates the visibility of the speaker notes sidebar that
-	 * is used to share annotated slides. The notes sidebar is
-	 * only visible if showNotes is true and there are notes on
-	 * one or more slides in the deck.
-	 */
-	function updateNotesVisibility() {
-
-		if( config.showNotes && hasNotes() ) {
-			dom.wrapper.classList.add( 'show-notes' );
-		}
-		else {
-			dom.wrapper.classList.remove( 'show-notes' );
-		}
-
-	}
-
-	/**
-	 * Checks if there are speaker notes for ANY slide in the
-	 * presentation.
-	 */
-	function hasNotes() {
-
-		return dom.slides.querySelectorAll( '[data-notes], aside.notes' ).length > 0;
 
 	}
 
@@ -2953,26 +2878,6 @@
 			else {
 				if( fragments.prev ) dom.controlsLeft.forEach( function( el ) { el.classList.add( 'fragmented', 'enabled' ); el.removeAttribute( 'disabled' ); } );
 				if( fragments.next ) dom.controlsRight.forEach( function( el ) { el.classList.add( 'fragmented', 'enabled' ); el.removeAttribute( 'disabled' ); } );
-			}
-
-		}
-
-		if( config.controlsTutorial ) {
-
-			// Highlight control arrows with an animation to ensure
-			// that the viewer knows how to navigate
-			if( !hasNavigatedDown && routes.down ) {
-				dom.controlsDownArrow.classList.add( 'highlight' );
-			}
-			else {
-				dom.controlsDownArrow.classList.remove( 'highlight' );
-
-				if( !hasNavigatedRight && routes.right && indexv === 0 ) {
-					dom.controlsRightArrow.classList.add( 'highlight' );
-				}
-				else {
-					dom.controlsRightArrow.classList.remove( 'highlight' );
-				}
 			}
 
 		}
@@ -3171,7 +3076,6 @@
 		// Media elements with data-src attributes
 		toArray( slide.querySelectorAll( 'img[data-src], video[data-src], audio[data-src]' ) ).forEach( function( element ) {
 			element.setAttribute( 'src', element.getAttribute( 'data-src' ) );
-			element.setAttribute( 'data-lazy-loaded', '' );
 			element.removeAttribute( 'data-src' );
 		} );
 
@@ -3182,7 +3086,6 @@
 			toArray( media.querySelectorAll( 'source[data-src]' ) ).forEach( function( source ) {
 				source.setAttribute( 'src', source.getAttribute( 'data-src' ) );
 				source.removeAttribute( 'data-src' );
-				source.setAttribute( 'data-lazy-loaded', '' );
 				sources += 1;
 			} );
 
@@ -3288,18 +3191,6 @@
 		if( background ) {
 			background.style.display = 'none';
 		}
-
-		// Reset lazy-loaded media elements with src attributes
-		toArray( slide.querySelectorAll( 'video[data-lazy-loaded][src], audio[data-lazy-loaded][src]' ) ).forEach( function( element ) {
-			element.setAttribute( 'data-src', element.getAttribute( 'src' ) );
-			element.removeAttribute( 'src' );
-		} );
-
-		// Reset lazy-loaded media elements with <source> children
-		toArray( slide.querySelectorAll( 'video[data-lazy-loaded] source[src], audio source[src]' ) ).forEach( function( source ) {
-			source.setAttribute( 'data-src', source.getAttribute( 'src' ) );
-			source.removeAttribute( 'src' );
-		} );
 
 	}
 
@@ -4125,7 +4016,7 @@
 
 		cancelAutoSlide();
 
-		if( currentSlide && config.autoSlide !== false ) {
+		if( currentSlide ) {
 
 			var fragment = currentSlide.querySelector( '.current-fragment' );
 
@@ -4243,8 +4134,6 @@
 
 	function navigateRight() {
 
-		hasNavigatedRight = true;
-
 		// Reverse for RTL
 		if( config.rtl ) {
 			if( ( isOverview() || previousFragment() === false ) && availableRoutes().right ) {
@@ -4268,8 +4157,6 @@
 	}
 
 	function navigateDown() {
-
-		hasNavigatedDown = true;
 
 		// Prioritize revealing fragments
 		if( ( isOverview() || nextFragment() === false ) && availableRoutes().down ) {
@@ -4316,9 +4203,6 @@
 	 * The reverse of #navigatePrev().
 	 */
 	function navigateNext() {
-
-		hasNavigatedRight = true;
-		hasNavigatedDown = true;
 
 		// Prioritize revealing fragments
 		if( nextFragment() === false ) {
@@ -4988,7 +4872,7 @@
 		this.context.beginPath();
 		this.context.arc( x, y, radius, 0, Math.PI * 2, false );
 		this.context.lineWidth = this.thickness;
-		this.context.strokeStyle = 'rgba( 255, 255, 255, 0.2 )';
+		this.context.strokeStyle = '#666';
 		this.context.stroke();
 
 		if( this.playing ) {

@@ -1,6 +1,3 @@
-
-import _u from './util';
-
 class Elements {
   constructor({ parent, el }) {
     this.parent = parent;

@@ -1,7 +1,8 @@
 import Editor from './Editor';
 import templates from './templates';
 import { getHeaders, getParameterByName } from '../sc_utils';
-import './css/editor.scss';
+import './css/editing_ui.css';
+import './css/reveal_override.css';
 
 (() => {
   const action = getParameterByName('action');
