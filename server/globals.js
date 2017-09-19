@@ -23,7 +23,7 @@ global.printMessage = (message, filename) => {
 
 global.report = () => {
   let chalkcontent = chalk.grey('running in ');
-  chalkcontent += config.status === 'production' ? chalk.red(config.mode) : chalk.blue(config.mode);
+  chalkcontent += config.mode === 'production' ? chalk.red(config.mode) : chalk.blue(config.mode);
   chalkcontent += chalk.grey(' mode');
 
   console.log(chalkcontent);
