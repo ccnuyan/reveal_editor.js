@@ -1,8 +1,12 @@
+import es6Promise from 'es6-promise';
+
 import Editor from './Editor';
 import templates from './templates';
 import { getHeaders, getParameterByName } from '../sc_utils';
 import './css/editing_ui.css';
 import './css/reveal_override.css';
+
+es6Promise.polyfill();
 
 (() => {
   const action = getParameterByName('action');
