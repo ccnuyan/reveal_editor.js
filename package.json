@@ -11,7 +11,7 @@
     "wp-dev": "cross-env NODE_ENV=development && webpack-dev-server --host 0.0.0.0 --config=webpack.dev-config.js",
     "fe-dev": "cross-env NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
     "wp-build": "cross-env NODE_ENV=production && webpack --config=webpack.build-config.js",
-    "start": "export NODE_ENV=production && babel-node server"
+    "start": "babel-node server"
   },
   "#comment# - browserslist": "for postcss autoprefix, which is in ./webpack/postcss.config.js",
   "browserslist": [

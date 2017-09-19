@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
+import delay from 'express-delay';
+
 
 import './globals';
 import config from '../config';
