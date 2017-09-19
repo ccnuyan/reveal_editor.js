@@ -52,7 +52,7 @@ es6Promise.polyfill();
         headers: getHeaders(),
       };
 
-      fetch(`/api/works?work_id=${work_id}`, payload)
+      fetch(`/api/works/created?work_id=${work_id}`, payload)
       .then(res => res.json())
       .then((ret) => {
         if (ret.success) {

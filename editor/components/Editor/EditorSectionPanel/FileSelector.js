@@ -19,20 +19,33 @@ class FileSelector extends Component {
     }
   }
 
-  render =() => {
+  render = () => {
     const { uploadedFiles } = this.props;
+    const { anonymous } = window.sc_mode;
     return (
       <div ref={ e => this.fileSelector = e } className="file-selector" onTouchTap={ this.tryToHide }>
-        <div ref={ e => this.uploadButton = e } className="upload-button">
+        {!anonymous ? <div ref={ e => this.uploadButton = e } className="upload-button">
           <h2>Upload</h2>
-        </div>
-        <div className="file-list">
+        </div> :
+        <div>
+          <h2>
+            <a style={ { color: 'grey' } } href="/#/user/register">
+              注册
+            </a>
+            <span> 或 </span>
+            <a style={ { color: 'grey' } } href="/#/user/login">
+              登陆
+            </a>
+            <span> 以使用该功能 </span>
+          </h2>
+        </div>}
+        {!anonymous ? <div className="file-list">
           {
-          Object.keys(uploadedFiles).map((k) => {
-            const file = uploadedFiles[k];
-            return <File hideFiles={ this.props.hideFiles } file={ file } key={ k }/>;
-          })}
-        </div>
+            Object.keys(uploadedFiles).map((k) => {
+              const file = uploadedFiles[k];
+              return <File hideFiles={ this.props.hideFiles } file={ file } key={ k } />;
+            })}
+        </div> : ''}
       </div>
     );
   }

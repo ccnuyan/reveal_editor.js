@@ -84,8 +84,8 @@ Manipulations.propTypes = {
   editor_set_preview: PropTypes.func.isRequired,
   editor_instant_save: PropTypes.func.isRequired,
   editor: PropTypes.object.isRequired,
-  // instant_save_busy: PropTypes.bool.isRequired,
-  // instant_save_error: PropTypes.bool.isRequired,
+  instant_save_busy: PropTypes.bool.isRequired,
+  instant_save_error: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
