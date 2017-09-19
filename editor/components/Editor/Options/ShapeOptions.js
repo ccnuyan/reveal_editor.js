@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 class ShapeOptions extends Component {
   render = () => {
@@ -19,10 +18,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    add_new_text: actions.set_preview(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(ShapeOptions);
+export default create(ShapeOptions, mapStateToProps);

@@ -149,7 +149,7 @@ class SectionArrangement {
 
     this.editor.services.undoredo.enqueue();
 
-    const content = templates.sectionTemplates.title;
+    const content = templates.sectionTemplates.titleAndSubtitle;
 
     if (event.currentTarget.getAttribute('data-direction') === 'right') {
       let domAfter = this.section.dom;

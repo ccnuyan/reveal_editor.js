@@ -1,11 +1,11 @@
-import ThemeService from './themeService';
-import UndoRedoService from './undoredo';
-import Snapshot from './snapshot';
+// import ThemeService from './Theme';
+import UndoRedoService from './Undoredo';
+import SnapshotService from './Snapshot';
 
 export default (editor) => {
   return {
-    theme: new ThemeService(editor),
+    // theme: new ThemeService(editor),
     undoredo: new UndoRedoService(editor),
-    snapshot: new Snapshot(editor),
+    snapshot: new SnapshotService(editor),
   };
 };

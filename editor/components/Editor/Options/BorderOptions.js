@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
 import WidthOptions from './WidthOptions';
 import ColorOptions from './ColorOptions';
 
 import OptionContainer from './OptionContainer';
+import create from '../../creator';
+
 
 class BorderOptions extends Component {
-
-  static propTypes = {
-    label: PropTypes.string,
-    selectedBlocks: PropTypes.array.isRequired,
-    set_current_block: PropTypes.func.isRequired,
-  }
-
   onChange = (event) => {
     let params;
     if (event.currentTarget.checked) {
@@ -24,7 +17,7 @@ class BorderOptions extends Component {
       params = { borderStyle: 'none' };
     }
     const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-    this.props.set_current_block(newState);
+    this.props.editor_set_current_block(newState);
   }
 
   render = () => {
@@ -48,16 +41,16 @@ class BorderOptions extends Component {
   }
 }
 
+BorderOptions.propTypes = {
+  label: PropTypes.string,
+  selectedBlocks: PropTypes.array.isRequired,
+  editor_set_current_block: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     selectedBlocks: state.editor.toJSON().currentSection.selectedBlocks,
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_current_block: actions.set_current_block(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(BorderOptions);
+export default create(BorderOptions, mapStateToProps);

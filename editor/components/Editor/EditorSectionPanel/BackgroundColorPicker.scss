@@ -1,0 +1,42 @@
+.background-color-picker{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top:20px;
+}
+
+.background-color-picker>.section-background-square{
+    width: 64px;
+    height: 64px;
+    border-width:2px;
+    border-style:solid;
+    border-color:white;
+    background-color:white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.background-color-picker>.section-background-square>*{
+    width: 64px;
+    height: 64px;
+    margin: -2px;
+    border-radius: 0;
+}
+
+.background-color-picker>.background-buttons{
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.background-color-picker>.background-buttons>button{
+    height: 30px;
+    padding:0 10px;
+    background-color:grey;
+}
+
+.background-color-picker>.background-buttons>button:hover{
+    background-color:#0d47a1;
+}

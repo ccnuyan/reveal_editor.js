@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
+
 
 class ColorOptions extends Component {
-
-  static propTypes = {
-    label: PropTypes.string,
-    blockProp: PropTypes.string.isRequired,
-    selectedBlocks: PropTypes.array.isRequired,
-    set_current_block: PropTypes.func.isRequired,
-  }
 
   state = {
     displayColorPicker: false,
@@ -32,7 +25,7 @@ class ColorOptions extends Component {
     const params = {};
     params[this.props.blockProp] = rgba;
     const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-    this.props.set_current_block(newState);
+    this.props.editor_set_current_block(newState);
   };
 
   styles = reactCSS({
@@ -58,7 +51,7 @@ class ColorOptions extends Component {
       <div className="color-option">
         <div className="color-square" style={ {
           display: 'inherit!important',
-          background: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==")', // eslint-disbale-line
+          background: 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==")', // eslint-disable-line
         } }
           onTouchTap={ this.handleClick }
         >
@@ -83,16 +76,17 @@ class ColorOptions extends Component {
   }
 }
 
+ColorOptions.propTypes = {
+  label: PropTypes.string,
+  blockProp: PropTypes.string.isRequired,
+  selectedBlocks: PropTypes.array.isRequired,
+  editor_set_current_block: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     selectedBlocks: state.editor.toJSON().currentSection.selectedBlocks,
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_current_block: actions.set_current_block(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(ColorOptions);
+export default create(ColorOptions, mapStateToProps);

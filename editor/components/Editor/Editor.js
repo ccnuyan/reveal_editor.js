@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Manipulations from './Manipulations/Manipulations';
 import EditorSectionPanel from './EditorSectionPanel/EditorSectionPanel';
 import Options from './Options/Options';
+import create from '../creator';
+
 
 class Editor extends Component {
   static propTypes = {
@@ -36,4 +37,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Editor);
+export default create(Editor, mapStateToProps);

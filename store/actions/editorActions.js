@@ -1,4 +1,8 @@
 import actionTypes from '../actionTypes';
+import { getHeaders } from '../../sc_utils';
+import fill from './messagesMW';
+
+// funtions below are actions
 
 const set_preview = dispatch => () => {
   dispatch({ type: actionTypes.SET_PREVIEW_MODE });
@@ -29,6 +33,31 @@ const set_current_block = dispatch => (selectedBlock) => {
   dispatch({ type: actionTypes.SET_CURRENT_BLOCK, payload: selectedBlock });
 };
 
+const instant_save = dispatch => ({ content, snapshot }) => {
+  dispatch(fill({ type: actionTypes.INSTANT_SAVE_START }));
+  const payload = {
+    method: 'PUT',
+    headers: getHeaders(),
+  };
+
+  payload.body = JSON.stringify({
+    work_id: window.sc_mode.work_id,
+    content,
+    snapshot,
+  });
+
+  fetch('/api/works', payload)
+    .then(res => res.json())
+    .then((ret) => {
+      dispatch(fill({ type: actionTypes.INSTANT_SAVE_END, payload: ret }));
+      return true;
+    })
+    .catch(() => {
+      dispatch(fill({ type: actionTypes.INSTANT_SAVE_ERROR }));
+      return false;
+    });
+};
+
 export default {
   set_preview,
   set_editor,
@@ -36,4 +65,5 @@ export default {
   set_current_section,
   set_selected_blocks,
   set_current_block,
+  instant_save,
 };

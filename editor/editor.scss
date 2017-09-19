@@ -2,7 +2,7 @@
     width:100%;
     height:100%;
     position: fixed;
-    display: none;
+    opacity: 0.01;
 }
 .wrapper>.reveal-editor{
     position: fixed;
@@ -62,32 +62,6 @@
     left: 300px;
 }
 
-// mainipulations and previewers
-
-.editor_manipulations, .previewer_panel{
-    position: absolute;
-    padding: 3px 0;
-    height:100%;
-}
-
-.editor_manipulations{
-    width:60px;
-    background-color: #333;
-    left:0;
-}
-
-.previewer_panel{
-    background-color: transparent;
-    width:60px;
-    left:0;
-}
-
-.editor_manipulations>*, .previewer_panel>*{
-    margin:3px 6px;
-    width:48px;
-    height: 48px;
-}
-
 .previewer_panel>button{
     background: transparent;
     border: 0px;
@@ -145,28 +119,6 @@ div.section-element-each>div{
 
 div.section-element-each:hover{
     border: 2px solid white;
-}
-
-.background-color-picker{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top:20px;
-}
-
-.section-background-square{
-    width: 64px;
-    height: 64px;
-    border-width:2px;
-    border-style:solid;
-    border-color:white;
-    border-radius: 8px;
-}
-
-.apply-section-background-to-all{
-    width: 50%;
-    height: 36px;
-    align-self: center;
 }
 
 .block-option{
@@ -343,52 +295,6 @@ input[type=checkbox] {
     opacity: 1;
     height: 200px;
     overflow: hidden;
-}
-
-.hidden{
-    height: 0;
-    display: none;
-    overflow: hidden;
-}
-
-.svg-elements-panel{
-    position: fixed;
-    right:100%;
-    top:0;
-    width: 100%;
-    height: 100%;
-    opacity: 1;
-    padding:0 80px 0 400px;
-    background-color: rgba(0,0,0,0.3);
-    display: block;
-    z-index: -1;
-}
-
-.show-up{
-    position: fixed;
-    opacity: 1;
-    right:0;
-    z-index: 255;
-    transition: opacity 0.2s ease-in-out, right 0.2s ease-in-out;
-}
-
-.icon-selector{
-    height: 100%;
-    padding: 80px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: #333;
-}
-
-.shape-selector{
-    padding: 80px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: #333;
 }
 
 .svg-icon-button{

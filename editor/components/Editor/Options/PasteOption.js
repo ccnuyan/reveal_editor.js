@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
 
 /* eslint-disable no-param-reassign, radix */
 
 class RemoveOptions extends Component {
-  static propTypes = {
-    isMain: PropTypes.bool,
-    label: PropTypes.string,
-    editor: PropTypes.object.isRequired,
-    selectedBlocks: PropTypes.array.isRequired,
-    set_editor: PropTypes.func.isRequired,
-    set_selected_blocks: PropTypes.func.isRequired,
-  }
 
   onPaste = () => {
+    console.log(this.props.editor.clipboard);
     window.RevealEditor.currentSection.paste(this.props.editor.clipboard);
   }
 
@@ -31,6 +23,13 @@ class RemoveOptions extends Component {
   }
 }
 
+RemoveOptions.propTypes = {
+  isMain: PropTypes.bool,
+  label: PropTypes.string,
+  editor: PropTypes.object.isRequired,
+  selectedBlocks: PropTypes.array.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     editor: state.editor.toJSON(),
@@ -38,11 +37,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_selected_blocks: actions.set_selected_blocks(dispacher),
-    set_editor: actions.set_editor(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(RemoveOptions);
+export default create(RemoveOptions, mapStateToProps);

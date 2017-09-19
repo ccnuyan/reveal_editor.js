@@ -1,0 +1,56 @@
+.hidden{
+    height: 0;
+    display: none;
+    overflow: hidden;
+}
+
+.add-elements-panel{
+    position: fixed;
+    right:100%;
+    top:0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    padding:0;
+    background-color: rgba(0,0,0,0.3);
+    display: block;
+    z-index: -1;
+}
+
+.show-up{
+    position: fixed;
+    opacity: 1;
+    right:0;
+    z-index: 255;
+    transition: opacity 0.2s ease-in-out, right 0.2s ease-in-out;
+}
+
+.icon-selector{
+    height: 100%;
+    padding: 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #333;
+}
+
+.shape-selector{
+    padding: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #333;
+}
+
+.file-selector{
+    padding: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #333;
+}

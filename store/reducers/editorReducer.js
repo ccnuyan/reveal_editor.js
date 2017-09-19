@@ -6,6 +6,8 @@ const editorInit = fromJS({
   currentSection: {
     selectedBlocks: [],
   },
+  instant_save_content: '',
+  instant_save_snapshot: '',
 });
 
 /* eslint-disable no-param-reassign */
@@ -39,6 +41,28 @@ export default (state = editorInit, action) => {
 
     case actionTypes.SET_CURRENT_BLOCK: {
       state = state.setIn(['currentSection', 'selectedBlocks'], fromJS([action.payload]));
+      return state;
+    }
+
+    case actionTypes.INSTANT_SAVE_START: {
+      state = state.set('instant_save_busy', true);
+      state = state.set('instant_save_error', false);
+      return state;
+    }
+
+    case actionTypes.INSTANT_SAVE_END: {
+      state = state.set('instant_save_busy', false);
+      state = state.set('instant_save_error', false);
+      state = state.set('instant_save_content', action.payload.content);
+      state = state.set('instant_save_snapshot', action.payload.snapshot);
+      return state;
+    }
+
+    case actionTypes.INSTANT_SAVE_ERROR: {
+      state = state.set('instant_save_busy', false);
+      state = state.set('instant_save_error', true);
+      state = state.set('instant_save_content', '');
+      state = state.set('instant_save_snapshot', '');
       return state;
     }
 

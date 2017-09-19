@@ -1,5 +1,3 @@
-import _u from './util';
-import config from './config';
 import Block from './Block';
 import DDMRR from './ddmrr';
 
@@ -12,11 +10,11 @@ class ImageBlock extends Block {
   constructor({ parent, el }) {
     super({ parent, el });
     this.image = this.blockContent.dom.querySelector('img');
-    _u.applyStyle(this.image, config.styles.imageContentImage);
 
-    _u.on(this.image, 'load', () => {
+    this.image.addEventListener('load', () => {
       this.state.desiredWidth = this.image.width;
       this.state.desiredHeight = this.image.height;
+
       this.dom.style.height = 'auto';
       this.image.style.display = 'block';
     });
@@ -27,7 +25,7 @@ class ImageBlock extends Block {
 
     const state = {
       ...this.state,
-      src: _u.getAttribute(this.image, 'src'),
+      src: this.image.getAttribute('src'),
       borderWidth: this.getLength(style.borderTopWidth),
       borderStyle: this.getBorderStyle(style.borderTopStyle),
       borderColor: this.getColor(style.borderTopColor),
@@ -39,11 +37,7 @@ class ImageBlock extends Block {
 
   setState(params) {
     Object.keys(params).forEach((key) => {
-      if (key === 'src') {
-        this.image.style[key] = params[key];
-      } else {
-        this.dom.style[key] = params[key];
-      }
+      this.dom.style[key] = params[key];
     });
 
     this.ddmrr && this.ddmrr.relocateDom();
@@ -51,7 +45,6 @@ class ImageBlock extends Block {
   }
 
   toManipulate() {
-    super.toManipulate();
     this.ddmrr = new DDMRR(this.dom, this.editor.reveal, {
       resize: {
         key: 'resize',
@@ -60,15 +53,7 @@ class ImageBlock extends Block {
         anchors: ['n', 'e', 's', 'w', 'ne', 'se', 'nw', 'sw'],
       },
     });
-  }
-
-  toEdit() {
-    super.toEdit();
-    this.editor.emitter.emit('editorRequestEditImage', {
-      currentSection: this.editor.currentSection,
-      block: this,
-      state: this.getState(),
-    });
+    super.toManipulate();
   }
 }
 

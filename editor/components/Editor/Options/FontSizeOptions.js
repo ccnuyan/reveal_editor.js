@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
+import create from '../../creator';
+
 
 /* eslint-disable radix */
 
@@ -15,14 +15,6 @@ class Percentage {
 }
 
 class FontSizeOptions extends Component {
-  static propTypes = {
-    isMain: PropTypes.bool,
-    label: PropTypes.string,
-    blockProp: PropTypes.string,
-    selectedBlocks: PropTypes.array.isRequired,
-    set_current_block: PropTypes.func.isRequired,
-  }
-
   changeFontSize = (event) => {
     const selectedBlock = this.props.selectedBlocks[0];
     const dir = event.currentTarget.getAttribute('data-change-direction');
@@ -47,7 +39,7 @@ class FontSizeOptions extends Component {
 
     const params = { fontSize: newPer };
     const newState = window.RevealEditor.currentSection.getSelectedBlocks()[0].setState(params);
-    this.props.set_current_block(newState);
+    this.props.editor_set_current_block(newState);
   }
 
   render = () => {
@@ -72,16 +64,18 @@ class FontSizeOptions extends Component {
   }
 }
 
+FontSizeOptions.propTypes = {
+  isMain: PropTypes.bool,
+  label: PropTypes.string,
+  blockProp: PropTypes.string,
+  selectedBlocks: PropTypes.array.isRequired,
+  editor_set_current_block: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => {
   return {
     selectedBlocks: state.editor.toJSON().currentSection.selectedBlocks,
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    set_current_block: actions.set_current_block(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(FontSizeOptions);
+export default create(FontSizeOptions, mapStateToProps);

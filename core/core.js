@@ -1,8 +1,8 @@
 import Editor from './Editor';
 import templates from './templates';
-import { getHeaders, getParameterByName } from './services/sc_util';
-import './css/editor.scss';
-
+import { getHeaders, getParameterByName } from '../sc_utils';
+import './css/editing_ui.css';
+import './css/reveal_override.css';
 
 (() => {
   const action = getParameterByName('action');
@@ -25,7 +25,7 @@ import './css/editor.scss';
   };
 
   const authenticatedModeRun = (html) => {
-    window.sc_mode.anonymous = true;
+    window.sc_mode.anonymous = false;
     run(html);
   };
 

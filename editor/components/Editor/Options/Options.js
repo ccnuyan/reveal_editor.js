@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../../store/actions';
 import commonOptions from './commonOptions';
 import block2optionsMap from './block2optionsMap';
 import OptionContainer from './OptionContainer';
 
+import create from '../../creator';
+
 class Elements extends Component {
-  static propTypes = {
-    selectedBlocks: PropTypes.array.isRequired,
-  }
 
   getCommonOptions = () => {
     const optionsElements = [];
@@ -46,16 +43,16 @@ class Elements extends Component {
     const sb = this.props.selectedBlocks;
     return (
       <div className="editor_options">
-        {
-          sb.length === 1 ? this.getBlockOptions(sb) : ''
-        }
-        {
-          this.getCommonOptions()
-        }
+        {sb.length === 1 ? this.getBlockOptions(sb) : ''}
+        {this.getCommonOptions()}
       </div>
     );
   }
 }
+
+Elements.propTypes = {
+  selectedBlocks: PropTypes.array.isRequired,
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -63,10 +60,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapActionsToProps = (dispacher) => {
-  return {
-    add_new_text: actions.set_preview(dispacher),
-  };
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Elements);
+export default create(Elements, mapStateToProps);

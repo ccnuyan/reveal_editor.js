@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import svgFilesMap from '../../../../icomoon_icons/svgFilesMap';
+import create from '../../creator';
 
 class IconSelector extends Component {
-
-  static propTypes = {
-    editor: PropTypes.object.isRequired,
-    hideIcons: PropTypes.func.isRequired,
-  }
 
   render =() => {
     return (
@@ -50,4 +45,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(IconSelector);
+IconSelector.propTypes = {
+  editor: PropTypes.object.isRequired,
+  hideIcons: PropTypes.func.isRequired,
+};
+
+export default create(IconSelector, mapStateToProps);

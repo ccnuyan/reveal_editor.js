@@ -1,6 +1,3 @@
-
-import _u from './util';
-
 class Elements {
   constructor({ parent, el }) {
     this.parent = parent;
@@ -8,11 +5,11 @@ class Elements {
     this.state = {};
   }
   show = () => {
-    _u.show(this.dom);
+    this.dom.style.display = '';
   }
 
   hide = () => {
-    _u.hide(this.dom);
+    this.dom.style.display = 'none';
   }
 }
 

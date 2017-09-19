@@ -1,25 +1,64 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import BackgroundColorPicker from './BackgroundColorPicker';
 import IconSelector from './IconSelector';
+import FileSelector from './FileSelector';
 import ShapeSelector from './ShapeSelector';
-
 import PasteOption from '../Options/PasteOption';
 import OptionContainer from '../Options/OptionContainer';
+import create from '../../creator';
+
+import './EditorSectionPanel.scss';
 
 
 /* eslint-disable max-len */
-class Elements extends Component {
-
-  static propTypes = {
-    editor: PropTypes.object.isRequired,
-  }
-
+class EditorSectionPanel extends Component {
   state ={
     showIcons: false,
     showShapes: false,
+    showFiles: false,
+  }
+
+  onAddNewText = (event) => {
+    event.preventDefault();
+    window.RevealEditor.currentSection.addText();
+  }
+
+  onAddSVGShape = (event) => {
+    event.preventDefault();
+    this.setState({ showShapes: true });
+  }
+
+  onAddSVGIcon = (event) => {
+    event.preventDefault();
+    this.setState({ showIcons: true });
+  }
+
+  onAddNewFile = () => {
+    this.setState({ showFiles: true });
+  }
+
+
+  hideIcons = () => {
+    this.setState({ showIcons: false });
+  }
+
+  hideShapes = () => {
+    this.setState({ showShapes: false });
+  }
+
+  hideFiles = () => {
+    this.setState({ showFiles: false });
+  }
+
+  onAddLatex = (event) => {
+    event.preventDefault();
+    window.RevealEditor.currentSection.addLatex({ latex: 'a^2+2ab+b^2=(a+b)^2' });
+  }
+
+  onTest = (event) => {
+    event.preventDefault();
   }
 
   render = () => {
@@ -43,7 +82,7 @@ class Elements extends Component {
             </div>
             <span>TEXT</span>
           </div>
-          <div onTouchTap={ this.onAddNewImage } className={ 'section-element-each' }>
+          <div ref={ e => this.selectImage = e } onTouchTap={ this.onAddNewFile } className={ 'section-element-each' }>
             <div>
               <i className="icon-image"></i>
             </div>
@@ -68,66 +107,24 @@ class Elements extends Component {
             <span>LATEX</span>
           </div>
         </div>
-        <input onChange={ this.onSelectImage } accept="image/png, image/jpeg" ref={ c => this.imageFileInput = c } type="file" name="file" id="image_file_select" className="inputfile" style={ { display: 'none' } }/>
-        <div onTouchTap={ this.hideShapes } className={ `svg-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
+        <div className={ `add-elements-panel${this.state.showShapes ? ' show-up' : ''}` }>
           <ShapeSelector hideShapes={ this.hideShapes } />
         </div>
-        <div onTouchTap={ this.hideIcons } className={ `svg-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
+        <div className={ `add-elements-panel${this.state.showIcons ? ' show-up' : ''}` }>
           <IconSelector hideIcons={ this.hideIcons } />
+        </div>
+        <div className={ `add-elements-panel${this.state.showFiles ? ' show-up' : ''}` }>
+          <FileSelector hideFiles={ this.hideFiles } />
         </div>
       </div>
     );
   }
-
-  onSelectImage = () => {
-    const reader = new FileReader();
-    // const ent = e || window.event;
-    const files = this.imageFileInput.files;
-    reader.onload = () => {
-      const dataURL = reader.result;
-      window.RevealEditor.currentSection.addImage({ imageUrl: dataURL });
-    };
-
-    reader.readAsDataURL(files[0]);
-  }
-
-  onAddNewText = (event) => {
-    event.preventDefault();
-    window.RevealEditor.currentSection.addText();
-  }
-
-  onAddNewImage = (event) => {
-    event.preventDefault();
-    this.imageFileInput.click();
-  }
-
-  onAddSVGShape = (event) => {
-    event.preventDefault();
-    this.setState({ showShapes: true });
-  }
-
-  onAddSVGIcon = (event) => {
-    event.preventDefault();
-    this.setState({ showIcons: true });
-  }
-
-  hideIcons = () => {
-    this.setState({ showIcons: false });
-  }
-
-  hideShapes = () => {
-    this.setState({ showShapes: false });
-  }
-
-  onAddLatex = (event) => {
-    event.preventDefault();
-    window.RevealEditor.currentSection.addLatex({ latex: 'a^2+2ab+b^2=(a+b)^2' });
-  }
-
-  onTest = (event) => {
-    event.preventDefault();
-  }
 }
+
+EditorSectionPanel.propTypes = {
+  editor: PropTypes.object.isRequired,
+  files_initialize: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -135,4 +132,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Elements);
+
+export default create(EditorSectionPanel, mapStateToProps);
