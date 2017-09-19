@@ -7,11 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
+    "start": "babel-node server",
     "eslint": "eslint --ignore-path .eslintignore ./**/*.js",
     "wp-dev": "cross-env NODE_ENV=development && webpack-dev-server --host 0.0.0.0 --config=webpack.dev-config.js",
     "fe-dev": "cross-env NODE_ENV=development && nodemon --config nodemon.json --delay 3000ms",
-    "wp-build": "cross-env NODE_ENV=production && webpack --config=webpack.build-config.js",
-    "start": "babel-node server"
+    "wp-build": "cross-env NODE_ENV=production && rm -r build | webpack --config=webpack.build-config.js"
   },
   "#comment# - browserslist": "for postcss autoprefix, which is in ./webpack/postcss.config.js",
   "browserslist": [

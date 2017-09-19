@@ -1,10 +1,10 @@
 {
   "editor": {
-    "js": "./static/assets/editor-cde14ddb133f788f48be.js",
-    "css": "./static/assets/editor-cde14ddb133f788f48be.css"
+    "js": "./static/assets/editor-d4c1abb8213bbc24d35f.js",
+    "css": "./static/assets/editor-d4c1abb8213bbc24d35f.css"
   },
   "core": {
-    "js": "./static/assets/core-cde14ddb133f788f48be.js",
-    "css": "./static/assets/core-cde14ddb133f788f48be.css"
+    "js": "./static/assets/core-d4c1abb8213bbc24d35f.js",
+    "css": "./static/assets/core-d4c1abb8213bbc24d35f.css"
   }
 }
