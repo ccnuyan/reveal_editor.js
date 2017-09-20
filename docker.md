@@ -1,3 +1,4 @@
+    git pull
     docker rm -f se001
     docker rmi -f syncollege-editor:001
     docker build -t syncollege-editor:001 .
