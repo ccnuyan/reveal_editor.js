@@ -11,8 +11,8 @@ import Main from './components/Main';
 import './global.scss';
 import './editor.scss';
 
-injectTapEventPlugin();
 es6Promise.polyfill();
+injectTapEventPlugin();
 
 ReactDom.render((
   <Provider store={ store }>

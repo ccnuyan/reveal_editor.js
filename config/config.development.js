@@ -1,6 +1,7 @@
 module.exports = {
   mode: 'development',
-  port: 8000,
+  domain: 'web.syncollege.local',
+  port: 19000,
   serviceBase: '',
   qiniu_bucket: '7xt1pi.com1.z0.glb.clouddn.com',
   stylesheets: {

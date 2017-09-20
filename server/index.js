@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import compression from 'compression';
+import delay from 'express-delay';
+
 
 import './globals';
 import config from '../config';
@@ -11,9 +13,15 @@ const app = express();
 
 const PORT = process.env.PORT || config.port;
 
+global.report();
+
 try {
   (async () => {
-    app.use(compression());
+    if (config.mode === 'development') {
+      app.use(delay(200, 500));
+    } else {
+      app.use(compression());
+    }
 
     app.use('/static/', express.static(path.join(__dirname, '../build/')));
     app.use('/static/', express.static(path.join(__dirname, '../public/')));
